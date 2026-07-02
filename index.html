@@ -13,726 +13,464 @@
 /* ═══════════════════════════════════════════════════════════════
    RESET & VARIABLES
    ═══════════════════════════════════════════════════════════════ */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-  --green: #0f0;
-  --green-dim: rgba(0, 255, 0, 0.15);
-  --green-glow: rgba(0, 255, 0, 0.4);
-  --black: #000;
-  --dark: #0a0a0a;
-  --border: #1a1a1a;
-  --border-light: #222;
-  --text: #999;
-  --text-dim: #666;
-  --text-bright: #ccc;
-  --pink: #ff0080;
-  --cyan: #00ffff;
-  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --font-sans: 'Inter', -apple-system, sans-serif;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --g:#0f0;--gd:rgba(0,255,0,.15);--gg:rgba(0,255,0,.4);
+  --bk:#000;--dk:#0a0a0a;--bd:#1a1a1a;--bl:#222;
+  --tx:#999;--td:#666;--tb:#ccc;
+  --pk:#ff0080;--cy:#00ffff;
+  --mono:'JetBrains Mono','Courier New',monospace;
+  --sans:'Inter',-apple-system,sans-serif;
 }
-
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--font-sans);
-  background: var(--black);
-  color: var(--text);
-  overflow-x: hidden;
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 6 L11 10 L12 11 L13 10 L12 6 M10 12 L9 14 L8 16 L8 14 L9 12 L10 12 M14 12 L15 12 L16 14 L16 16 L15 14 L14 12" fill="none" stroke="%2300ff00" stroke-width="1.5"/><circle cx="12" cy="8" r="1" fill="%2300ff00"/></svg>') 12 6, crosshair;
-  min-height: 100vh;
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);background:var(--bk);color:var(--tx);
+  overflow-x:hidden;min-height:100vh;
+  cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 6 L11 10 L12 11 L13 10 L12 6 M10 12 L9 14 L8 16 L8 14 L9 12 L10 12 M14 12 L15 12 L16 14 L16 16 L15 14 L14 12" fill="none" stroke="%2300ff00" stroke-width="1.5"/><circle cx="12" cy="8" r="1" fill="%2300ff00"/></svg>') 12 6, crosshair;
 }
+a,button{cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 2 L14 8 L16 10 L18 8 L16 2 M12 12 L10 16 L8 20 L6 24 L8 22 L10 18 L12 14 L12 12 M20 12 L20 14 L22 18 L24 22 L26 24 L24 20 L22 16 L20 12" fill="%2300ff00" stroke="%2300ff00" stroke-width="1"/></svg>') 16 3, pointer}
+a{color:inherit;text-decoration:none}
 
-a, button {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M16 2 L14 8 L16 10 L18 8 L16 2 M12 12 L10 16 L8 20 L6 24 L8 22 L10 18 L12 14 L12 12 M20 12 L20 14 L22 18 L24 22 L26 24 L24 20 L22 16 L20 12" fill="%2300ff00" stroke="%2300ff00" stroke-width="1"/></svg>') 16 3, pointer;
+/* ═══════════════════════════════════════════════════════════════
+   LOADING SCREEN
+   ═══════════════════════════════════════════════════════════════ */
+#loader{
+  position:fixed;inset:0;z-index:99999;
+  background:var(--bk);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .6s,visibility .6s;
 }
-
-a { color: inherit; text-decoration: none; }
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-text{
+  font-family:var(--mono);font-size:.85rem;color:var(--g);
+  letter-spacing:4px;text-transform:uppercase;
+}
+.loader-bar{
+  width:200px;height:2px;background:var(--bd);margin-top:1.5rem;overflow:hidden;
+}
+.loader-fill{
+  height:100%;background:var(--g);width:0;
+  animation:loaderFill 1.5s ease forwards;
+  box-shadow:0 0 10px var(--gg);
+}
+@keyframes loaderFill{to{width:100%}}
+.loader-dots{display:flex;gap:6px;margin-top:1rem}
+.loader-dots span{
+  width:4px;height:4px;background:var(--g);border-radius:50%;
+  animation:loaderDot 1.2s ease-in-out infinite;
+}
+.loader-dots span:nth-child(2){animation-delay:.2s}
+.loader-dots span:nth-child(3){animation-delay:.4s}
+@keyframes loaderDot{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.5)}}
 
 /* ═══════════════════════════════════════════════════════════════
    BACKGROUND LAYERS
    ═══════════════════════════════════════════════════════════════ */
-.bg-gradient {
-  position: fixed; inset: 0;
+#particle-canvas{position:fixed;inset:0;z-index:-4;pointer-events:none}
+.bg-gradient{
+  position:fixed;inset:0;
   background:
-    radial-gradient(circle at 20% 50%, rgba(0, 255, 0, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 50%, rgba(0, 255, 255, 0.06) 0%, transparent 50%),
-    radial-gradient(circle at 50% 80%, rgba(255, 0, 255, 0.03) 0%, transparent 50%);
-  animation: bgPulse 20s ease-in-out infinite;
-  z-index: -3;
+    radial-gradient(circle at 20% 50%,rgba(0,255,0,.08) 0%,transparent 50%),
+    radial-gradient(circle at 80% 50%,rgba(0,255,255,.06) 0%,transparent 50%),
+    radial-gradient(circle at 50% 80%,rgba(255,0,255,.03) 0%,transparent 50%);
+  animation:bgPulse 20s ease-in-out infinite;z-index:-3;
 }
-@keyframes bgPulse {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 1; }
+@keyframes bgPulse{0%,100%{opacity:.8}50%{opacity:1}}
+.scanlines{
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,0,.02) 2px,rgba(0,255,0,.02) 4px);
+  z-index:1;pointer-events:none;animation:scan 8s linear infinite;
 }
-
-.scanlines {
-  position: fixed; inset: 0;
-  background: repeating-linear-gradient(
-    0deg, transparent, transparent 2px,
-    rgba(0, 255, 0, 0.02) 2px, rgba(0, 255, 0, 0.02) 4px
-  );
-  z-index: 1; pointer-events: none;
-  animation: scan 8s linear infinite;
-}
-@keyframes scan {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(10px); }
-}
-
-.noise {
-  position: fixed; inset: 0;
-  opacity: 0.03; z-index: -1; pointer-events: none;
-}
-.noise::before {
-  content: "";
-  position: absolute; inset: 0;
+@keyframes scan{0%{transform:translateY(0)}100%{transform:translateY(10px)}}
+.noise{position:fixed;inset:0;opacity:.03;z-index:-1;pointer-events:none}
+.noise::before{
+  content:"";position:absolute;inset:0;
   background-image:
-    repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px),
-    repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px);
-  animation: shift 1s linear infinite;
+    repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(255,255,255,.03) 2px,rgba(255,255,255,.03) 4px),
+    repeating-linear-gradient(-45deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
+  animation:shift 1s linear infinite;
 }
-@keyframes shift {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(4px, 4px); }
+@keyframes shift{0%{transform:translate(0,0)}100%{transform:translate(4px,4px)}}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOUSE GLOW FOLLOWER
+   ═══════════════════════════════════════════════════════════════ */
+#mouse-glow{
+  position:fixed;width:400px;height:400px;
+  border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(0,255,0,.06) 0%,transparent 70%);
+  transform:translate(-50%,-50%);
+  transition:left .15s ease-out,top .15s ease-out;
+  will-change:left,top;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   HEADER / NAV
+   HEADER
    ═══════════════════════════════════════════════════════════════ */
-header {
-  padding: 3rem 3rem 0;
-  position: relative; z-index: 10;
+header{padding:3rem 3rem 0;position:relative;z-index:10}
+.logo{
+  font-size:.85rem;letter-spacing:3px;opacity:.5;
+  transition:all .3s;display:inline-block;font-family:var(--mono);
 }
-.logo {
-  font-size: 0.85rem;
-  letter-spacing: 3px;
-  opacity: 0.5;
-  transition: all 0.3s;
-  display: inline-block;
-  font-family: var(--font-mono);
-}
-.logo:hover { opacity: 1; letter-spacing: 5px; }
+.logo:hover{opacity:1;letter-spacing:5px}
 
 /* ═══════════════════════════════════════════════════════════════
-   HERO / MAIN
+   HERO
    ═══════════════════════════════════════════════════════════════ */
-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem;
-  text-align: center;
+main{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:3rem;text-align:center;
+}
+h1{
+  font-size:clamp(2.5rem,8vw,5rem);font-weight:200;letter-spacing:-1px;
+  margin-bottom:1rem;opacity:0;
+  animation:fadeIn 1s .2s forwards,glitchText 2s 2s infinite;
+  position:relative;display:inline-block;color:#fff;
+}
+h1::before,h1::after{
+  content:attr(data-text);position:absolute;left:0;top:0;
+  width:100%;height:100%;opacity:0;
+}
+h1::before{color:var(--pk);z-index:-1;animation:glitchBefore 3s infinite}
+h1::after{color:var(--cy);z-index:-1;animation:glitchAfter 3s infinite}
+@keyframes glitchBefore{
+  0%,90%{opacity:0}91%{opacity:.8;left:-2px;top:-2px}
+  92%{opacity:.8;left:2px;top:0}93%{opacity:0}
+  94%{opacity:.8;left:0;top:2px}95%,100%{opacity:0}
+}
+@keyframes glitchAfter{
+  0%,88%{opacity:0}89%{opacity:.8;left:2px;top:2px}
+  90%{opacity:.8;left:-2px;top:1px}91%{opacity:0}
+  92%{opacity:.8;left:1px;top:-2px}93%,100%{opacity:0}
+}
+@keyframes glitchText{
+  0%,94%{text-shadow:none}
+  95%{text-shadow:-2px 0 var(--pk),2px 0 var(--cy)}
+  96%{text-shadow:-1px 0 var(--pk),1px 0 var(--cy);transform:skew(.5deg)}
+  97%{text-shadow:none;transform:skew(0)}
+  98%{text-shadow:2px 0 var(--pk),-2px 0 var(--cy)}
+  99%,100%{text-shadow:none}
 }
 
-h1 {
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 200;
-  letter-spacing: -1px;
-  margin-bottom: 1rem;
-  opacity: 0;
-  animation: fadeIn 1s 0.2s forwards, glitchText 2s 2s infinite;
-  position: relative;
-  display: inline-block;
-  color: #fff;
+.tagline{
+  font-size:1.05rem;color:var(--td);margin-bottom:1.5rem;
+  letter-spacing:2px;text-transform:uppercase;opacity:0;
+  animation:fadeIn 1s .4s forwards;display:inline-block;
 }
-h1::before, h1::after {
-  content: attr(data-text);
-  position: absolute; left: 0; top: 0;
-  width: 100%; height: 100%;
-  opacity: 0;
-}
-h1::before { color: var(--pink); z-index: -1; animation: glitchBefore 3s infinite; }
-h1::after { color: var(--cyan); z-index: -1; animation: glitchAfter 3s infinite; }
+.tagline::after{content:'_';animation:blink 1s infinite}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
 
-@keyframes glitchBefore {
-  0%, 90% { opacity: 0; }
-  91% { opacity: 0.8; left: -2px; top: -2px; }
-  92% { opacity: 0.8; left: 2px; top: 0; }
-  93% { opacity: 0; }
-  94% { opacity: 0.8; left: 0; top: 2px; }
-  95%, 100% { opacity: 0; }
+.bio{
+  color:var(--tx);max-width:520px;margin:0 auto 3rem;
+  line-height:1.7;font-size:.95rem;opacity:0;
+  animation:fadeIn 1s .6s forwards;
 }
-@keyframes glitchAfter {
-  0%, 88% { opacity: 0; }
-  89% { opacity: 0.8; left: 2px; top: 2px; }
-  90% { opacity: 0.8; left: -2px; top: 1px; }
-  91% { opacity: 0; }
-  92% { opacity: 0.8; left: 1px; top: -2px; }
-  93%, 100% { opacity: 0; }
-}
-@keyframes glitchText {
-  0%, 94% { text-shadow: none; }
-  95% { text-shadow: -2px 0 var(--pink), 2px 0 var(--cyan); }
-  96% { text-shadow: -1px 0 var(--pink), 1px 0 var(--cyan); transform: skew(0.5deg); }
-  97% { text-shadow: none; transform: skew(0); }
-  98% { text-shadow: 2px 0 var(--pink), -2px 0 var(--cyan); }
-  99%, 100% { text-shadow: none; }
-}
+.bio .hl{color:var(--g);font-style:italic;letter-spacing:1px;white-space:nowrap}
 
-.tagline {
-  font-size: 1.05rem;
-  color: var(--text-dim);
-  margin-bottom: 1.5rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  opacity: 0;
-  animation: fadeIn 1s 0.4s forwards;
-  display: inline-block;
+.social{
+  display:flex;gap:2rem;justify-content:center;
+  margin:2rem auto 4rem;opacity:0;animation:fadeIn 1s .7s forwards;
 }
-.tagline::after {
-  content: '_';
-  animation: blink 1s infinite;
+.social a{
+  font-size:.8rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--td);position:relative;transition:all .3s;
 }
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
+.social a::after{
+  content:'';position:absolute;bottom:-4px;left:0;
+  width:0;height:1px;background:var(--g);transition:width .3s;
 }
-
-.bio {
-  color: var(--text);
-  max-width: 520px;
-  margin: 0 auto 3rem;
-  line-height: 1.7;
-  font-size: 0.95rem;
-  opacity: 0;
-  animation: fadeIn 1s 0.6s forwards;
-}
-.bio .hl {
-  color: var(--green);
-  font-style: italic;
-  letter-spacing: 1px;
-  white-space: nowrap;
-}
-
-.social {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  margin: 2rem auto 4rem;
-  opacity: 0;
-  animation: fadeIn 1s 0.7s forwards;
-}
-.social a {
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  position: relative;
-  transition: all 0.3s;
-}
-.social a::after {
-  content: '';
-  position: absolute;
-  bottom: -4px; left: 0;
-  width: 0; height: 1px;
-  background: var(--green);
-  transition: width 0.3s;
-}
-.social a:hover { color: var(--green); }
-.social a:hover::after { width: 100%; }
+.social a:hover{color:var(--g)}
+.social a:hover::after{width:100%}
 
 /* ═══════════════════════════════════════════════════════════════
-   PROJECTS GRID — Pliny-style
+   RIPPLE EFFECT
    ═══════════════════════════════════════════════════════════════ */
-.projects-frame {
-  position: relative;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  opacity: 0;
-  animation: fadeIn 1s 0.8s forwards;
+.ripple{
+  position:absolute;border-radius:50%;
+  background:rgba(0,255,0,.15);
+  transform:scale(0);animation:rippleAnim .6s linear;
+  pointer-events:none;
 }
-.projects {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  background: var(--border-light);
-  max-width: 720px;
-  width: 100%;
-}
-.project {
-  background: var(--black);
-  padding: 2.5rem 2rem;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 180px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid transparent;
-  text-decoration: none;
-}
-.project::before {
-  content: '';
-  position: absolute; inset: -2px;
-  background: linear-gradient(45deg, #0f0, #0ff, #f0f, #0f0);
-  opacity: 0; z-index: -1;
-  transition: opacity 0.4s;
-  animation: borderRotate 3s linear infinite;
-}
-@keyframes borderRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.project:hover::before { opacity: 1; }
-.project::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: var(--black); z-index: -1;
-}
-.project:hover {
-  transform: scale(1.05);
-  z-index: 10;
-  box-shadow: 0 0 30px var(--green-glow), inset 0 0 30px rgba(0,255,0,0.1);
-  border-color: var(--green);
-}
-.project h3 {
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  color: var(--green);
-  text-shadow: 0 0 10px rgba(0,255,0,0.5);
-  font-family: var(--font-mono);
-}
-.project p {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  transition: all 0.3s;
-}
-.project .detail {
-  position: absolute;
-  bottom: 2rem; left: 2rem; right: 2rem;
-  font-size: 0.8rem;
-  color: #fff;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.4s;
-  line-height: 1.4;
-}
-.project:hover .detail {
-  opacity: 1;
-  transform: translateY(0);
-}
-.project:hover p:first-of-type {
-  opacity: 0;
-  transform: translateY(-20px);
-}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
 
 /* ═══════════════════════════════════════════════════════════════
-   SVG SERPENTS
+   PROJECTS GRID
    ═══════════════════════════════════════════════════════════════ */
-.serpent {
-  flex-shrink: 0;
-  width: 50px;
-  opacity: 0;
-  filter: drop-shadow(0 0 8px var(--green-glow));
-  animation: serpentReveal 2s ease-out 1.5s forwards, serpentBreath 6s ease-in-out 3.5s infinite;
+.projects-frame{
+  position:relative;width:100%;max-width:1100px;
+  margin:0 auto 4rem;display:flex;align-items:center;
+  justify-content:center;gap:1.5rem;
+  opacity:0;animation:fadeIn 1s .8s forwards;
 }
-.serpent-right { transform: scaleX(-1); }
-.serpent .body-main {
-  stroke-dasharray: 1500;
-  stroke-dashoffset: 1500;
-  animation: drawPath 3s ease-out 1.8s forwards;
+.projects{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:var(--bl);max-width:720px;width:100%;
 }
-.serpent .body-inner {
-  stroke-dasharray: 1400;
-  stroke-dashoffset: 1400;
-  animation: drawPath 3.5s ease-out 2.2s forwards;
+.project{
+  background:var(--bk);padding:2.5rem 2rem;position:relative;
+  overflow:hidden;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;min-height:180px;
+  transition:all .4s cubic-bezier(.4,0,.2,1);border:1px solid transparent;
 }
-.serpent .scales {
-  stroke-dasharray: 800;
-  stroke-dashoffset: 800;
-  animation: drawPath 2s ease-out 3.5s forwards;
+.project::before{
+  content:'';position:absolute;inset:-2px;
+  background:linear-gradient(45deg,#0f0,#0ff,#f0f,#0f0);
+  opacity:0;z-index:-1;transition:opacity .4s;
+  animation:borderRotate 3s linear infinite;
 }
-@keyframes serpentReveal { to { opacity: 0.3; } }
-@keyframes serpentBreath {
-  0%, 100% { filter: drop-shadow(0 0 8px var(--green-glow)); }
-  50% { filter: drop-shadow(0 0 20px var(--green-glow)); }
+@keyframes borderRotate{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.project:hover::before{opacity:1}
+.project::after{content:'';position:absolute;inset:0;background:var(--bk);z-index:-1}
+.project:hover{
+  transform:scale(1.05);z-index:10;
+  box-shadow:0 0 30px var(--gg),inset 0 0 30px rgba(0,255,0,.1);
+  border-color:var(--g);
 }
-@keyframes drawPath { to { stroke-dashoffset: 0; } }
+.project h3{
+  font-size:.8rem;letter-spacing:2px;margin-bottom:.5rem;
+  text-transform:uppercase;color:var(--g);
+  text-shadow:0 0 10px rgba(0,255,0,.5);font-family:var(--mono);
+  transition:transform .3s;
+}
+.project:hover h3{transform:scale(1.05)}
+.project p{font-size:.85rem;color:var(--td);transition:all .3s}
+.project .detail{
+  position:absolute;bottom:2rem;left:2rem;right:2rem;
+  font-size:.8rem;color:#fff;opacity:0;transform:translateY(20px);
+  transition:all .4s;line-height:1.4;
+}
+.project:hover .detail{opacity:1;transform:translateY(0)}
+.project:hover p:first-of-type{opacity:0;transform:translateY(-20px)}
+
+/* ═══════════════════════════════════════════════════════════════
+   SERPENTS
+   ═══════════════════════════════════════════════════════════════ */
+.serpent{
+  flex-shrink:0;width:50px;opacity:0;
+  filter:drop-shadow(0 0 8px var(--gg));
+  animation:serpentReveal 2s ease-out 1.5s forwards,serpentBreath 6s ease-in-out 3.5s infinite;
+}
+.serpent-right{transform:scaleX(-1)}
+.serpent .body-main{stroke-dasharray:1500;stroke-dashoffset:1500;animation:drawPath 3s ease-out 1.8s forwards}
+.serpent .body-inner{stroke-dasharray:1400;stroke-dashoffset:1400;animation:drawPath 3.5s ease-out 2.2s forwards}
+.serpent .scales{stroke-dasharray:800;stroke-dashoffset:800;animation:drawPath 2s ease-out 3.5s forwards}
+@keyframes serpentReveal{to{opacity:.3}}
+@keyframes serpentBreath{0%,100%{filter:drop-shadow(0 0 8px var(--gg))}50%{filter:drop-shadow(0 0 20px var(--gg))}}
+@keyframes drawPath{to{stroke-dashoffset:0}}
 
 /* ═══════════════════════════════════════════════════════════════
    EMBERS
    ═══════════════════════════════════════════════════════════════ */
-.embers {
-  position: absolute; inset: 0;
-  pointer-events: none; overflow: hidden;
-}
-.ember {
-  position: absolute;
-  border-radius: 50%;
-  animation: emberRise linear infinite;
-}
-@keyframes emberRise {
-  0% { opacity: 0; transform: translateY(0) translateX(0) scale(1); }
-  10% { opacity: 0.9; }
-  50% { opacity: 0.4; }
-  100% { opacity: 0; transform: translateY(-500px) translateX(var(--drift, 10px)) scale(0.2); }
+.embers{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.ember{position:absolute;border-radius:50%;animation:emberRise linear infinite}
+@keyframes emberRise{
+  0%{opacity:0;transform:translateY(0) translateX(0) scale(1)}
+  10%{opacity:.9}50%{opacity:.4}
+  100%{opacity:0;transform:translateY(-500px) translateX(var(--drift,10px)) scale(.2)}
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   ABOUT — Terminal Style
+   STATS
    ═══════════════════════════════════════════════════════════════ */
-.section-divider {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 3rem;
+.section-divider{width:100%;max-width:1100px;margin:0 auto;padding:0 3rem}
+.section-divider hr{border:none;border-top:1px solid var(--bd)}
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--bl);max-width:800px;margin:0 auto 6rem;
 }
-.section-divider hr {
-  border: none;
-  border-top: 1px solid var(--border);
+.stat-cell{
+  background:var(--bk);padding:2rem;text-align:center;
+  transition:all .3s;position:relative;overflow:hidden;
 }
-
-.about-section {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 6rem 3rem;
+.stat-cell::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--g);transform:scaleX(0);transition:transform .3s;
 }
-.about-header {
-  text-align: center;
-  margin-bottom: 4rem;
+.stat-cell:hover::before{transform:scaleX(1)}
+.stat-cell:hover{background:var(--dk);box-shadow:inset 0 0 30px rgba(0,255,0,.05)}
+.stat-num{
+  font-size:2rem;font-weight:700;font-family:var(--mono);
+  color:var(--g);text-shadow:0 0 15px var(--gg);
 }
-.about-tag {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--green);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
-}
-.about-title {
-  font-size: 1.2rem;
-  color: var(--green);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  position: relative;
-  display: inline-block;
-}
-.about-title::before, .about-title::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 60px;
-  height: 1px;
-  background: var(--green);
-  opacity: 0.3;
-}
-.about-title::before { right: calc(100% + 20px); }
-.about-title::after { left: calc(100% + 20px); }
-
-.terminal-window {
-  background: var(--dark);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-}
-.terminal-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: var(--black);
-  border-bottom: 1px solid var(--border);
-}
-.terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
-.terminal-dot:nth-child(1) { background: #ef4444; }
-.terminal-dot:nth-child(2) { background: #f59e0b; }
-.terminal-dot:nth-child(3) { background: #22c55e; }
-.terminal-label { margin-left: 0.5rem; color: var(--text-dim); font-size: 0.75rem; }
-.terminal-body { padding: 1.5rem; line-height: 2; }
-.t-p { color: var(--green); }
-.t-c { color: #fff; }
-.t-o { color: var(--text-dim); }
-.t-s { color: var(--green); }
-.t-f { color: var(--cyan); }
-.t-w { color: #fb923c; }
+.stat-label{font-size:.7rem;color:var(--td);margin-top:.25rem;text-transform:uppercase;letter-spacing:2px}
 
 /* ═══════════════════════════════════════════════════════════════
-   STATS — Leet cards
+   ABOUT TERMINAL
    ═══════════════════════════════════════════════════════════════ */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--border-light);
-  max-width: 800px;
-  margin: 0 auto 6rem;
+.about-section{max-width:800px;margin:0 auto;padding:6rem 3rem}
+.about-header{text-align:center;margin-bottom:4rem}
+.about-tag{font-family:var(--mono);font-size:.75rem;color:var(--g);letter-spacing:3px;text-transform:uppercase;margin-bottom:.75rem}
+.about-title{
+  font-size:1.2rem;color:var(--g);letter-spacing:3px;text-transform:uppercase;
+  position:relative;display:inline-block;
 }
-.stat-cell {
-  background: var(--black);
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
+.about-title::before,.about-title::after{
+  content:'';position:absolute;top:50%;width:60px;height:1px;
+  background:var(--g);opacity:.3;
 }
-.stat-cell::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: var(--green);
-  transform: scaleX(0);
-  transition: transform 0.3s;
+.about-title::before{right:calc(100% + 20px)}
+.about-title::after{left:calc(100% + 20px)}
+
+.terminal-window{
+  background:var(--dk);border:1px solid var(--bd);border-radius:8px;
+  overflow:hidden;font-family:var(--mono);font-size:.82rem;
 }
-.stat-cell:hover::before { transform: scaleX(1); }
-.stat-cell:hover {
-  background: var(--dark);
-  box-shadow: inset 0 0 30px rgba(0,255,0,0.05);
+.terminal-bar{
+  display:flex;align-items:center;gap:.5rem;padding:.75rem 1rem;
+  background:var(--bk);border-bottom:1px solid var(--bd);
 }
-.stat-num {
-  font-size: 2rem;
-  font-weight: 700;
-  font-family: var(--font-mono);
-  color: var(--green);
-  text-shadow: 0 0 15px var(--green-glow);
-}
-.stat-label {
-  font-size: 0.7rem;
-  color: var(--text-dim);
-  margin-top: 0.25rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+.terminal-dot{width:10px;height:10px;border-radius:50%}
+.terminal-dot:nth-child(1){background:#ef4444}
+.terminal-dot:nth-child(2){background:#f59e0b}
+.terminal-dot:nth-child(3){background:#22c55e}
+.terminal-label{margin-left:.5rem;color:var(--td);font-size:.75rem}
+.terminal-body{padding:1.5rem;line-height:2}
+.t-p{color:var(--g)}.t-c{color:#fff}.t-o{color:var(--td)}.t-s{color:var(--g)}.t-f{color:var(--cy)}.t-w{color:#fb923c}
+
+/* Terminal cursor blink */
+.term-cursor{
+  display:inline-block;width:8px;height:1.1em;background:var(--g);
+  vertical-align:text-bottom;animation:blink 1s step-end infinite;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    TECH MARQUEE
    ═══════════════════════════════════════════════════════════════ */
-.marquee-section {
-  overflow: hidden;
-  padding: 3rem 0;
-  position: relative;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background: var(--dark);
+.marquee-section{
+  overflow:hidden;padding:3rem 0;position:relative;
+  border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  background:var(--dk);
 }
-.marquee-section::before, .marquee-section::after {
-  content: '';
-  position: absolute; top: 0; bottom: 0;
-  width: 120px; z-index: 2;
+.marquee-section::before,.marquee-section::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;
 }
-.marquee-section::before { left: 0; background: linear-gradient(90deg, var(--dark), transparent); }
-.marquee-section::after { right: 0; background: linear-gradient(-90deg, var(--dark), transparent); }
-.marquee-track {
-  display: flex;
-  gap: 1.5rem;
-  animation: marqueeScroll 40s linear infinite;
-  width: max-content;
+.marquee-section::before{left:0;background:linear-gradient(90deg,var(--dk),transparent)}
+.marquee-section::after{right:0;background:linear-gradient(-90deg,var(--dk),transparent)}
+.marquee-track{
+  display:flex;gap:1.5rem;animation:marqueeScroll 40s linear infinite;width:max-content;
 }
-.marquee-track:hover { animation-play-state: paused; }
-@keyframes marqueeScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tech-pill{
+  display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;
+  background:var(--bk);border:1px solid var(--bd);white-space:nowrap;
+  font-family:var(--mono);font-size:.8rem;color:var(--tx);transition:all .3s;
 }
-.tech-pill {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: var(--black);
-  border: 1px solid var(--border);
-  white-space: nowrap;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--text);
-  transition: all 0.3s;
-}
-.tech-pill:hover {
-  border-color: var(--green);
-  color: var(--green);
-  box-shadow: 0 0 15px var(--green-dim);
-}
+.tech-pill:hover{border-color:var(--g);color:var(--g);box-shadow:0 0 15px var(--gd)}
 
 /* ═══════════════════════════════════════════════════════════════
    JOURNEY TIMELINE
    ═══════════════════════════════════════════════════════════════ */
-.journey-section {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 6rem 3rem;
+.journey-section{max-width:700px;margin:0 auto;padding:6rem 3rem}
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--g);opacity:.3}
+.tl-item{
+  position:relative;padding-bottom:3rem;opacity:0;
+  transform:translateX(-20px);transition:all .6s ease;
 }
-.timeline {
-  position: relative;
-  padding-left: 2rem;
+.tl-item.visible{opacity:1;transform:translateX(0)}
+.tl-item::before{
+  content:'';position:absolute;left:-2.15rem;top:.5rem;
+  width:8px;height:8px;background:var(--g);border-radius:50%;
+  box-shadow:0 0 10px var(--gg);
 }
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 1px;
-  background: var(--green);
-  opacity: 0.3;
-}
-.tl-item {
-  position: relative;
-  padding-bottom: 3rem;
-  opacity: 0;
-  transform: translateX(-20px);
-  transition: all 0.6s ease;
-}
-.tl-item.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-.tl-item::before {
-  content: '';
-  position: absolute;
-  left: -2.15rem;
-  top: 0.5rem;
-  width: 8px; height: 8px;
-  background: var(--green);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--green-glow);
-}
-.tl-date {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--green);
-  letter-spacing: 2px;
-  margin-bottom: 0.25rem;
-}
-.tl-title {
-  font-size: 0.95rem;
-  color: #fff;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-}
-.tl-desc {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  line-height: 1.6;
-}
+.tl-date{font-family:var(--mono);font-size:.7rem;color:var(--g);letter-spacing:2px;margin-bottom:.25rem}
+.tl-title{font-size:.95rem;color:#fff;font-weight:500;margin-bottom:.25rem}
+.tl-desc{font-size:.85rem;color:var(--td);line-height:1.6}
 
 /* ═══════════════════════════════════════════════════════════════
    CONTACT
    ═══════════════════════════════════════════════════════════════ */
-.contact-section {
-  background: var(--dark);
-  padding: 6rem 3rem;
-  text-align: center;
-  border-top: 1px solid var(--border);
+.contact-section{background:var(--dk);padding:6rem 3rem;text-align:center;border-top:1px solid var(--bd)}
+.contact-title{font-size:1.2rem;color:var(--g);letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem}
+.contact-sub{color:var(--td);margin-bottom:3rem;font-size:.9rem}
+.contact-grid{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;max-width:700px;margin:0 auto}
+.contact-card{
+  display:flex;align-items:center;gap:.75rem;padding:1rem 1.5rem;
+  background:var(--bk);border:1px solid var(--bd);text-decoration:none;
+  color:var(--tx);transition:all .3s;min-width:200px;justify-content:center;
+  position:relative;overflow:hidden;
 }
-.contact-title {
-  font-size: 1.2rem;
-  color: var(--green);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
+.contact-card::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:rgba(0,255,0,.08);transition:left .4s;
 }
-.contact-sub {
-  color: var(--text-dim);
-  margin-bottom: 3rem;
-  font-size: 0.9rem;
-}
-.contact-grid {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  max-width: 700px;
-  margin: 0 auto;
-}
-.contact-card {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem;
-  background: var(--black);
-  border: 1px solid var(--border);
-  text-decoration: none;
-  color: var(--text);
-  transition: all 0.3s;
-  min-width: 200px;
-  justify-content: center;
-}
-.contact-card:hover {
-  border-color: var(--green);
-  transform: translateY(-3px);
-  box-shadow: 0 5px 20px rgba(0,255,0,0.1);
-  color: var(--green);
-}
-.contact-card .icon { font-size: 1.2rem; }
-.contact-card .name { font-size: 0.85rem; font-weight: 600; color: #fff; }
-.contact-card .handle { font-size: 0.7rem; color: var(--text-dim); font-family: var(--font-mono); }
+.contact-card:hover::before{left:0}
+.contact-card:hover{border-color:var(--g);transform:translateY(-3px);box-shadow:0 5px 20px rgba(0,255,0,.1);color:var(--g)}
+.contact-card .icon{font-size:1.2rem}
+.contact-card .name{font-size:.85rem;font-weight:600;color:#fff}
+.contact-card .handle{font-size:.7rem;color:var(--td);font-family:var(--mono)}
 
 /* ═══════════════════════════════════════════════════════════════
    FOOTER
    ═══════════════════════════════════════════════════════════════ */
-footer {
-  text-align: center;
-  padding: 3rem;
-  border-top: 1px solid var(--border);
-}
-.footer-text {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--text-dim);
-  letter-spacing: 1px;
-}
-.footer-text .heart { color: var(--green); }
+footer{text-align:center;padding:3rem;border-top:1px solid var(--bd)}
+.footer-text{font-family:var(--mono);font-size:.72rem;color:var(--td);letter-spacing:1px}
+.footer-text .heart{color:var(--g)}
 
 /* ═══════════════════════════════════════════════════════════════
    ANIMATIONS
    ═══════════════════════════════════════════════════════════════ */
-@keyframes fadeIn { to { opacity: 1; } }
+@keyframes fadeIn{to{opacity:1}}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
 
 /* ═══════════════════════════════════════════════════════════════
    SCROLLBAR
    ═══════════════════════════════════════════════════════════════ */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--black); }
-::-webkit-scrollbar-thumb { background: var(--border-light); }
-::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bk)}
+::-webkit-scrollbar-thumb{background:var(--bl)}
+::-webkit-scrollbar-thumb:hover{background:var(--td)}
 
 /* ═══════════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════════ */
-@media (max-width: 768px) {
-  header, main, .about-section, .journey-section, .contact-section { padding: 2rem; }
-  .serpent { display: none; }
-  .projects { grid-template-columns: 1fr; max-width: 400px; }
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  .social { flex-wrap: wrap; gap: 1rem; }
-  .contact-grid { flex-direction: column; align-items: center; }
-  .contact-card { width: 100%; max-width: 300px; }
+@media(max-width:768px){
+  header,main,.about-section,.journey-section,.contact-section{padding:2rem}
+  .serpent{display:none}
+  .projects{grid-template-columns:1fr;max-width:400px}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .social{flex-wrap:wrap;gap:1rem}
+  .contact-grid{flex-direction:column;align-items:center}
+  .contact-card{width:100%;max-width:300px}
 }
-@media (min-width: 769px) and (max-width: 1024px) {
-  .serpent { width: 35px; }
-  .projects-frame { gap: 1rem; }
+@media(min-width:769px) and (max-width:1024px){
+  .serpent{width:35px}
+  .projects-frame{gap:1rem}
 }
 </style>
 </head>
 <body>
 
+<!-- ═══ LOADING SCREEN ═══ -->
+<div id="loader">
+  <div class="loader-text">initializing</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- ═══ BACKGROUND LAYERS ═══ -->
+<canvas id="particle-canvas"></canvas>
 <div class="bg-gradient"></div>
 <div class="noise"></div>
 <div class="scanlines"></div>
+<div id="mouse-glow"></div>
 
 <header>
-  <a href="#" class="logo">&lt;YKRISHHH/&gt;</a>
+  <a href="#" class="logo" id="logo-link">&lt;YKRISHHH/&gt;</a>
 </header>
 
 <main>
-  <h1 data-text="YKRISHHH">YKRISHHH</h1>
+  <h1 data-text="YKRISHHH" id="hero-title">YKRISHHH</h1>
   <p class="tagline">security researcher & developer</p>
   <p class="bio">
     Hunting bugs, breaking systems, and building tools that make the digital world safer.
     From <span class="hl">kernel exploitation</span> to <span class="hl">ESP32 hacking</span> to <span class="hl">AI automation</span> —
     if it runs code, I've probably tried to break it.
   </p>
-
   <div class="social">
     <a href="https://github.com/ykrishhh" target="_blank" rel="noopener">GitHub</a>
     <a href="https://twitter.com/harry6ez" target="_blank" rel="noopener">X / Twitter</a>
@@ -740,91 +478,88 @@ footer {
   </div>
 
   <div class="projects-frame">
-    <!-- Left Serpent -->
     <svg class="serpent serpent-left" viewBox="0 0 60 700" fill="none">
-      <path class="body-main" d="M30 10 C55 80, 5 160, 30 230 C55 300, 5 380, 30 450 C55 520, 5 600, 30 680" stroke="#0f0" stroke-width="2.5" stroke-linecap="round"/>
-      <path class="body-inner" d="M30 18 C52 82, 8 158, 30 225 C52 295, 8 375, 30 445 C52 515, 8 595, 30 672" stroke="#0f0" stroke-width="0.8" opacity="0.15"/>
-      <path d="M30 10 C27 3, 34 0, 30 -4" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M30 680 C34 688, 26 694, 32 700" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
+      <path class="body-main" d="M30 10 C55 80,5 160,30 230 C55 300,5 380,30 450 C55 520,5 600,30 680" stroke="#0f0" stroke-width="2.5" stroke-linecap="round"/>
+      <path class="body-inner" d="M30 18 C52 82,8 158,30 225 C52 295,8 375,30 445 C52 515,8 595,30 672" stroke="#0f0" stroke-width=".8" opacity=".15"/>
+      <path d="M30 10 C27 3,34 0,30 -4" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M30 680 C34 688,26 694,32 700" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
       <g class="scales">
-        <path d="M36 40 C44 32, 50 38, 54 30 C57 24, 52 18, 56 12" stroke="#0f0" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-        <path d="M44 80 C52 68, 54 56, 48 50 C46 58, 42 68, 44 80Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="48" cy="118" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <path d="M16 180 C8 168, 6 156, 12 150 C14 158, 18 168, 16 180Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <path d="M22 200 C14 192, 8 198, 4 190 C1 184, 6 178, 2 172" stroke="#0f0" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-        <circle cx="12" cy="248" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="7" cy="254" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="17" cy="255" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="12" cy="261" r="3" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <path d="M46 310 C54 298, 56 286, 50 280 C48 288, 44 298, 46 310Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <path d="M42 348 C50 340, 54 346, 58 338 C60 332, 56 326, 58 320" stroke="#0f0" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-        <path d="M14 400 C6 388, 4 376, 10 370 C12 378, 16 388, 14 400Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="46" cy="455" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="51" cy="461" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="41" cy="462" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="46" cy="468" r="3" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <path d="M20 500 C12 492, 6 498, 2 490 C0 484, 4 478, 0 472" stroke="#0f0" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-        <path d="M44 540 C52 528, 54 516, 48 510 C46 518, 42 528, 44 540Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="14" cy="578" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="9" cy="584" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="19" cy="585" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="14" cy="591" r="3" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <path d="M16 640 C8 628, 6 616, 12 610 C14 618, 18 628, 16 640Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <path d="M36 660 C44 652, 48 658, 52 650 C54 644, 50 638, 54 632" stroke="#0f0" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+        <path d="M36 40 C44 32,50 38,54 30 C57 24,52 18,56 12" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+        <path d="M44 80 C52 68,54 56,48 50 C46 58,42 68,44 80Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <circle cx="48" cy="118" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <path d="M16 180 C8 168,6 156,12 150 C14 158,18 168,16 180Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <path d="M22 200 C14 192,8 198,4 190 C1 184,6 178,2 172" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+        <circle cx="12" cy="248" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="7" cy="254" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="17" cy="255" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="12" cy="261" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <path d="M46 310 C54 298,56 286,50 280 C48 288,44 298,46 310Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <path d="M42 348 C50 340,54 346,58 338 C60 332,56 326,58 320" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+        <path d="M14 400 C6 388,4 376,10 370 C12 378,16 388,14 400Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <circle cx="46" cy="455" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="51" cy="461" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="41" cy="462" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="46" cy="468" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <path d="M20 500 C12 492,6 498,2 490 C0 484,4 478,0 472" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+        <path d="M44 540 C52 528,54 516,48 510 C46 518,42 528,44 540Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <circle cx="14" cy="578" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="9" cy="584" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="19" cy="585" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="14" cy="591" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <path d="M16 640 C8 628,6 616,12 610 C14 618,18 628,16 640Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <path d="M36 660 C44 652,48 658,52 650 C54 644,50 638,54 632" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
       </g>
     </svg>
 
     <div class="projects" id="projects-grid"></div>
 
-    <!-- Right Serpent (mirrored) -->
     <svg class="serpent serpent-right" viewBox="0 0 60 700" fill="none">
-      <path class="body-main" d="M30 10 C55 80, 5 160, 30 230 C55 300, 5 380, 30 450 C55 520, 5 600, 30 680" stroke="#0f0" stroke-width="2.5" stroke-linecap="round"/>
-      <path class="body-inner" d="M30 18 C52 82, 8 158, 30 225 C52 295, 8 375, 30 445 C52 515, 8 595, 30 672" stroke="#0f0" stroke-width="0.8" opacity="0.15"/>
-      <path d="M30 10 C27 3, 34 0, 30 -4" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M30 680 C34 688, 26 694, 32 700" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
+      <path class="body-main" d="M30 10 C55 80,5 160,30 230 C55 300,5 380,30 450 C55 520,5 600,30 680" stroke="#0f0" stroke-width="2.5" stroke-linecap="round"/>
+      <path class="body-inner" d="M30 18 C52 82,8 158,30 225 C52 295,8 375,30 445 C52 515,8 595,30 672" stroke="#0f0" stroke-width=".8" opacity=".15"/>
+      <path d="M30 10 C27 3,34 0,30 -4" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M30 680 C34 688,26 694,32 700" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
       <g class="scales">
-        <path d="M36 40 C44 32, 50 38, 54 30 C57 24, 52 18, 56 12" stroke="#0f0" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-        <path d="M44 80 C52 68, 54 56, 48 50 C46 58, 42 68, 44 80Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="48" cy="118" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <path d="M16 180 C8 168, 6 156, 12 150 C14 158, 18 168, 16 180Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <path d="M22 200 C14 192, 8 198, 4 190 C1 184, 6 178, 2 172" stroke="#0f0" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-        <circle cx="12" cy="248" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="7" cy="254" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="17" cy="255" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="12" cy="261" r="3" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <path d="M46 310 C54 298, 56 286, 50 280 C48 288, 44 298, 46 310Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <path d="M42 348 C50 340, 54 346, 58 338 C60 332, 56 326, 58 320" stroke="#0f0" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-        <path d="M14 400 C6 388, 4 376, 10 370 C12 378, 16 388, 14 400Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="46" cy="455" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="51" cy="461" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="41" cy="462" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="46" cy="468" r="3" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <path d="M20 500 C12 492, 6 498, 2 490 C0 484, 4 478, 0 472" stroke="#0f0" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-        <path d="M44 540 C52 528, 54 516, 48 510 C46 518, 42 528, 44 540Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="14" cy="578" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="9" cy="584" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="19" cy="585" r="3.5" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <circle cx="14" cy="591" r="3" stroke="#0f0" stroke-width="0.7" fill="rgba(0,255,0,0.05)"/>
-        <path d="M16 640 C8 628, 6 616, 12 610 C14 618, 18 628, 16 640Z" stroke="#0f0" stroke-width="0.8" fill="rgba(0,255,0,0.05)"/>
-        <path d="M36 660 C44 652, 48 658, 52 650 C54 644, 50 638, 54 632" stroke="#0f0" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+        <path d="M36 40 C44 32,50 38,54 30 C57 24,52 18,56 12" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+        <path d="M44 80 C52 68,54 56,48 50 C46 58,42 68,44 80Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <circle cx="48" cy="118" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <path d="M16 180 C8 168,6 156,12 150 C14 158,18 168,16 180Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <path d="M22 200 C14 192,8 198,4 190 C1 184,6 178,2 172" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+        <circle cx="12" cy="248" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="7" cy="254" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="17" cy="255" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="12" cy="261" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <path d="M46 310 C54 298,56 286,50 280 C48 288,44 298,46 310Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <path d="M42 348 C50 340,54 346,58 338 C60 332,56 326,58 320" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+        <path d="M14 400 C6 388,4 376,10 370 C12 378,16 388,14 400Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <circle cx="46" cy="455" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="51" cy="461" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="41" cy="462" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="46" cy="468" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <path d="M20 500 C12 492,6 498,2 490 C0 484,4 478,0 472" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+        <path d="M44 540 C52 528,54 516,48 510 C46 518,42 528,44 540Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <circle cx="14" cy="578" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="9" cy="584" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="19" cy="585" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <circle cx="14" cy="591" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+        <path d="M16 640 C8 628,6 616,12 610 C14 618,18 628,16 640Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+        <path d="M36 660 C44 652,48 658,52 650 C54 644,50 638,54 632" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
       </g>
     </svg>
 
-    <!-- Embers -->
     <div class="embers">
       <div class="ember" style="left:5%;bottom:15%;width:3px;height:3px;background:#0f0;animation-duration:5.5s;--drift:12px"></div>
       <div class="ember" style="left:92%;bottom:25%;width:2px;height:2px;background:#ff4400;animation-duration:6.2s;animation-delay:1.2s;--drift:-18px"></div>
       <div class="ember" style="left:8%;bottom:40%;width:2px;height:2px;background:#0ff;animation-duration:4.8s;animation-delay:2.5s;--drift:8px"></div>
-      <div class="ember" style="left:88%;bottom:55%;width:3px;height:3px;background:#0f0;animation-duration:5.1s;animation-delay:0.8s;--drift:-15px"></div>
+      <div class="ember" style="left:88%;bottom:55%;width:3px;height:3px;background:#0f0;animation-duration:5.1s;animation-delay:.8s;--drift:-15px"></div>
       <div class="ember" style="left:15%;bottom:70%;width:2px;height:2px;background:#ff0080;animation-duration:6.8s;animation-delay:3.1s;--drift:20px"></div>
       <div class="ember" style="left:85%;bottom:10%;width:2px;height:2px;background:#0f0;animation-duration:4.5s;animation-delay:1.8s;--drift:-10px"></div>
-      <div class="ember" style="left:50%;bottom:5%;width:3px;height:3px;background:#0ff;animation-duration:5.8s;animation-delay:0.3s;--drift:6px"></div>
+      <div class="ember" style="left:50%;bottom:5%;width:3px;height:3px;background:#0ff;animation-duration:5.8s;animation-delay:.3s;--drift:6px"></div>
     </div>
   </div>
 </main>
@@ -832,38 +567,26 @@ footer {
 <!-- Stats -->
 <div class="section-divider"><hr></div>
 <div class="stats-row" id="stats-row">
-  <div class="stat-cell">
-    <div class="stat-num" data-count="26">0</div>
-    <div class="stat-label">Repos</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-num" data-count="5" data-suffix="+">0</div>
-    <div class="stat-label">CVEs</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-num" data-count="8" data-suffix="+">0</div>
-    <div class="stat-label">Tools</div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-num" data-count="3" data-suffix="+">0</div>
-    <div class="stat-label">AI Projects</div>
-  </div>
+  <div class="stat-cell reveal"><div class="stat-num" data-count="26">0</div><div class="stat-label">Repos</div></div>
+  <div class="stat-cell reveal"><div class="stat-num" data-count="5" data-suffix="+">0</div><div class="stat-label">CVEs</div></div>
+  <div class="stat-cell reveal"><div class="stat-num" data-count="8" data-suffix="+">0</div><div class="stat-label">Tools</div></div>
+  <div class="stat-cell reveal"><div class="stat-num" data-count="3" data-suffix="+">0</div><div class="stat-label">AI Projects</div></div>
 </div>
 
 <!-- About -->
 <section class="about-section">
-  <div class="about-header">
+  <div class="about-header reveal">
     <div class="about-tag">// whoami</div>
     <h2 class="about-title">Terminal Profile</h2>
   </div>
-  <div class="terminal-window">
+  <div class="terminal-window reveal">
     <div class="terminal-bar">
       <div class="terminal-dot"></div>
       <div class="terminal-dot"></div>
       <div class="terminal-dot"></div>
       <span class="terminal-label">ykrishhh — ~/research</span>
     </div>
-    <div class="terminal-body">
+    <div class="terminal-body" id="terminal-body">
       <div><span class="t-p">$</span> <span class="t-c">whoami</span></div>
       <div><span class="t-o">Security Researcher & Developer</span></div>
       <div><span class="t-p">$</span> <span class="t-c">cat</span> <span class="t-f">specialties.txt</span></div>
@@ -871,7 +594,7 @@ footer {
       <div><span class="t-s">Android RE</span> · <span class="t-s">AI Automation</span> · <span class="t-s">Linux Hardening</span></div>
       <div><span class="t-p">$</span> <span class="t-c">echo</span> <span class="t-w">"Open to opportunities"</span></div>
       <div><span class="t-s">Open to opportunities</span></div>
-      <div><span class="t-p">$</span> <span class="t-c">_</span></div>
+      <div><span class="t-p">$</span> <span class="term-cursor"></span></div>
     </div>
   </div>
 </section>
@@ -883,7 +606,7 @@ footer {
 
 <!-- Journey -->
 <section class="journey-section">
-  <div class="about-header">
+  <div class="about-header reveal">
     <div class="about-tag">// journey</div>
     <h2 class="about-title">Security Path</h2>
   </div>
@@ -892,72 +615,216 @@ footer {
 
 <!-- Contact -->
 <section class="contact-section">
-  <h2 class="contact-title">Let's Connect</h2>
-  <p class="contact-sub">Always open to collaboration and new opportunities</p>
-  <div class="contact-grid">
+  <h2 class="contact-title reveal">Let's Connect</h2>
+  <p class="contact-sub reveal">Always open to collaboration and new opportunities</p>
+  <div class="contact-grid reveal">
     <a href="https://github.com/ykrishhh" target="_blank" rel="noopener" class="contact-card">
-      <span class="icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-      </span>
-      <div>
-        <div class="name">GitHub</div>
-        <div class="handle">@ykrishhh</div>
-      </div>
+      <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></span>
+      <div><div class="name">GitHub</div><div class="handle">@ykrishhh</div></div>
     </a>
     <a href="https://twitter.com/harry6ez" target="_blank" rel="noopener" class="contact-card">
-      <span class="icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      </span>
-      <div>
-        <div class="name">X / Twitter</div>
-        <div class="handle">@harry6ez</div>
-      </div>
+      <span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
+      <div><div class="name">X / Twitter</div><div class="handle">@harry6ez</div></div>
     </a>
     <a href="https://github.com/ykrishhh/ykrishhh" target="_blank" rel="noopener" class="contact-card">
-      <span class="icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      </span>
-      <div>
-        <div class="name">Profile README</div>
-        <div class="handle">ykrishhh/ykrishhh</div>
-      </div>
+      <span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+      <div><div class="name">Profile README</div><div class="handle">ykrishhh/ykrishhh</div></div>
     </a>
   </div>
 </section>
 
 <footer>
-  <p class="footer-text">
-    Built with <span class="heart">&hearts;</span> by <strong style="color:#fff">ykrishhh</strong> &middot; 2025
-    &middot; Deployed on GitHub Pages
-  </p>
+  <p class="footer-text">Built with <span class="heart">&hearts;</span> by <strong style="color:#fff">ykrishhh</strong> · 2025 · Deployed on GitHub Pages</p>
 </footer>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   PROJECTS — Leet-speak style
+   LOADING SCREEN
+   ═══════════════════════════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1800);
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   PARTICLE SYSTEM (Canvas)
+   ═══════════════════════════════════════════════════════════════ */
+const pCanvas = document.getElementById('particle-canvas');
+const pCtx = pCanvas.getContext('2d');
+let particles = [];
+const PARTICLE_COUNT = 60;
+
+function resizeCanvas(){
+  pCanvas.width = window.innerWidth;
+  pCanvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor(){
+    this.reset();
+  }
+  reset(){
+    this.x = Math.random() * pCanvas.width;
+    this.y = Math.random() * pCanvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.5 + 0.1;
+    this.color = Math.random() > 0.7 ? '#0ff' : '#0f0';
+  }
+  update(){
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if(this.x < 0 || this.x > pCanvas.width || this.y < 0 || this.y > pCanvas.height) this.reset();
+  }
+  draw(){
+    pCtx.beginPath();
+    pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    pCtx.fillStyle = this.color;
+    pCtx.globalAlpha = this.opacity;
+    pCtx.fill();
+    pCtx.globalAlpha = 1;
+  }
+}
+
+for(let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+function drawParticles(){
+  pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  // Draw connections
+  for(let i = 0; i < particles.length; i++){
+    for(let j = i + 1; j < particles.length; j++){
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < 120){
+        pCtx.beginPath();
+        pCtx.moveTo(particles[i].x, particles[i].y);
+        pCtx.lineTo(particles[j].x, particles[j].y);
+        pCtx.strokeStyle = '#0f0';
+        pCtx.globalAlpha = 0.05 * (1 - dist/120);
+        pCtx.stroke();
+        pCtx.globalAlpha = 1;
+      }
+    }
+  }
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+/* ═══════════════════════════════════════════════════════════════
+   MOUSE GLOW FOLLOWER
+   ═══════════════════════════════════════════════════════════════ */
+const mouseGlow = document.getElementById('mouse-glow');
+document.addEventListener('mousemove', e => {
+  mouseGlow.style.left = e.clientX + 'px';
+  mouseGlow.style.top = e.clientY + 'px';
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   TEXT SCRAMBLE EFFECT
+   ═══════════════════════════════════════════════════════════════ */
+const scrambleChars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`0123456789ABCDEF';
+class TextScramble {
+  constructor(el){ this.el = el; this.chars = scrambleChars; }
+  setText(newText){
+    const oldText = this.el.innerText;
+    const length = Math.max(oldText.length, newText.length);
+    return new Promise(resolve => {
+      const queue = [];
+      for(let i = 0; i < length; i++){
+        const from = oldText[i] || '';
+        const to = newText[i] || '';
+        const start = Math.floor(Math.random() * 40);
+        const end = start + Math.floor(Math.random() * 40);
+        queue.push({ from, to, start, end });
+      }
+      let frame = 0;
+      const update = () => {
+        let output = '';
+        let complete = 0;
+        for(let i = 0; i < queue.length; i++){
+          let { from, to, start, end, char } = queue[i];
+          if(frame >= end){ complete++; output += to; }
+          else if(frame >= start){
+            if(!char || Math.random() < 0.28) char = this.chars[Math.floor(Math.random() * this.chars.length)];
+            queue[i].char = char;
+            output += `<span style="color:var(--g);opacity:.7">${char}</span>`;
+          } else { output += from; }
+        }
+        this.el.innerHTML = output;
+        if(complete === queue.length) resolve();
+        else { frame++; requestAnimationFrame(update); }
+      };
+      update();
+    });
+  }
+}
+
+// Scramble on hover for logo
+const logoEl = document.getElementById('logo-link');
+const scramble = new TextScramble(logoEl);
+logoEl.addEventListener('mouseenter', () => {
+  scramble.setText('<YKRISHHH/>');
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   RIPPLE EFFECT on project cards
+   ═══════════════════════════════════════════════════════════════ */
+document.addEventListener('click', e => {
+  const card = e.target.closest('.project, .contact-card');
+  if(!card) return;
+  const rect = card.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  ripple.style.left = (e.clientX - rect.left) + 'px';
+  ripple.style.top = (e.clientY - rect.top) + 'px';
+  ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
+  card.appendChild(ripple);
+  ripple.addEventListener('animationend', () => ripple.remove());
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   MAGNETIC HOVER on project cards
+   ═══════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.project').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    const rotateX = -y / 15;
+    const rotateY = x / 15;
+    card.style.transform = `perspective(500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   PROJECTS DATA
    ═══════════════════════════════════════════════════════════════ */
 const projects = [
-  { name: 'AW3S0M3-ESP32', desc: 'ESP32 security tools', detail: 'Curated list of ESP32 security tools, firmware, and resources for penetration testers and IoT researchers.', url: 'https://github.com/ykrishhh/awesome-esp32-security' },
-  { name: '3SP32-H4RNESS', desc: 'Pentesting firmware', detail: 'Advanced ESP32 pentesting & telemetry firmware — 2.4 GHz research, RF24 experimentation, and on-device forensic capture.', url: 'https://github.com/ykrishhh/ESP32-HARNESS' },
-  { name: 'CV3-P0C5', desc: 'CVE exploits', detail: 'Proof-of-concept exploits for CVEs — security research, vulnerability analysis, and responsible disclosure.', url: 'https://github.com/ykrishhh/cve-pocs' },
-  { name: 'H4RRYP4N3L', desc: 'Hosting control panel', detail: 'Advanced web hosting control panel — server management, database admin, file manager, and deployment tools.', url: 'https://github.com/ykrishhh/HarryPanel' },
-  { name: 'C0NT3NT-4G3NT', desc: 'AI content agent', detail: 'Autonomous AI content agent for Termux — SEO-optimized posts, GitHub/LinkedIn/Instagram/email automation, and Telegram integration.', url: 'https://github.com/ykrishhh/content-agent' },
-  { name: '4DR01D-R00T1NG', desc: 'Rooting masterclass', detail: 'Complete guide to Android rooting and hooking — from user-space DEX editing to Xposed/LSPosed modules to kernel patching with KernelPatch and eBPF.', url: 'https://github.com/ykrishhh/android-rooting-masterclass' },
-  { name: 'L1NUX-H4RD3N', desc: 'Security hardening', detail: 'Security hardening scripts for Linux — firewall config, audit rules, kernel parameters, and CIS benchmarks.', url: 'https://github.com/ykrishhh/linux-hardening' },
-  { name: 'T3RMUX-53C', desc: 'Security toolkit', detail: 'Security tools and scripts for Termux — network scanning, password auditing, and ethical hacking on Android.', url: 'https://github.com/ykrishhh/termux-security-toolkit' },
-  { name: '53LF-H05T3D-41', desc: 'Self-hosted AI', detail: 'Run AI models on your phone — complete self-hosted AI setup guide for Termux with Ollama, Open WebUI, and more.', url: 'https://github.com/ykrishhh/self-hosted-ai-termux' },
-  { name: '41-4G3NT-C0MP4R3', desc: 'AI agent comparison', detail: 'Honest comparison of AI agent frameworks — LangChain, CrewAI, AutoGPT, Swarm, and alternatives with benchmarks.', url: 'https://github.com/ykrishhh/ai-agent-comparison' },
-  { name: 'N3TW0RK-5C4NN3R', desc: 'Network scanner', detail: 'Fast Python network scanner — port scanning, service detection, OS fingerprinting, and subnet enumeration.', url: 'https://github.com/ykrishhh/network-scanner' },
-  { name: 'PR1V4CY-T00L5', desc: 'Privacy utilities', detail: 'Encryption and privacy utilities — file encryption, secure messaging, password generation, and data protection.', url: 'https://github.com/ykrishhh/privacy-tools' },
+  { name:'AW3S0M3-ESP32',desc:'ESP32 security tools',detail:'Curated list of ESP32 security tools, firmware, and resources for penetration testers and IoT researchers.',url:'https://github.com/ykrishhh/awesome-esp32-security' },
+  { name:'3SP32-H4RNESS',desc:'Pentesting firmware',detail:'Advanced ESP32 pentesting & telemetry firmware — 2.4 GHz research, RF24 experimentation, and on-device forensic capture.',url:'https://github.com/ykrishhh/ESP32-HARNESS' },
+  { name:'CV3-P0C5',desc:'CVE exploits',detail:'Proof-of-concept exploits for CVEs — security research, vulnerability analysis, and responsible disclosure.',url:'https://github.com/ykrishhh/cve-pocs' },
+  { name:'H4RRYP4N3L',desc:'Hosting control panel',detail:'Advanced web hosting control panel — server management, database admin, file manager, and deployment tools.',url:'https://github.com/ykrishhh/HarryPanel' },
+  { name:'C0NT3NT-4G3NT',desc:'AI content agent',detail:'Autonomous AI content agent for Termux — SEO-optimized posts, GitHub/LinkedIn/Instagram/email automation, and Telegram integration.',url:'https://github.com/ykrishhh/content-agent' },
+  { name:'4DR01D-R00T1NG',desc:'Rooting masterclass',detail:'Complete guide to Android rooting and hooking — from user-space DEX editing to Xposed/LSPosed modules to kernel patching with KernelPatch and eBPF.',url:'https://github.com/ykrishhh/android-rooting-masterclass' },
+  { name:'L1NUX-H4RD3N',desc:'Security hardening',detail:'Security hardening scripts for Linux — firewall config, audit rules, kernel parameters, and CIS benchmarks.',url:'https://github.com/ykrishhh/linux-hardening' },
+  { name:'T3RMUX-53C',desc:'Security toolkit',detail:'Security tools and scripts for Termux — network scanning, password auditing, and ethical hacking on Android.',url:'https://github.com/ykrishhh/termux-security-toolkit' },
+  { name:'53LF-H05T3D-41',desc:'Self-hosted AI',detail:'Run AI models on your phone — complete self-hosted AI setup guide for Termux with Ollama, Open WebUI, and more.',url:'https://github.com/ykrishhh/self-hosted-ai-termux' },
+  { name:'41-4G3NT-C0MP4R3',desc:'AI agent comparison',detail:'Honest comparison of AI agent frameworks — LangChain, CrewAI, AutoGPT, Swarm, and alternatives with benchmarks.',url:'https://github.com/ykrishhh/ai-agent-comparison' },
+  { name:'N3TW0RK-5C4NN3R',desc:'Network scanner',detail:'Fast Python network scanner — port scanning, service detection, OS fingerprinting, and subnet enumeration.',url:'https://github.com/ykrishhh/network-scanner' },
+  { name:'PR1V4CY-T00L5',desc:'Privacy utilities',detail:'Encryption and privacy utilities — file encryption, secure messaging, password generation, and data protection.',url:'https://github.com/ykrishhh/privacy-tools' },
 ];
-
 const grid = document.getElementById('projects-grid');
 projects.forEach(p => {
   const a = document.createElement('a');
   a.className = 'project';
-  a.href = p.url;
-  a.target = '_blank';
-  a.rel = 'noopener';
+  a.href = p.url; a.target = '_blank'; a.rel = 'noopener';
   a.innerHTML = `<h3>${p.name}</h3><p>${p.desc}</p><p class="detail">${p.detail}</p>`;
   grid.appendChild(a);
 });
@@ -965,37 +832,23 @@ projects.forEach(p => {
 /* ═══════════════════════════════════════════════════════════════
    TECH MARQUEE
    ═══════════════════════════════════════════════════════════════ */
-const techs = [
-  'Python','Java','TypeScript','JavaScript','C','Assembly','Linux',
-  'ESP32','Docker','Kubernetes','Git','React','Node.js',
-  'Frida','Nmap','Wireshark','Metasploit','Burp Suite','SQL',
-  'HTML/CSS','Ollama','eBPF','Xposed','Frida',
-  'Python','Java','TypeScript','JavaScript','C','Assembly','Linux',
-  'ESP32','Docker','Kubernetes','Git','React','Node.js',
-  'Frida','Nmap','Wireshark','Metasploit','Burp Suite','SQL',
-  'HTML/CSS','Ollama','eBPF','Xposed','Frida',
-];
+const techs = ['Python','Java','TypeScript','JavaScript','C','Assembly','Linux','ESP32','Docker','Kubernetes','Git','React','Node.js','Frida','Nmap','Wireshark','Metasploit','Burp Suite','SQL','HTML/CSS','Ollama','eBPF','Xposed','Frida','Python','Java','TypeScript','JavaScript','C','Assembly','Linux','ESP32','Docker','Kubernetes','Git','React','Node.js','Frida','Nmap','Wireshark','Metasploit','Burp Suite','SQL','HTML/CSS','Ollama','eBPF','Xposed','Frida'];
 const track = document.getElementById('marquee-track');
-techs.forEach(t => {
-  const el = document.createElement('div');
-  el.className = 'tech-pill';
-  el.textContent = t;
-  track.appendChild(el);
-});
+techs.forEach(t => { const el = document.createElement('div'); el.className = 'tech-pill'; el.textContent = t; track.appendChild(el); });
 
 /* ═══════════════════════════════════════════════════════════════
    TIMELINE
    ═══════════════════════════════════════════════════════════════ */
 const timelineData = [
-  { date: '2025', title: 'AI Agent Automation', desc: 'Building autonomous content agents, LLM comparisons, and self-hosted AI setups on Termux.' },
-  { date: '2025', title: 'ESP32 Security Research', desc: 'Deep-dive into ESP32 firmware analysis, WiFi/BLE exploitation, and building pentesting telemetry tools.' },
-  { date: '2024', title: 'Android Reverse Engineering', desc: 'Mastering APK analysis, Frida hooking, Xposed/LSPosed modules, and KernelPatch/eBPF kernel patching.' },
-  { date: '2024', title: 'CVE Research & PoC Development', desc: 'Discovering and documenting vulnerabilities with responsible disclosure and proof-of-concept exploits.' },
-  { date: '2024', title: 'Linux Security Hardening', desc: 'Building automated hardening scripts with CIS benchmarks, firewall rules, and kernel parameter tuning.' },
-  { date: '2023', title: 'Web & Network Security', desc: 'Penetration testing, network scanning tools, and building security monitoring for Telegram bots.' },
+  { date:'2025',title:'AI Agent Automation',desc:'Building autonomous content agents, LLM comparisons, and self-hosted AI setups on Termux.' },
+  { date:'2025',title:'ESP32 Security Research',desc:'Deep-dive into ESP32 firmware analysis, WiFi/BLE exploitation, and building pentesting telemetry tools.' },
+  { date:'2024',title:'Android Reverse Engineering',desc:'Mastering APK analysis, Frida hooking, Xposed/LSPosed modules, and KernelPatch/eBPF kernel patching.' },
+  { date:'2024',title:'CVE Research & PoC Development',desc:'Discovering and documenting vulnerabilities with responsible disclosure and proof-of-concept exploits.' },
+  { date:'2024',title:'Linux Security Hardening',desc:'Building automated hardening scripts with CIS benchmarks, firewall rules, and kernel parameter tuning.' },
+  { date:'2023',title:'Web & Network Security',desc:'Penetration testing, network scanning tools, and building security monitoring for Telegram bots.' },
 ];
 const timeline = document.getElementById('timeline');
-timelineData.forEach((item, i) => {
+timelineData.forEach(item => {
   const el = document.createElement('div');
   el.className = 'tl-item';
   el.innerHTML = `<div class="tl-date">${item.date}</div><div class="tl-title">${item.title}</div><div class="tl-desc">${item.desc}</div>`;
@@ -1003,31 +856,51 @@ timelineData.forEach((item, i) => {
 });
 
 /* ═══════════════════════════════════════════════════════════════
-   SCROLL REVEAL
+   SCROLL REVEAL + COUNTER
    ═══════════════════════════════════════════════════════════════ */
-const obs = new IntersectionObserver((entries) => {
+const obs = new IntersectionObserver(entries => {
   entries.forEach(e => {
-    if (e.isIntersecting) {
+    if(e.isIntersecting){
       e.target.classList.add('visible');
-      // Counter animation
       const num = e.target.querySelector('.stat-num');
-      if (num && !num.dataset.done) {
+      if(num && !num.dataset.done){
         num.dataset.done = '1';
         const target = parseInt(num.dataset.count);
         const suffix = num.dataset.suffix || '';
-        let cur = 0;
-        const step = Math.ceil(target / 30);
+        let cur = 0; const step = Math.ceil(target / 30);
         const timer = setInterval(() => {
           cur = Math.min(cur + step, target);
           num.textContent = cur + suffix;
-          if (cur >= target) clearInterval(timer);
+          if(cur >= target) clearInterval(timer);
         }, 40);
       }
     }
   });
 }, { threshold: 0.1 });
+document.querySelectorAll('.tl-item, .stat-cell, .reveal').forEach(el => obs.observe(el));
 
-document.querySelectorAll('.tl-item, .stat-cell').forEach(el => obs.observe(el));
+/* ═══════════════════════════════════════════════════════════════
+   PARALLAX on sections
+   ═══════════════════════════════════════════════════════════════ */
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if(!ticking){
+    requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      // Parallax on hero
+      const hero = document.querySelector('main');
+      if(hero) hero.style.transform = `translateY(${scrollY * 0.15}px)`;
+      // Parallax on serpents
+      document.querySelectorAll('.serpent').forEach(s => {
+        s.style.transform = s.classList.contains('serpent-right')
+          ? `scaleX(-1) translateY(${scrollY * 0.05}px)`
+          : `translateY(${scrollY * 0.05}px)`;
+      });
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
 </script>
 </body>
 </html>

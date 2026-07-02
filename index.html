@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ykrishhh — Security Researcher & Developer</title>
+<title>KRI$H — Security Researcher & Developer</title>
 <meta name="description" content="Security Researcher & Developer — Java, Linux, Kernels, ESP32, Python, TypeScript. Bug Hunting & Pentesting.">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -23,7 +23,7 @@
   --pk:#ff0080;--cy:#00ffff;
   --mono:'JetBrains Mono','Courier New',monospace;
   --sans:'Inter',-apple-system,sans-serif;
-  --nav-h:64px;
+  --nav-h:60px;
   --max-w:1200px;
   --ease:cubic-bezier(.4,0,.2,1);
   --ease-bounce:cubic-bezier(.34,1.56,.64,1);
@@ -42,6 +42,17 @@ button{background:none;border:none;font:inherit;color:inherit}
   *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
   html{scroll-behavior:auto}
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   SKIP LINK
+   ═══════════════════════════════════════════════════════════════ */
+.skip-link{
+  position:absolute;top:-100%;left:50%;transform:translateX(-50%);
+  padding:.5rem 1rem;background:var(--g);color:var(--bk);
+  font-family:var(--mono);font-size:.8rem;z-index:99999;
+  transition:top .2s;border-radius:0 0 4px 4px;
+}
+.skip-link:focus{top:0}
 
 /* ═══════════════════════════════════════════════════════════════
    LOADING SCREEN
@@ -85,28 +96,28 @@ button{background:none;border:none;font:inherit;color:inherit}
   content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
   background:var(--g);transition:width .3s var(--ease);
 }
-.nav-links a:hover{color:var(--g)}
-.nav-links a:hover::after{width:100%}
+.nav-links a:hover,.nav-links a.active{color:var(--g)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
 .nav-cta{
   padding:.45rem 1rem;border:1px solid var(--g);color:var(--g);
   font-family:var(--mono);font-size:.7rem;letter-spacing:2px;
   text-transform:uppercase;border-radius:4px;transition:all .3s var(--ease);
 }
 .nav-cta:hover{background:var(--g);color:var(--bk);box-shadow:0 0 20px var(--gd)}
-.hamburger{display:none;flex-direction:column;gap:5px;padding:4px;z-index:1001}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:4px;z-index:1002}
 .hamburger span{width:22px;height:2px;background:var(--g);transition:all .3s var(--ease);transform-origin:center}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .mobile-menu{
   position:fixed;top:0;left:0;right:0;bottom:0;
-  background:rgba(0,0,0,.97);z-index:999;
+  background:rgba(0,0,0,.97);z-index:1001;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:2rem;opacity:0;visibility:hidden;transition:all .3s var(--ease);
 }
 .mobile-menu.open{opacity:1;visibility:visible}
 .mobile-menu a{
-  font-size:1.5rem;font-weight:500;color:var(--text-primary);
+  font-size:1.5rem;font-weight:500;color:var(--td);
   transition:color .3s;letter-spacing:2px;
 }
 .mobile-menu a:hover{color:var(--g)}
@@ -141,7 +152,7 @@ button{background:none;border:none;font:inherit;color:inherit}
 @keyframes shift{0%{transform:translate(0,0)}100%{transform:translate(4px,4px)}}
 #mouse-glow{
   position:fixed;width:500px;height:500px;border-radius:50%;
-  pointer-events:none;z-index:0;
+  pointer-events:none;z-index:-1;
   background:radial-gradient(circle,rgba(0,255,0,.06) 0%,transparent 70%);
   transform:translate(-50%,-50%);transition:left .12s ease-out,top .12s ease-out;
   will-change:left,top;display:none;
@@ -152,59 +163,75 @@ button{background:none;border:none;font:inherit;color:inherit}
    HERO
    ═══════════════════════════════════════════════════════════════ */
 .hero{
-  min-height:100vh;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:clamp(4rem,10vh,8rem) clamp(1rem,4vw,3rem) 3rem;
-  text-align:center;position:relative;
+  min-height:100dvh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:clamp(5rem,12vh,8rem) clamp(1rem,4vw,3rem) 2rem;
+  text-align:center;position:relative;gap:0;
+  overflow:hidden;
+}
+.hero-inner{
+  display:flex;flex-direction:column;align-items:center;gap:0;
 }
 .hero-badge{
   display:inline-flex;align-items:center;gap:.5rem;
   padding:.4rem 1rem;background:var(--gd);border:1px solid rgba(0,255,0,.2);
   border-radius:999px;font-family:var(--mono);font-size:.7rem;color:var(--g);
-  margin-bottom:2rem;opacity:0;animation:fadeInUp .8s var(--ease) .2s forwards;
+  margin-bottom:1.5rem;opacity:0;animation:fadeInUp .8s var(--ease) .2s forwards;
+  animation-fill-mode:forwards;
 }
 .hero-badge .dot{width:6px;height:6px;background:var(--g);border-radius:50%;animation:blink 2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title-wrap{position:relative;margin-bottom:.75rem;opacity:0;animation:fadeInUp .8s var(--ease) .4s forwards;animation-fill-mode:forwards}
 h1{
-  font-size:clamp(2.2rem,7vw,5rem);font-weight:200;letter-spacing:-1px;
-  margin-bottom:1rem;opacity:0;color:#fff;
-  animation:fadeInUp .8s var(--ease) .4s forwards,glitchText 3s 3s infinite;
-  position:relative;display:inline-block;
+  font-size:clamp(2rem,7vw,5rem);font-weight:200;letter-spacing:-1px;
+  color:#fff;position:relative;display:inline-block;
+  max-width:90vw;word-break:break-word;
 }
-h1::before,h1::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;height:100%;opacity:0}
-h1::before{color:var(--pk);z-index:-1;animation:glitchBefore 3s infinite}
-h1::after{color:var(--cy);z-index:-1;animation:glitchAfter 3s infinite}
-@keyframes glitchBefore{0%,90%{opacity:0}91%{opacity:.8;left:-2px;top:-2px}92%{opacity:.8;left:2px;top:0}93%{opacity:0}94%{opacity:.8;left:0;top:2px}95%,100%{opacity:0}}
-@keyframes glitchAfter{0%,88%{opacity:0}89%{opacity:.8;left:2px;top:2px}90%{opacity:.8;left:-2px;top:1px}91%{opacity:0}92%{opacity:.8;left:1px;top:-2px}93%,100%{opacity:0}}
-@keyframes glitchText{0%,94%{text-shadow:none}95%{text-shadow:-2px 0 var(--pk),2px 0 var(--cy)}96%{text-shadow:-1px 0 var(--pk),1px 0 var(--cy);transform:skew(.5deg)}97%{text-shadow:none;transform:skew(0)}98%{text-shadow:2px 0 var(--pk),-2px 0 var(--cy)}99%,100%{text-shadow:none}}
+.hero-title-underline{
+  position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--g);
+  box-shadow:0 0 10px var(--gg);animation:underlineDraw 1s var(--ease) 1.2s forwards;
+}
+@keyframes underlineDraw{to{width:100%}}
+h1::before,h1::after{
+  content:attr(data-text);position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;
+  pointer-events:none;
+}
+h1::before{color:var(--pk);z-index:-1;animation:glitchBefore 4s 3s infinite}
+h1::after{color:var(--cy);z-index:-1;animation:glitchAfter 4s 3s infinite}
+@keyframes glitchBefore{0%,92%{opacity:0}93%{opacity:.8;left:-2px;top:-2px}94%{opacity:.8;left:2px;top:0}95%{opacity:0}96%{opacity:.8;left:0;top:2px}97%,100%{opacity:0}}
+@keyframes glitchAfter{0%,90%{opacity:0}91%{opacity:.8;left:2px;top:2px}92%{opacity:.8;left:-2px;top:1px}93%{opacity:0}94%{opacity:.8;left:1px;top:-2px}95%,100%{opacity:0}}
 .tagline{
-  font-size:clamp(.85rem,2vw,1.05rem);color:var(--td);margin-bottom:1.5rem;
+  font-size:clamp(.8rem,2vw,1.05rem);color:var(--td);margin-bottom:1.25rem;
   letter-spacing:2px;text-transform:uppercase;opacity:0;
   animation:fadeInUp .8s var(--ease) .6s forwards;display:inline-block;
+  animation-fill-mode:forwards;
 }
 .tagline::after{content:'_';animation:blink 1s step-end infinite}
 .bio{
-  color:var(--tx);max-width:540px;margin:0 auto 2.5rem;
-  line-height:1.8;font-size:clamp(.875rem,1.5vw,1rem);opacity:0;
-  animation:fadeInUp .8s var(--ease) .8s forwards;
+  color:var(--tx);max-width:540px;margin:0 auto 2rem;
+  line-height:1.8;font-size:clamp(.85rem,1.5vw,1rem);opacity:0;
+  animation:fadeInUp .8s var(--ease) .8s forwards;animation-fill-mode:forwards;
 }
-.bio .hl{color:var(--g);font-style:italic;letter-spacing:1px;white-space:nowrap}
+.bio .hl{color:var(--g);font-style:italic;letter-spacing:1px}
 .hero-actions{
   display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
-  opacity:0;animation:fadeInUp .8s var(--ease) 1s forwards;
+  opacity:0;animation:fadeInUp .8s var(--ease) 1s forwards;animation-fill-mode:forwards;
 }
 .btn{
   display:inline-flex;align-items:center;gap:.5rem;
   padding:.7rem 1.5rem;font-size:.8rem;font-weight:600;
   border-radius:6px;letter-spacing:1px;text-transform:uppercase;
   transition:all .3s var(--ease);font-family:var(--mono);
+  touch-action:manipulation;
 }
+.btn:active{transform:scale(.97)!important}
 .btn-primary{background:var(--g);color:var(--bk);border:1px solid var(--g)}
 .btn-primary:hover{box-shadow:0 0 25px var(--gg);transform:translateY(-2px)}
 .btn-secondary{background:transparent;color:var(--g);border:1px solid var(--bl)}
 .btn-secondary:hover{border-color:var(--g);transform:translateY(-2px)}
 .social{
   display:flex;gap:clamp(1rem,3vw,2rem);justify-content:center;
-  margin-top:2.5rem;opacity:0;animation:fadeInUp .8s var(--ease) 1.2s forwards;
+  margin-top:2rem;opacity:0;animation:fadeInUp .8s var(--ease) 1.2s forwards;
+  animation-fill-mode:forwards;
 }
 .social a{
   font-size:.75rem;letter-spacing:2px;text-transform:uppercase;
@@ -227,15 +254,21 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
 .section-header{text-align:center;margin-bottom:clamp(2rem,5vh,4rem)}
 .section-tag{font-family:var(--mono);font-size:.7rem;color:var(--g);letter-spacing:3px;text-transform:uppercase;margin-bottom:.75rem}
 .section-title{
-  font-size:clamp(1.5rem,3.5vw,2rem);color:var(--g);letter-spacing:3px;
+  font-size:clamp(1.3rem,3.5vw,2rem);color:var(--g);letter-spacing:3px;
   text-transform:uppercase;position:relative;display:inline-block;
 }
-.section-title::before,.section-title::after{
-  content:'';position:absolute;top:50%;width:40px;height:1px;background:var(--g);opacity:.3;
+@media(min-width:480px){
+  .section-title::before,.section-title::after{
+    content:'';position:absolute;top:50%;height:1px;background:var(--g);opacity:.3;
+  }
+  .section-title::before{right:calc(100% + 12px);width:30px}
+  .section-title::after{left:calc(100% + 12px);width:30px}
 }
-@media(min-width:768px){.section-title::before,.section-title::after{width:60px}}
-.section-title::before{right:calc(100% + 15px)}
-.section-title::after{left:calc(100% + 15px)}
+@media(min-width:768px){
+  .section-title::before,.section-title::after{width:60px}
+  .section-title::before{right:calc(100% + 15px)}
+  .section-title::after{left:calc(100% + 15px)}
+}
 .reveal{opacity:0;transform:translateY(30px);transition:all .7s var(--ease)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
@@ -260,7 +293,9 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
 .stat-num{
   font-size:clamp(1.5rem,3vw,2rem);font-weight:700;font-family:var(--mono);
   color:var(--g);text-shadow:0 0 15px var(--gg);
+  transition:text-shadow .3s;
 }
+.stat-num.done{text-shadow:0 0 25px var(--gg),0 0 50px var(--gd)}
 .stat-label{font-size:.65rem;color:var(--td);margin-top:.25rem;text-transform:uppercase;letter-spacing:2px}
 
 /* ═══════════════════════════════════════════════════════════════
@@ -270,7 +305,6 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
   position:relative;width:100%;max-width:1100px;
   margin:0 auto;display:flex;align-items:center;
   justify-content:center;gap:clamp(.75rem,2vw,1.5rem);
-  opacity:0;animation:fadeInUp .8s var(--ease) .8s forwards;
 }
 .projects{
   display:grid;grid-template-columns:1fr;
@@ -280,9 +314,11 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
 .project{
   background:var(--bk);padding:clamp(1.5rem,3vw,2.5rem) clamp(1rem,2.5vw,2rem);
   position:relative;overflow:hidden;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;min-height:150px;
+  align-items:center;justify-content:center;min-height:180px;
   transition:all .4s var(--ease);border:1px solid transparent;
+  text-decoration:none;
 }
+@media(min-width:768px){.project{min-height:200px}}
 .project::before{
   content:'';position:absolute;inset:-2px;
   background:linear-gradient(45deg,#0f0,#0ff,#f0f,#0f0);
@@ -291,24 +327,38 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
 @keyframes borderRotate{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
 .project:hover::before{opacity:1}
 .project::after{content:'';position:absolute;inset:0;background:var(--bk);z-index:-1}
-.project:hover{
-  transform:scale(1.05);z-index:10;
-  box-shadow:0 0 30px var(--gg),inset 0 0 30px rgba(0,255,0,.1);border-color:var(--g);
+.project-content{
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  transition:transform .4s var(--ease);
 }
+.project:hover .project-content{transform:translateY(-15px)}
 .project h3{
-  font-size:clamp(.7rem,1.5vw,.8rem);letter-spacing:2px;margin-bottom:.5rem;
+  font-size:clamp(.7rem,1.5vw,.8rem);letter-spacing:2px;
   text-transform:uppercase;color:var(--g);text-shadow:0 0 10px rgba(0,255,0,.5);
   font-family:var(--mono);transition:transform .3s var(--ease-bounce);
 }
 .project:hover h3{transform:scale(1.05)}
 .project p{font-size:clamp(.75rem,1.3vw,.85rem);color:var(--td);transition:all .3s;text-align:center}
-.project .detail{
+.project-tags{
+  display:flex;flex-wrap:wrap;gap:.3rem;justify-content:center;margin-top:.25rem;
+  opacity:0;transition:opacity .3s;max-height:0;overflow:hidden;
+}
+.project:hover .project-tags{opacity:1;max-height:50px}
+.project-tag{
+  font-family:var(--mono);font-size:.55rem;padding:.15rem .4rem;
+  background:rgba(0,255,0,.08);color:var(--g);border-radius:2px;
+}
+.project-detail{
   position:absolute;bottom:clamp(1rem,2vw,2rem);left:clamp(1rem,2vw,2rem);right:clamp(1rem,2vw,2rem);
-  font-size:clamp(.7rem,1.2vw,.8rem);color:#fff;opacity:0;transform:translateY(20px);
+  font-size:clamp(.7rem,1.2vw,.8rem);color:#fff;opacity:0;transform:translateY(15px);
   transition:all .4s var(--ease);line-height:1.4;text-align:center;
 }
-.project:hover .detail{opacity:1;transform:translateY(0)}
-.project:hover p:first-of-type{opacity:0;transform:translateY(-20px)}
+.project:hover .project-detail{opacity:1;transform:translateY(0)}
+.project-arrow{
+  position:absolute;top:1rem;right:1rem;font-size:.9rem;color:var(--td);
+  opacity:0;transform:translate(-5px,5px);transition:all .3s var(--ease);
+}
+.project:hover .project-arrow{opacity:1;transform:translate(0,0)}
 
 /* Serpents */
 .serpent{
@@ -337,9 +387,11 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
    ═══════════════════════════════════════════════════════════════ */
 .terminal-window{
   background:var(--dk);border:1px solid var(--bd);border-radius:8px;
-  overflow:hidden;font-family:var(--mono);font-size:clamp(.7rem,1.3vw,.82rem);
+  overflow:hidden;font-family:var(--mono);font-size:clamp(.65rem,1.3vw,.82rem);
   max-width:700px;margin:0 auto;
+  opacity:0;transform:scale(.96);transition:all .6s var(--ease);
 }
+.terminal-window.visible{opacity:1;transform:scale(1)}
 .terminal-bar{
   display:flex;align-items:center;gap:.5rem;padding:.6rem 1rem;
   background:var(--bk);border-bottom:1px solid var(--bd);
@@ -408,7 +460,7 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
   display:flex;align-items:center;gap:.75rem;padding:.85rem 1.25rem;
   background:var(--bk);border:1px solid var(--bd);
   color:var(--tx);transition:all .3s var(--ease);position:relative;overflow:hidden;
-  justify-content:center;
+  justify-content:center;min-height:56px;
 }
 .contact-card::before{
   content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
@@ -416,7 +468,8 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
 }
 .contact-card:hover::before{left:0}
 .contact-card:hover{border-color:var(--g);transform:translateY(-3px);box-shadow:0 5px 20px rgba(0,255,0,.1);color:var(--g)}
-.contact-card .icon{font-size:1.2rem;flex-shrink:0}
+.contact-card .icon{font-size:1.2rem;flex-shrink:0;transition:transform .3s var(--ease-bounce)}
+.contact-card:hover .icon{transform:scale(1.15)}
 .contact-card .name{font-size:clamp(.75rem,1.2vw,.85rem);font-weight:600;color:#fff}
 .contact-card .handle{font-size:clamp(.6rem,1vw,.7rem);color:var(--td);font-family:var(--mono)}
 
@@ -431,6 +484,11 @@ footer{text-align:center;padding:clamp(2rem,4vh,3rem) clamp(1rem,4vw,3rem);borde
    ANIMATIONS
    ═══════════════════════════════════════════════════════════════ */
 @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInScale{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+
+/* Staggered project entrance */
+.project{opacity:0;transform:translateY(20px)}
+.project.visible{opacity:1;transform:translateY(0);transition:all .5s var(--ease)}
 
 /* ═══════════════════════════════════════════════════════════════
    SCROLLBAR
@@ -441,15 +499,24 @@ footer{text-align:center;padding:clamp(2rem,4vh,3rem) clamp(1rem,4vw,3rem);borde
 ::-webkit-scrollbar-thumb:hover{background:var(--td)}
 
 /* ═══════════════════════════════════════════════════════════════
-   RESPONSIVE UTILITIES
+   RESPONSIVE
    ═══════════════════════════════════════════════════════════════ */
+@media(max-width:360px){
+  .hero-badge{font-size:.6rem;padding:.25rem .6rem}
+  h1{font-size:1.8rem}
+  .tagline{font-size:.7rem;letter-spacing:1px}
+  .bio{font-size:.8rem}
+  .hero-actions{gap:.75rem}
+  .btn{padding:.6rem 1rem;font-size:.7rem}
+  .social{gap:.6rem}
+  .social a{font-size:.6rem}
+  .stat-num{font-size:1.3rem}
+  .project{min-height:160px;padding:1.25rem 1rem}
+}
 @media(max-width:480px){
   .nav-links,.nav-cta{display:none}
   .hamburger{display:flex}
-  .hero{min-height:auto;padding-top:calc(var(--nav-h) + 3rem);padding-bottom:3rem}
-  .hero-badge{font-size:.65rem;padding:.3rem .75rem}
-  .social{gap:.75rem}
-  .social a{font-size:.65rem}
+  .hero{min-height:auto;padding-top:calc(var(--nav-h) + 2.5rem);padding-bottom:2rem}
 }
 @media(min-width:481px) and (max-width:768px){
   .nav-links,.nav-cta{display:none}
@@ -459,9 +526,18 @@ footer{text-align:center;padding:clamp(2rem,4vh,3rem) clamp(1rem,4vw,3rem);borde
   .hamburger{display:none}
   .mobile-menu{display:none!important}
 }
+@media(hover:none){
+  .project:hover .project-content{transform:none}
+  .project:hover .project-detail{opacity:0;transform:translateY(15px)}
+  .project:hover .project-arrow{opacity:0}
+  .project:hover .project-tags{opacity:0;max-height:0}
+}
 </style>
 </head>
 <body>
+
+<!-- Skip Link -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
 <!-- Loading Screen -->
 <div id="loader" role="status" aria-label="Loading">
@@ -479,7 +555,7 @@ footer{text-align:center;padding:clamp(2rem,4vh,3rem) clamp(1rem,4vw,3rem);borde
 
 <!-- Navigation -->
 <nav class="nav" id="nav" aria-label="Main navigation">
-  <a href="#" class="nav-logo" id="logo-link" aria-label="Home">&lt;YKRISHHH/&gt;</a>
+  <a href="#" class="nav-logo" id="logo-link" aria-label="Home">&lt;KRI$H/&gt;</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#projects">Projects</a></li>
@@ -503,203 +579,211 @@ footer{text-align:center;padding:clamp(2rem,4vh,3rem) clamp(1rem,4vw,3rem);borde
   <a href="https://github.com/ykrishhh" target="_blank" rel="noopener">GitHub</a>
 </div>
 
-<!-- Hero -->
-<section class="hero" id="hero">
-  <div class="hero-badge"><span class="dot"></span>Available for opportunities</div>
-  <h1 data-text="YKRISHHH" id="hero-title">YKRISHHH</h1>
-  <p class="tagline">security researcher & developer</p>
-  <p class="bio">
-    Hunting bugs, breaking systems, and building tools that make the digital world safer.
-    From <span class="hl">kernel exploitation</span> to <span class="hl">ESP32 hacking</span> to <span class="hl">AI automation</span> —
-    if it runs code, I've probably tried to break it.
-  </p>
-  <div class="hero-actions">
-    <a href="#projects" class="btn btn-primary">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-      View Projects
-    </a>
-    <a href="https://github.com/ykrishhh" target="_blank" rel="noopener" class="btn btn-secondary">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-      GitHub
-    </a>
-  </div>
-  <div class="social">
-    <a href="https://github.com/ykrishhh" target="_blank" rel="noopener">GitHub</a>
-    <a href="https://twitter.com/harry6ez" target="_blank" rel="noopener">X / Twitter</a>
-    <a href="https://github.com/ykrishhh/ykrishhh" target="_blank" rel="noopener">Profile</a>
-  </div>
-</section>
-
-<!-- Stats -->
-<div class="stats-row" id="stats-row">
-  <div class="stat-cell reveal"><div class="stat-num" data-count="26">0</div><div class="stat-label">Repos</div></div>
-  <div class="stat-cell reveal"><div class="stat-num" data-count="5" data-suffix="+">0</div><div class="stat-label">CVEs</div></div>
-  <div class="stat-cell reveal"><div class="stat-num" data-count="8" data-suffix="+">0</div><div class="stat-label">Tools</div></div>
-  <div class="stat-cell reveal"><div class="stat-num" data-count="3" data-suffix="+">0</div><div class="stat-label">AI Projects</div></div>
-</div>
-
-<!-- About -->
-<section id="about">
-  <div class="section-header reveal">
-    <div class="section-tag">// whoami</div>
-    <h2 class="section-title">Terminal Profile</h2>
-  </div>
-  <div class="terminal-window reveal">
-    <div class="terminal-bar">
-      <div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div>
-      <span class="terminal-label">ykrishhh — ~/research</span>
+<!-- Main Content -->
+<main id="main-content">
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-badge"><span class="dot"></span>Available for opportunities</div>
+      <div class="hero-title-wrap">
+        <h1 data-text="KRI$H" id="hero-title">KRI$H</h1>
+        <div class="hero-title-underline"></div>
+      </div>
+      <p class="tagline">security researcher & developer</p>
+      <p class="bio">
+        Hunting bugs, breaking systems, and building tools that make the digital world safer.
+        From <span class="hl">kernel exploitation</span> to <span class="hl">ESP32 hacking</span> to <span class="hl">AI automation</span> —
+        if it runs code, I've probably tried to break it.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          View Projects
+        </a>
+        <a href="https://github.com/ykrishhh" target="_blank" rel="noopener" class="btn btn-secondary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+      <div class="social">
+        <a href="https://github.com/ykrishhh" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://twitter.com/harry6ez" target="_blank" rel="noopener">X / Twitter</a>
+        <a href="https://github.com/ykrishhh/ykrishhh" target="_blank" rel="noopener">Profile</a>
+      </div>
     </div>
-    <div class="terminal-body" id="terminal-body">
-      <div><span class="t-p">$</span> <span class="t-c">whoami</span></div>
-      <div><span class="t-o">Security Researcher & Developer</span></div>
-      <div><span class="t-p">$</span> <span class="t-c">cat</span> <span class="t-f">specialties.txt</span></div>
-      <div><span class="t-s">CVE Research</span> · <span class="t-s">Kernel Hacking</span> · <span class="t-s">ESP32/IoT</span></div>
-      <div><span class="t-s">Android RE</span> · <span class="t-s">AI Automation</span> · <span class="t-s">Linux Hardening</span></div>
-      <div><span class="t-p">$</span> <span class="t-c">echo</span> <span class="t-w">"Open to opportunities"</span></div>
-      <div><span class="t-s">Open to opportunities</span></div>
-      <div><span class="t-p">$</span> <span class="term-cursor"></span></div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-row" id="stats-row">
+    <div class="stat-cell reveal"><div class="stat-num" data-count="26">0</div><div class="stat-label">Repos</div></div>
+    <div class="stat-cell reveal"><div class="stat-num" data-count="5" data-suffix="+">0</div><div class="stat-label">CVEs</div></div>
+    <div class="stat-cell reveal"><div class="stat-num" data-count="8" data-suffix="+">0</div><div class="stat-label">Tools</div></div>
+    <div class="stat-cell reveal"><div class="stat-num" data-count="3" data-suffix="+">0</div><div class="stat-label">AI Projects</div></div>
+  </div>
+
+  <!-- About -->
+  <section id="about">
+    <div class="section-header reveal">
+      <div class="section-tag">// whoami</div>
+      <h2 class="section-title">Terminal Profile</h2>
     </div>
-  </div>
-</section>
-
-<!-- Projects -->
-<section id="projects">
-  <div class="section-header reveal">
-    <div class="section-tag">// projects</div>
-    <h2 class="section-title">Featured Work</h2>
-  </div>
-  <div class="projects-frame">
-    <svg class="serpent serpent-left" viewBox="0 0 60 700" fill="none" aria-hidden="true">
-      <path class="body-main" d="M30 10 C55 80,5 160,30 230 C55 300,5 380,30 450 C55 520,5 600,30 680" stroke="#0f0" stroke-width="2.5" stroke-linecap="round"/>
-      <path class="body-inner" d="M30 18 C52 82,8 158,30 225 C52 295,8 375,30 445 C52 515,8 595,30 672" stroke="#0f0" stroke-width=".8" opacity=".15"/>
-      <path d="M30 10 C27 3,34 0,30 -4" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M30 680 C34 688,26 694,32 700" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
-      <g class="scales">
-        <path d="M36 40 C44 32,50 38,54 30 C57 24,52 18,56 12" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
-        <path d="M44 80 C52 68,54 56,48 50 C46 58,42 68,44 80Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <circle cx="48" cy="118" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <path d="M16 180 C8 168,6 156,12 150 C14 158,18 168,16 180Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <path d="M22 200 C14 192,8 198,4 190 C1 184,6 178,2 172" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
-        <circle cx="12" cy="248" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="7" cy="254" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="17" cy="255" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="12" cy="261" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <path d="M46 310 C54 298,56 286,50 280 C48 288,44 298,46 310Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <path d="M42 348 C50 340,54 346,58 338 C60 332,56 326,58 320" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
-        <path d="M14 400 C6 388,4 376,10 370 C12 378,16 388,14 400Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <circle cx="46" cy="455" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="51" cy="461" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="41" cy="462" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="46" cy="468" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <path d="M20 500 C12 492,6 498,2 490 C0 484,4 478,0 472" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
-        <path d="M44 540 C52 528,54 516,48 510 C46 518,42 528,44 540Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <circle cx="14" cy="578" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="9" cy="584" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="19" cy="585" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="14" cy="591" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <path d="M16 640 C8 628,6 616,12 610 C14 618,18 628,16 640Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <path d="M36 660 C44 652,48 658,52 650 C54 644,50 638,54 632" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
-      </g>
-    </svg>
-
-    <div class="projects" id="projects-grid"></div>
-
-    <svg class="serpent serpent-right" viewBox="0 0 60 700" fill="none" aria-hidden="true">
-      <path class="body-main" d="M30 10 C55 80,5 160,30 230 C55 300,5 380,30 450 C55 520,5 600,30 680" stroke="#0f0" stroke-width="2.5" stroke-linecap="round"/>
-      <path class="body-inner" d="M30 18 C52 82,8 158,30 225 C52 295,8 375,30 445 C52 515,8 595,30 672" stroke="#0f0" stroke-width=".8" opacity=".15"/>
-      <path d="M30 10 C27 3,34 0,30 -4" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M30 680 C34 688,26 694,32 700" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
-      <g class="scales">
-        <path d="M36 40 C44 32,50 38,54 30 C57 24,52 18,56 12" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
-        <path d="M44 80 C52 68,54 56,48 50 C46 58,42 68,44 80Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <circle cx="48" cy="118" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <path d="M16 180 C8 168,6 156,12 150 C14 158,18 168,16 180Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <path d="M22 200 C14 192,8 198,4 190 C1 184,6 178,2 172" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
-        <circle cx="12" cy="248" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="7" cy="254" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="17" cy="255" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="12" cy="261" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <path d="M46 310 C54 298,56 286,50 280 C48 288,44 298,46 310Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <path d="M42 348 C50 340,54 346,58 338 C60 332,56 326,58 320" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
-        <path d="M14 400 C6 388,4 376,10 370 C12 378,16 388,14 400Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <circle cx="46" cy="455" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="51" cy="461" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="41" cy="462" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="46" cy="468" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <path d="M20 500 C12 492,6 498,2 490 C0 484,4 478,0 472" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
-        <path d="M44 540 C52 528,54 516,48 510 C46 518,42 528,44 540Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <circle cx="14" cy="578" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="9" cy="584" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="19" cy="585" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <circle cx="14" cy="591" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
-        <path d="M16 640 C8 628,6 616,12 610 C14 618,18 628,16 640Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
-        <path d="M36 660 C44 652,48 658,52 650 C54 644,50 638,54 632" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
-      </g>
-    </svg>
-
-    <div class="embers" aria-hidden="true">
-      <div class="ember" style="left:5%;bottom:15%;width:3px;height:3px;background:#0f0;animation-duration:5.5s;--drift:12px"></div>
-      <div class="ember" style="left:92%;bottom:25%;width:2px;height:2px;background:#ff4400;animation-duration:6.2s;animation-delay:1.2s;--drift:-18px"></div>
-      <div class="ember" style="left:8%;bottom:40%;width:2px;height:2px;background:#0ff;animation-duration:4.8s;animation-delay:2.5s;--drift:8px"></div>
-      <div class="ember" style="left:88%;bottom:55%;width:3px;height:3px;background:#0f0;animation-duration:5.1s;animation-delay:.8s;--drift:-15px"></div>
-      <div class="ember" style="left:15%;bottom:70%;width:2px;height:2px;background:#ff0080;animation-duration:6.8s;animation-delay:3.1s;--drift:20px"></div>
-      <div class="ember" style="left:85%;bottom:10%;width:2px;height:2px;background:#0f0;animation-duration:4.5s;animation-delay:1.8s;--drift:-10px"></div>
-      <div class="ember" style="left:50%;bottom:5%;width:3px;height:3px;background:#0ff;animation-duration:5.8s;animation-delay:.3s;--drift:6px"></div>
+    <div class="terminal-window" id="terminal">
+      <div class="terminal-bar">
+        <div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div>
+        <span class="terminal-label">KRI$H — ~/research</span>
+      </div>
+      <div class="terminal-body" id="terminal-body">
+        <div><span class="t-p">$</span> <span class="t-c">whoami</span></div>
+        <div><span class="t-o">Security Researcher & Developer</span></div>
+        <div><span class="t-p">$</span> <span class="t-c">cat</span> <span class="t-f">specialties.txt</span></div>
+        <div><span class="t-s">CVE Research</span> · <span class="t-s">Kernel Hacking</span> · <span class="t-s">ESP32/IoT</span></div>
+        <div><span class="t-s">Android RE</span> · <span class="t-s">AI Automation</span> · <span class="t-s">Linux Hardening</span></div>
+        <div><span class="t-p">$</span> <span class="t-c">echo</span> <span class="t-w">"Open to opportunities"</span></div>
+        <div><span class="t-s">Open to opportunities</span></div>
+        <div><span class="t-p">$</span> <span class="term-cursor"></span></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Tech Stack -->
-<section id="stack">
-  <div class="section-header reveal">
-    <div class="section-tag">// stack</div>
-    <h2 class="section-title">Tech Arsenal</h2>
-  </div>
-</section>
-<div class="marquee-section">
-  <div class="marquee-track" id="marquee-track" aria-label="Technology stack scrolling list"></div>
-</div>
+  <!-- Projects -->
+  <section id="projects">
+    <div class="section-header reveal">
+      <div class="section-tag">// projects</div>
+      <h2 class="section-title">Featured Work</h2>
+    </div>
+    <div class="projects-frame">
+      <svg class="serpent serpent-left" viewBox="0 0 60 700" fill="none" aria-hidden="true">
+        <path class="body-main" d="M30 10 C55 80,5 160,30 230 C55 300,5 380,30 450 C55 520,5 600,30 680" stroke="#0f0" stroke-width="2.5" stroke-linecap="round"/>
+        <path class="body-inner" d="M30 18 C52 82,8 158,30 225 C52 295,8 375,30 445 C52 515,8 595,30 672" stroke="#0f0" stroke-width=".8" opacity=".15"/>
+        <path d="M30 10 C27 3,34 0,30 -4" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M30 680 C34 688,26 694,32 700" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
+        <g class="scales">
+          <path d="M36 40 C44 32,50 38,54 30 C57 24,52 18,56 12" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+          <path d="M44 80 C52 68,54 56,48 50 C46 58,42 68,44 80Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <circle cx="48" cy="118" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <path d="M16 180 C8 168,6 156,12 150 C14 158,18 168,16 180Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <path d="M22 200 C14 192,8 198,4 190 C1 184,6 178,2 172" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+          <circle cx="12" cy="248" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="7" cy="254" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="17" cy="255" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="12" cy="261" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <path d="M46 310 C54 298,56 286,50 280 C48 288,44 298,46 310Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <path d="M42 348 C50 340,54 346,58 338 C60 332,56 326,58 320" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+          <path d="M14 400 C6 388,4 376,10 370 C12 378,16 388,14 400Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <circle cx="46" cy="455" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="51" cy="461" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="41" cy="462" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="46" cy="468" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <path d="M20 500 C12 492,6 498,2 490 C0 484,4 478,0 472" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+          <path d="M44 540 C52 528,54 516,48 510 C46 518,42 528,44 540Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <circle cx="14" cy="578" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="9" cy="584" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="19" cy="585" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="14" cy="591" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <path d="M16 640 C8 628,6 616,12 610 C14 618,18 628,16 640Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <path d="M36 660 C44 652,48 658,52 650 C54 644,50 638,54 632" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
 
-<!-- Journey -->
-<section id="journey">
-  <div class="section-header reveal">
-    <div class="section-tag">// journey</div>
-    <h2 class="section-title">Security Path</h2>
-  </div>
-  <div class="timeline" id="timeline"></div>
-</section>
+      <div class="projects" id="projects-grid"></div>
 
-<!-- Contact -->
-<section class="contact-section" id="contact">
-  <div class="section-header reveal">
-    <div class="section-tag">// contact</div>
-    <h2 class="section-title">Let's Connect</h2>
+      <svg class="serpent serpent-right" viewBox="0 0 60 700" fill="none" aria-hidden="true">
+        <path class="body-main" d="M30 10 C55 80,5 160,30 230 C55 300,5 380,30 450 C55 520,5 600,30 680" stroke="#0f0" stroke-width="2.5" stroke-linecap="round"/>
+        <path class="body-inner" d="M30 18 C52 82,8 158,30 225 C52 295,8 375,30 445 C52 515,8 595,30 672" stroke="#0f0" stroke-width=".8" opacity=".15"/>
+        <path d="M30 10 C27 3,34 0,30 -4" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M30 680 C34 688,26 694,32 700" stroke="#0f0" stroke-width="1.5" stroke-linecap="round"/>
+        <g class="scales">
+          <path d="M36 40 C44 32,50 38,54 30 C57 24,52 18,56 12" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+          <path d="M44 80 C52 68,54 56,48 50 C46 58,42 68,44 80Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <circle cx="48" cy="118" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <path d="M16 180 C8 168,6 156,12 150 C14 158,18 168,16 180Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <path d="M22 200 C14 192,8 198,4 190 C1 184,6 178,2 172" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+          <circle cx="12" cy="248" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="7" cy="254" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="17" cy="255" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="12" cy="261" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <path d="M46 310 C54 298,56 286,50 280 C48 288,44 298,46 310Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <path d="M42 348 C50 340,54 346,58 338 C60 332,56 326,58 320" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+          <path d="M14 400 C6 388,4 376,10 370 C12 378,16 388,14 400Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <circle cx="46" cy="455" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="51" cy="461" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="41" cy="462" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="46" cy="468" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <path d="M20 500 C12 492,6 498,2 490 C0 484,4 478,0 472" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+          <path d="M44 540 C52 528,54 516,48 510 C46 518,42 528,44 540Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <circle cx="14" cy="578" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="9" cy="584" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="19" cy="585" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <circle cx="14" cy="591" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)"/>
+          <path d="M16 640 C8 628,6 616,12 610 C14 618,18 628,16 640Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)"/>
+          <path d="M36 660 C44 652,48 658,52 650 C54 644,50 638,54 632" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+
+      <div class="embers" aria-hidden="true">
+        <div class="ember" style="left:5%;bottom:15%;width:3px;height:3px;background:#0f0;animation-duration:5.5s;--drift:12px"></div>
+        <div class="ember" style="left:92%;bottom:25%;width:2px;height:2px;background:#ff4400;animation-duration:6.2s;animation-delay:1.2s;--drift:-18px"></div>
+        <div class="ember" style="left:8%;bottom:40%;width:2px;height:2px;background:#0ff;animation-duration:4.8s;animation-delay:2.5s;--drift:8px"></div>
+        <div class="ember" style="left:88%;bottom:55%;width:3px;height:3px;background:#0f0;animation-duration:5.1s;animation-delay:.8s;--drift:-15px"></div>
+        <div class="ember" style="left:15%;bottom:70%;width:2px;height:2px;background:#ff0080;animation-duration:6.8s;animation-delay:3.1s;--drift:20px"></div>
+        <div class="ember" style="left:85%;bottom:10%;width:2px;height:2px;background:#0f0;animation-duration:4.5s;animation-delay:1.8s;--drift:-10px"></div>
+        <div class="ember" style="left:50%;bottom:5%;width:3px;height:3px;background:#0ff;animation-duration:5.8s;animation-delay:.3s;--drift:6px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section id="stack">
+    <div class="section-header reveal">
+      <div class="section-tag">// stack</div>
+      <h2 class="section-title">Tech Arsenal</h2>
+    </div>
+  </section>
+  <div class="marquee-section">
+    <div class="marquee-track" id="marquee-track" aria-label="Technology stack scrolling list"></div>
   </div>
-  <p class="contact-sub reveal" style="text-align:center">Always open to collaboration and new opportunities</p>
-  <div class="contact-grid reveal">
-    <a href="https://github.com/ykrishhh" target="_blank" rel="noopener" class="contact-card">
-      <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></span>
-      <div><div class="name">GitHub</div><div class="handle">@ykrishhh</div></div>
-    </a>
-    <a href="https://twitter.com/harry6ez" target="_blank" rel="noopener" class="contact-card">
-      <span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
-      <div><div class="name">X / Twitter</div><div class="handle">@harry6ez</div></div>
-    </a>
-    <a href="https://github.com/ykrishhh/ykrishhh" target="_blank" rel="noopener" class="contact-card">
-      <span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
-      <div><div class="name">Profile README</div><div class="handle">ykrishhh/ykrishhh</div></div>
-    </a>
-  </div>
-</section>
+
+  <!-- Journey -->
+  <section id="journey">
+    <div class="section-header reveal">
+      <div class="section-tag">// journey</div>
+      <h2 class="section-title">Security Path</h2>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact-section" id="contact">
+    <div class="section-header reveal">
+      <div class="section-tag">// contact</div>
+      <h2 class="section-title">Let's Connect</h2>
+    </div>
+    <p class="contact-sub reveal" style="text-align:center">Always open to collaboration and new opportunities</p>
+    <div class="contact-grid reveal">
+      <a href="https://github.com/ykrishhh" target="_blank" rel="noopener" class="contact-card">
+        <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></span>
+        <div><div class="name">GitHub</div><div class="handle">@KRI$H</div></div>
+      </a>
+      <a href="https://twitter.com/harry6ez" target="_blank" rel="noopener" class="contact-card">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
+        <div><div class="name">X / Twitter</div><div class="handle">@harry6ez</div></div>
+      </a>
+      <a href="https://github.com/ykrishhh/ykrishhh" target="_blank" rel="noopener" class="contact-card">
+        <span class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+        <div><div class="name">Profile README</div><div class="handle">KRI$H</div></div>
+      </a>
+    </div>
+  </section>
+</main>
 
 <footer>
-  <p class="footer-text">Built with <span class="heart">&hearts;</span> by <strong style="color:#fff">ykrishhh</strong> &middot; 2025 &middot; Deployed on GitHub Pages</p>
+  <p class="footer-text">Built with <span class="heart">&hearts;</span> by <strong style="color:#fff">KRI$H</strong> &middot; 2025 &middot; Deployed on GitHub Pages</p>
 </footer>
 
 <script>
@@ -709,13 +793,19 @@ footer{text-align:center;padding:clamp(2rem,4vh,3rem) clamp(1rem,4vw,3rem);borde
 window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('hidden'),1800));
 
 /* ═══════════════════════════════════════════════════════════════
-   NAVIGATION
+   NAVIGATION — scroll spy + hide/show
    ═══════════════════════════════════════════════════════════════ */
 let lastScroll=0;const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>{
   const c=window.scrollY;
   nav.classList.toggle('hidden',c>lastScroll&&c>100);
   lastScroll=c;
+  // Scroll spy
+  document.querySelectorAll('section[id]').forEach(sec=>{
+    const top=sec.offsetTop-100,bot=top+sec.offsetHeight;
+    const link=document.querySelector(`.nav-links a[href="#${sec.id}"]`);
+    if(link)link.classList.toggle('active',c>=top&&c<bot);
+  });
 },{passive:true});
 
 const hamburger=document.getElementById('hamburger');
@@ -738,9 +828,13 @@ function closeMobile(){
    ═══════════════════════════════════════════════════════════════ */
 const pCanvas=document.getElementById('particle-canvas');
 const pCtx=pCanvas.getContext('2d');
-let particles=[];const PCOUNT=window.innerWidth<768?25:50;
+let particles=[];
+const isMobile=window.innerWidth<480;
+const PCOUNT=isMobile?15:window.innerWidth<768?25:50;
 function resizeCanvas(){pCanvas.width=window.innerWidth;pCanvas.height=window.innerHeight}
 resizeCanvas();window.addEventListener('resize',resizeCanvas);
+let mouseX=-1000,mouseY=-1000;
+document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY});
 class Particle{
   constructor(){this.reset()}
   reset(){
@@ -750,6 +844,13 @@ class Particle{
     this.color=Math.random()>.7?'#0ff':'#0f0';
   }
   update(){
+    // Mouse repulsion
+    const dx=this.x-mouseX,dy=this.y-mouseY;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<100&&dist>0){
+      const force=(100-dist)/100*.5;
+      this.x+=dx/dist*force;this.y+=dy/dist*force;
+    }
     this.x+=this.speedX;this.y+=this.speedY;
     if(this.x<0||this.x>pCanvas.width||this.y<0||this.y>pCanvas.height)this.reset();
   }
@@ -816,7 +917,7 @@ class TextScramble{
   }
 }
 const scramble=new TextScramble(document.getElementById('logo-link'));
-document.getElementById('logo-link').addEventListener('mouseenter',()=>scramble.setText('<YKRISHHH/>'));
+document.getElementById('logo-link').addEventListener('mouseenter',()=>scramble.setText('<KRI$H/>'));
 
 /* ═══════════════════════════════════════════════════════════════
    RIPPLE + MAGNETIC CARDS
@@ -835,7 +936,7 @@ document.querySelectorAll('.project').forEach(card=>{
     if(window.innerWidth<768)return;
     const rect=card.getBoundingClientRect();
     const x=e.clientX-rect.left-rect.width/2,y=e.clientY-rect.top-rect.height/2;
-    card.style.transform=`perspective(500px) rotateX(${-y/15}deg) rotateY(${x/15}deg) scale(1.05)`;
+    card.style.transform=`perspective(500px) rotateX(${-y/15}deg) rotateY(${x/15}deg) scale(1.03)`;
   });
   card.addEventListener('mouseleave',()=>{card.style.transform=''});
 });
@@ -844,23 +945,24 @@ document.querySelectorAll('.project').forEach(card=>{
    PROJECTS
    ═══════════════════════════════════════════════════════════════ */
 const projects=[
-  {name:'AW3S0M3-ESP32',desc:'ESP32 security tools',detail:'Curated list of ESP32 security tools, firmware, and resources for penetration testers and IoT researchers.',url:'https://github.com/ykrishhh/awesome-esp32-security'},
-  {name:'3SP32-H4RNESS',desc:'Pentesting firmware',detail:'Advanced ESP32 pentesting & telemetry firmware — 2.4 GHz research, RF24 experimentation, and on-device forensic capture.',url:'https://github.com/ykrishhh/ESP32-HARNESS'},
-  {name:'CV3-P0C5',desc:'CVE exploits',detail:'Proof-of-concept exploits for CVEs — security research, vulnerability analysis, and responsible disclosure.',url:'https://github.com/ykrishhh/cve-pocs'},
-  {name:'H4RRYP4N3L',desc:'Hosting control panel',detail:'Advanced web hosting control panel — server management, database admin, file manager, and deployment tools.',url:'https://github.com/ykrishhh/HarryPanel'},
-  {name:'C0NT3NT-4G3NT',desc:'AI content agent',detail:'Autonomous AI content agent for Termux — SEO-optimized posts, GitHub/LinkedIn/Instagram/email automation, and Telegram integration.',url:'https://github.com/ykrishhh/content-agent'},
-  {name:'4DR01D-R00T1NG',desc:'Rooting masterclass',detail:'Complete guide to Android rooting and hooking — from user-space DEX editing to Xposed/LSPosed modules to kernel patching.',url:'https://github.com/ykrishhh/android-rooting-masterclass'},
-  {name:'L1NUX-H4RD3N',desc:'Security hardening',detail:'Security hardening scripts for Linux — firewall config, audit rules, kernel parameters, and CIS benchmarks.',url:'https://github.com/ykrishhh/linux-hardening'},
-  {name:'T3RMUX-53C',desc:'Security toolkit',detail:'Security tools and scripts for Termux — network scanning, password auditing, and ethical hacking on Android.',url:'https://github.com/ykrishhh/termux-security-toolkit'},
-  {name:'53LF-H05T3D-41',desc:'Self-hosted AI',detail:'Run AI models on your phone — complete self-hosted AI setup guide for Termux with Ollama, Open WebUI, and more.',url:'https://github.com/ykrishhh/self-hosted-ai-termux'},
-  {name:'41-4G3NT-C0MP4R3',desc:'AI agent comparison',detail:'Honest comparison of AI agent frameworks — LangChain, CrewAI, AutoGPT, Swarm, and alternatives with benchmarks.',url:'https://github.com/ykrishhh/ai-agent-comparison'},
-  {name:'N3TW0RK-5C4NN3R',desc:'Network scanner',detail:'Fast Python network scanner — port scanning, service detection, OS fingerprinting, and subnet enumeration.',url:'https://github.com/ykrishhh/network-scanner'},
-  {name:'PR1V4CY-T00L5',desc:'Privacy utilities',detail:'Encryption and privacy utilities — file encryption, secure messaging, password generation, and data protection.',url:'https://github.com/ykrishhh/privacy-tools'},
+  {name:'AW3S0M3-ESP32',desc:'ESP32 security tools',detail:'Curated list of ESP32 security tools, firmware, and resources for penetration testers and IoT researchers.',tags:['esp32','iot','pentesting'],url:'https://github.com/ykrishhh/awesome-esp32-security'},
+  {name:'3SP32-H4RNESS',desc:'Pentesting firmware',detail:'Advanced ESP32 pentesting & telemetry firmware — 2.4 GHz research, RF24 experimentation, and on-device forensic capture.',tags:['esp32','firmware','rf'],url:'https://github.com/ykrishhh/ESP32-HARNESS'},
+  {name:'CV3-P0C5',desc:'CVE exploits',detail:'Proof-of-concept exploits for CVEs — security research, vulnerability analysis, and responsible disclosure.',tags:['cve','exploit','poc'],url:'https://github.com/ykrishhh/cve-pocs'},
+  {name:'H4RRYP4N3L',desc:'Hosting control panel',detail:'Advanced web hosting control panel — server management, database admin, file manager, and deployment tools.',tags:['python','flask','devops'],url:'https://github.com/ykrishhh/HarryPanel'},
+  {name:'C0NT3NT-4G3NT',desc:'AI content agent',detail:'Autonomous AI content agent for Termux — SEO-optimized posts, GitHub/LinkedIn/Instagram/email automation, and Telegram integration.',tags:['ai','automation','termux'],url:'https://github.com/ykrishhh/content-agent'},
+  {name:'4DR01D-R00T1NG',desc:'Rooting masterclass',detail:'Complete guide to Android rooting and hooking — from user-space DEX editing to Xposed/LSPosed modules to kernel patching.',tags:['android','frida','kernel'],url:'https://github.com/ykrishhh/android-rooting-masterclass'},
+  {name:'L1NUX-H4RD3N',desc:'Security hardening',detail:'Security hardening scripts for Linux — firewall config, audit rules, kernel parameters, and CIS benchmarks.',tags:['linux','firewall','cis'],url:'https://github.com/ykrishhh/linux-hardening'},
+  {name:'T3RMUX-53C',desc:'Security toolkit',detail:'Security tools and scripts for Termux — network scanning, password auditing, and ethical hacking on Android.',tags:['termux','pentesting','android'],url:'https://github.com/ykrishhh/termux-security-toolkit'},
+  {name:'53LF-H05T3D-41',desc:'Self-hosted AI',detail:'Run AI models on your phone — complete self-hosted AI setup guide for Termux with Ollama, Open WebUI, and more.',tags:['ollama','local-llm','privacy'],url:'https://github.com/ykrishhh/self-hosted-ai-termux'},
+  {name:'41-4G3NT-C0MP4R3',desc:'AI agent comparison',detail:'Honest comparison of AI agent frameworks — LangChain, CrewAI, AutoGPT, Swarm, and alternatives with benchmarks.',tags:['llm','agents','benchmark'],url:'https://github.com/ykrishhh/ai-agent-comparison'},
+  {name:'N3TW0RK-5C4NN3R',desc:'Network scanner',detail:'Fast Python network scanner — port scanning, service detection, OS fingerprinting, and subnet enumeration.',tags:['python','scapy','networking'],url:'https://github.com/ykrishhh/network-scanner'},
+  {name:'PR1V4CY-T00L5',desc:'Privacy utilities',detail:'Encryption and privacy utilities — file encryption, secure messaging, password generation, and data protection.',tags:['encryption','privacy','python'],url:'https://github.com/ykrishhh/privacy-tools'},
 ];
 const grid=document.getElementById('projects-grid');
-projects.forEach(p=>{
+projects.forEach((p,i)=>{
   const a=document.createElement('a');a.className='project';a.href=p.url;a.target='_blank';a.rel='noopener';
-  a.innerHTML=`<h3>${p.name}</h3><p>${p.desc}</p><p class="detail">${p.detail}</p>`;
+  a.style.transitionDelay=`${i*60}ms`;
+  a.innerHTML=`<span class="project-arrow">\u2197</span><div class="project-content"><h3>${p.name}</h3><p>${p.desc}</p><div class="project-tags">${p.tags.map(t=>`<span class="project-tag">${t}</span>`).join('')}</div></div><p class="project-detail">${p.detail}</p>`;
   grid.appendChild(a);
 });
 
@@ -896,19 +998,25 @@ const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
       e.target.classList.add('visible');
+      // Counter animation
       const num=e.target.querySelector('.stat-num');
       if(num&&!num.dataset.done){
         num.dataset.done='1';const target=parseInt(num.dataset.count),suffix=num.dataset.suffix||'';
         let cur=0;const step=Math.ceil(target/30);
-        const timer=setInterval(()=>{cur=Math.min(cur+step,target);num.textContent=cur+suffix;if(cur>=target)clearInterval(timer)},40);
+        const timer=setInterval(()=>{
+          cur=Math.min(cur+step,target);num.textContent=cur+suffix;
+          if(cur>=target){clearInterval(timer);num.classList.add('done')}
+        },40);
       }
+      // Terminal scale-in
+      if(e.target.id==='terminal')e.target.classList.add('visible');
     }
   });
 },{threshold:.1});
-document.querySelectorAll('.tl-item,.stat-cell,.reveal').forEach(el=>obs.observe(el));
+document.querySelectorAll('.tl-item,.stat-cell,.reveal,.project,#terminal').forEach(el=>obs.observe(el));
 
 /* ═══════════════════════════════════════════════════════════════
-   PARALLAX (desktop only)
+   PARALLAX (desktop only, background layers only)
    ═══════════════════════════════════════════════════════════════ */
 if(window.innerWidth>=768){
   let ticking=false;
@@ -916,7 +1024,8 @@ if(window.innerWidth>=768){
     if(!ticking){
       requestAnimationFrame(()=>{
         const s=window.scrollY;
-        document.querySelector('main').style.transform=`translateY(${s*.12}px)`;
+        // Only move background layers, NOT main content
+        document.querySelector('.bg-gradient').style.transform=`translateY(${s*.05}px)`;
         document.querySelectorAll('.serpent').forEach(serp=>{
           if(!serp.classList.contains('serpent-right'))serp.style.transform=`translateY(${s*.04}px)`;
           else serp.style.transform=`scaleX(-1) translateY(${s*.04}px)`;

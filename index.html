@@ -129,7 +129,7 @@ button{background:none;border:none;font:inherit;color:inherit}
   position:fixed;top:0;left:0;right:0;bottom:0;
   background:rgba(0,0,0,.97);z-index:1001;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:2rem;opacity:0;visibility:hidden;transition:all .3s var(--ease);
+  gap:2rem;opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility .3s;
 }
 .mobile-menu.open{opacity:1;visibility:visible}
 .mobile-menu a{
@@ -180,10 +180,11 @@ button{background:none;border:none;font:inherit;color:inherit}
    ═══════════════════════════════════════════════════════════════ */
 .hero{
   min-height:100dvh;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:clamp(5rem,12vh,8rem) clamp(1rem,4vw,3rem) 2rem;
+  justify-content:center;padding:clamp(4rem,10vh,8rem) clamp(1rem,4vw,3rem) 2rem;
   text-align:center;position:relative;gap:0;
   overflow:hidden;
 }
+@media(max-height:600px){.hero{min-height:auto;padding-top:2rem;padding-bottom:1rem}}
 .hero-inner{
   display:flex;flex-direction:column;align-items:center;gap:0;
 }
@@ -221,13 +222,13 @@ h1::after{color:var(--cy);z-index:-1;animation:glitchAfter 4s 3s infinite}
   animation:fadeInUp .8s var(--ease) .6s forwards;display:inline-block;
   animation-fill-mode:forwards;
 }
-.tagline::after{content:'_';animation:blink 1s step-end infinite}
+.tagline::after{content:'_';animation:blink 1s step-end infinite;will-change:opacity}
 .bio{
   color:var(--tx);max-width:540px;margin:0 auto 2rem;
   line-height:1.8;font-size:clamp(.85rem,1.5vw,1rem);opacity:0;
   animation:fadeInUp .8s var(--ease) .8s forwards;animation-fill-mode:forwards;
 }
-.bio .hl{color:var(--g);font-style:italic;letter-spacing:1px}
+.bio .hl{color:var(--g);font-style:italic;letter-spacing:1px;white-space:normal}
 .hero-actions{
   display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
   opacity:0;animation:fadeInUp .8s var(--ease) 1s forwards;animation-fill-mode:forwards;
@@ -277,13 +278,13 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
   .section-title::before,.section-title::after{
     content:'';position:absolute;top:50%;height:1px;background:var(--g);opacity:.3;
   }
-  .section-title::before{right:calc(100% + 12px);width:30px}
-  .section-title::after{left:calc(100% + 12px);width:30px}
+  .section-title::before{right:calc(100% + 10px);width:25px}
+  .section-title::after{left:calc(100% + 10px);width:25px}
 }
 @media(min-width:768px){
-  .section-title::before,.section-title::after{width:60px}
-  .section-title::before{right:calc(100% + 15px)}
-  .section-title::after{left:calc(100% + 15px)}
+  .section-title::before,.section-title::after{width:50px}
+  .section-title::before{right:calc(100% + 12px)}
+  .section-title::after{left:calc(100% + 12px)}
 }
 .reveal{opacity:0;transform:translateY(30px);transition:all .7s var(--ease)}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -297,7 +298,7 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
 }
 @media(min-width:640px){.stats-row{grid-template-columns:repeat(4,1fr);max-width:800px}}
 .stat-cell{
-  background:var(--bk);padding:clamp(1.25rem,3vw,2rem);text-align:center;
+  background:var(--bk);padding:clamp(1.5rem,3vw,2.25rem);text-align:center;
   transition:all .3s var(--ease);position:relative;overflow:hidden;
 }
 .stat-cell::before{
@@ -345,9 +346,9 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
 .project::after{content:'';position:absolute;inset:0;background:var(--bk);z-index:-1}
 .project-content{
   display:flex;flex-direction:column;align-items:center;gap:.5rem;
-  transition:transform .4s var(--ease);
+  transition:all .4s var(--ease);
 }
-.project:hover .project-content{transform:translateY(-15px)}
+.project:hover .project-content{transform:translateY(-15px);opacity:.4}
 .project h3{
   font-size:clamp(.7rem,1.5vw,.8rem);letter-spacing:2px;
   text-transform:uppercase;color:var(--g);text-shadow:0 0 10px rgba(0,255,0,.5);
@@ -365,9 +366,10 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
   background:rgba(0,255,0,.08);color:var(--g);border-radius:2px;
 }
 .project-detail{
-  position:absolute;bottom:clamp(1rem,2vw,2rem);left:clamp(1rem,2vw,2rem);right:clamp(1rem,2vw,2rem);
-  font-size:clamp(.7rem,1.2vw,.8rem);color:#fff;opacity:0;transform:translateY(15px);
+  position:absolute;bottom:clamp(.75rem,2vw,1.5rem);left:clamp(.75rem,2vw,1.5rem);right:clamp(.75rem,2vw,1.5rem);
+  font-size:clamp(.65rem,1.1vw,.75rem);color:#fff;opacity:0;transform:translateY(10px);
   transition:all .4s var(--ease);line-height:1.4;text-align:center;
+  pointer-events:none;
 }
 .project:hover .project-detail{opacity:1;transform:translateY(0)}
 .project-arrow{
@@ -404,7 +406,7 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
 .terminal-window{
   background:var(--dk);border:1px solid var(--bd);border-radius:8px;
   overflow:hidden;font-family:var(--mono);font-size:clamp(.65rem,1.3vw,.82rem);
-  max-width:700px;margin:0 auto;
+  max-width:700px;margin:0 auto;width:100%;
   opacity:0;transform:scale(.96);transition:all .6s var(--ease);
 }
 .terminal-window.visible{opacity:1;transform:scale(1)}
@@ -435,9 +437,9 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
 .marquee-section::before{left:0;background:linear-gradient(90deg,var(--dk),transparent)}
 .marquee-section::after{right:0;background:linear-gradient(-90deg,var(--dk),transparent)}
 .marquee-track{
-  display:flex;gap:1rem;animation:marqueeScroll 35s linear infinite;width:max-content;
+  display:flex;gap:1rem;animation:marqueeScroll 40s linear infinite;width:max-content;
 }
-@media(min-width:768px){.marquee-track{gap:1.5rem;animation-duration:40s}}
+@media(min-width:768px){.marquee-track{gap:1.5rem}}
 .marquee-track:hover{animation-play-state:paused}
 @keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .tech-pill{
@@ -471,7 +473,7 @@ section{padding:clamp(3rem,8vh,6rem) clamp(1rem,4vw,3rem);max-width:var(--max-w)
   display:grid;grid-template-columns:1fr;gap:1rem;
   max-width:700px;margin:0 auto;
 }
-@media(min-width:640px){.contact-grid{grid-template-columns:repeat(3,1fr);gap:1.5rem}}
+@media(min-width:640px){.contact-grid{grid-template-columns:repeat(3,1fr);gap:1.25rem}}
 .contact-card{
   display:flex;align-items:center;gap:.75rem;padding:.85rem 1.25rem;
   background:var(--bk);border:1px solid var(--bd);

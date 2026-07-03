@@ -8,6 +8,22 @@
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="canonical" href="https://ykrishhh.github.io">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ykrishhh.github.io">
+<meta property="og:title" content="KRI$H — Security Researcher & Developer">
+<meta property="og:description" content="Security Researcher & Developer — Java, Linux, Kernels, ESP32, Python, TypeScript. Bug Hunting & Pentesting.">
+<meta property="og:site_name" content="KRI$H Portfolio">
+<meta property="og:image" content="https://ykrishhh.github.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@harry6ez">
+<meta name="twitter:title" content="KRI$H — Security Researcher & Developer">
+<meta name="twitter:description" content="Security Researcher & Developer — Java, Linux, Kernels, ESP32, Python, TypeScript. Bug Hunting & Pentesting.">
+<meta name="twitter:image" content="https://ykrishhh.github.io/og-image.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"KRI$H","url":"https://ykrishhh.github.io","sameAs":["https://github.com/ykrishhh","https://twitter.com/harry6ez"],"jobTitle":"Security Researcher & Developer","knowsAbout":["Cybersecurity","Penetration Testing","Kernel Exploitation","ESP32 Security","Android Reverse Engineering","Linux Security Hardening","AI Automation","CVE Research","Network Security"]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -783,7 +799,7 @@ footer{text-align:center;padding:clamp(2rem,4vh,3rem) clamp(1rem,4vw,3rem);borde
 </main>
 
 <footer>
-  <p class="footer-text">Built with <span class="heart">&hearts;</span> by <strong style="color:#fff">KRI$H</strong> &middot; 2025 &middot; Deployed on GitHub Pages</p>
+  <p class="footer-text">Built with <span class="heart">&hearts;</span> by <strong style="color:#fff">KRI$H</strong> &middot; <span id="footer-year"></span> &middot; Deployed on GitHub Pages</p>
 </footer>
 
 <script>
@@ -874,9 +890,9 @@ function drawParticles(){
       }
     }
   }
-  requestAnimationFrame(drawParticles);
+  if(!document.hidden)particleRaf=requestAnimationFrame(drawParticles);
 }
-drawParticles();
+let particleRaf=requestAnimationFrame(drawParticles);
 
 /* ═══════════════════════════════════════════════════════════════
    MOUSE GLOW
@@ -1036,6 +1052,16 @@ if(window.innerWidth>=768){
     }
   },{passive:true});
 }
+
+/* Dynamic footer year */
+document.getElementById('footer-year').textContent=new Date().getFullYear();
+
+/* Pause canvas particles when tab hidden */
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&!particleRaf){
+    particleRaf=requestAnimationFrame(drawParticles);
+  }
+});
 </script>
 </body>
 </html>

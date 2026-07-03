@@ -1,0 +1,447 @@
+import { useState, useEffect } from 'react';
+import { Navbar } from './components/layout/Navbar';
+import {
+  ParticlesBg,
+  Terminal,
+  ProjectCard,
+  Stats,
+  Timeline,
+  Contact,
+} from './components/ui';
+
+interface Project {
+  name: string;
+  desc: string;
+  detail: string;
+  tags: string[];
+  url: string;
+  category: 'security' | 'ai' | 'iot' | 'devops' | 'all';
+}
+
+const projectsData: Project[] = [
+  {
+    name: 'AW3S0M3-ESP32',
+    desc: 'ESP32 security tools',
+    detail: 'Curated list of ESP32 security tools, firmware, and resources for penetration testers and IoT researchers.',
+    tags: ['esp32', 'iot', 'pentesting'],
+    url: 'https://github.com/ykrishhh/awesome-esp32-security',
+    category: 'iot',
+  },
+  {
+    name: '3SP32-H4RNESS',
+    desc: 'Pentesting firmware',
+    detail: 'Advanced ESP32 pentesting & telemetry firmware — 2.4 GHz research, RF24 experimentation, and on-device forensic capture.',
+    tags: ['esp32', 'firmware', 'rf'],
+    url: 'https://github.com/ykrishhh/ESP32-HARNESS',
+    category: 'iot',
+  },
+  {
+    name: 'CV3-P0C5',
+    desc: 'CVE exploits',
+    detail: 'Proof-of-concept exploits for CVEs — security research, vulnerability analysis, and responsible disclosure.',
+    tags: ['cve', 'exploit', 'poc'],
+    url: 'https://github.com/ykrishhh/cve-pocs',
+    category: 'security',
+  },
+  {
+    name: 'H4RRYP4N3L',
+    desc: 'Hosting control panel',
+    detail: 'Advanced web hosting control panel — server management, database admin, file manager, and deployment tools.',
+    tags: ['python', 'flask', 'devops'],
+    url: 'https://github.com/ykrishhh/HarryPanel',
+    category: 'devops',
+  },
+  {
+    name: 'C0NT3NT-4G3NT',
+    desc: 'AI content agent',
+    detail: 'Autonomous AI content agent for Termux — SEO-optimized posts, GitHub/LinkedIn/Instagram/email automation, and Telegram integration.',
+    tags: ['ai', 'automation', 'termux'],
+    url: 'https://github.com/ykrishhh/content-agent',
+    category: 'ai',
+  },
+  {
+    name: 'PYP3NT3ST-41',
+    desc: 'AI pentesting tool',
+    detail: 'AI-powered security automation scanner for pentesting, exploit analysis, and vulnerability detection.',
+    tags: ['ai', 'pentesting', 'python'],
+    url: 'https://github.com/ykrishhh/pypentest-ai',
+    category: 'ai',
+  },
+  {
+    name: '3SP32-SM4RT-C4M',
+    desc: 'AI security camera',
+    detail: 'Low-cost AI-powered security camera on ESP32 with face detection, computer vision, and local MQTT integration.',
+    tags: ['esp32', 'ai', 'iot'],
+    url: 'https://github.com/ykrishhh/esp32-smart-cam',
+    category: 'ai',
+  },
+  {
+    name: 'AW3S0M3-41-53C',
+    desc: 'AI security tools',
+    detail: 'Curated list of AI-powered security tools, vulnerability scanners, and resources for machine learning threat modeling.',
+    tags: ['ai', 'security', 'awesome'],
+    url: 'https://github.com/ykrishhh/awesome-ai-security-tools',
+    category: 'ai',
+  },
+  {
+    name: '4DR01D-R00T1NG',
+    desc: 'Rooting masterclass',
+    detail: 'Complete guide to Android rooting and hooking — from user-space DEX editing to Xposed/LSPosed modules to kernel patching.',
+    tags: ['android', 'frida', 'kernel'],
+    url: 'https://github.com/ykrishhh/android-rooting-masterclass',
+    category: 'security',
+  },
+  {
+    name: 'L1NUX-H4RD3N',
+    desc: 'Security hardening',
+    detail: 'Security hardening scripts for Linux — firewall config, audit rules, kernel parameters, and CIS benchmarks.',
+    tags: ['linux', 'firewall', 'cis'],
+    url: 'https://github.com/ykrishhh/linux-hardening',
+    category: 'security',
+  },
+  {
+    name: 'T3RMUX-53C',
+    desc: 'Security toolkit',
+    detail: 'Security tools and scripts for Termux — network scanning, password auditing, and ethical hacking on Android.',
+    tags: ['termux', 'pentesting', 'android'],
+    url: 'https://github.com/ykrishhh/termux-security-toolkit',
+    category: 'security',
+  },
+  {
+    name: '53LF-H05T3D-41',
+    desc: 'Self-hosted AI',
+    detail: 'Run AI models on your phone — complete self-hosted AI setup guide for Termux with Ollama, Open WebUI, and more.',
+    tags: ['ollama', 'local-llm', 'privacy'],
+    url: 'https://github.com/ykrishhh/self-hosted-ai-termux',
+    category: 'ai',
+  },
+  {
+    name: '41-4G3NT-C0MP4R3',
+    desc: 'AI agent comparison',
+    detail: 'Honest comparison of AI agent frameworks — LangChain, CrewAI, AutoGPT, Swarm, and alternatives with benchmarks.',
+    tags: ['llm', 'agents', 'benchmark'],
+    url: 'https://github.com/ykrishhh/ai-agent-comparison',
+    category: 'ai',
+  },
+  {
+    name: 'N3TW0RK-5C4NN3R',
+    desc: 'Network scanner',
+    detail: 'Fast Python network scanner — port scanning, service detection, OS fingerprinting, and subnet enumeration.',
+    tags: ['python', 'scapy', 'networking'],
+    url: 'https://github.com/ykrishhh/network-scanner',
+    category: 'security',
+  },
+  {
+    name: 'PR1V4CY-T00L5',
+    desc: 'Privacy utilities',
+    detail: 'Encryption and privacy utilities — file encryption, secure messaging, password generation, and data protection.',
+    tags: ['encryption', 'privacy', 'python'],
+    url: 'https://github.com/ykrishhh/privacy-tools',
+    category: 'security',
+  },
+];
+
+const categories = [
+  { id: 'all', label: 'All Projects' },
+  { id: 'security', label: 'Cybersecurity' },
+  { id: 'ai', label: 'AI / LLM' },
+  { id: 'iot', label: 'Embedded & IoT' },
+  { id: 'devops', label: 'Devops / Fullstack' },
+];
+
+const techMarqueeData = [
+  'Python', 'Java', 'TypeScript', 'JavaScript', 'C', 'Assembly', 'Linux', 'ESP32',
+  'Docker', 'Kubernetes', 'Git', 'React', 'Node.js', 'Frida', 'Nmap', 'Wireshark',
+  'Metasploit', 'Burp Suite', 'SQL', 'HTML/CSS', 'Ollama', 'eBPF', 'Xposed'
+];
+
+function App() {
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [typedTitle, setTypedTitle] = useState('');
+  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+  const fullTitle = 'Security Researcher & Developer';
+
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      setTypedTitle(fullTitle.substring(0, index));
+      index++;
+      if (index > fullTitle.length) {
+        clearInterval(interval);
+      }
+    }, 80);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  const filteredProjects = projectsData.filter(
+    (p) => activeFilter === 'all' || p.category === activeFilter
+  );
+
+  return (
+    <div className="relative min-h-screen text-gray-300 font-sans selection:bg-green-500 selection:text-black overflow-x-hidden">
+      {/* Visual Identity Overlays */}
+      <div className="bg-gradient-cyber" aria-hidden="true" />
+      <div className="noise" aria-hidden="true" />
+      <div className="scanlines" aria-hidden="true" />
+      <div
+        id="mouse-glow"
+        style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
+        aria-hidden="true"
+      />
+
+      {/* Dynamic Network Node Background */}
+      <ParticlesBg />
+      <Navbar />
+
+      {/* Hero Section */}
+      <section
+        id="home"
+        className="relative flex flex-col items-center justify-center min-h-screen pt-20 px-4 max-w-5xl mx-auto text-center"
+      >
+        {/* Glowing active node badge */}
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/30 rounded-full font-mono text-[10px] uppercase tracking-wider text-green-500 mb-6">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(0,255,0,0.8)]" />
+          node_status: active
+        </div>
+
+        {/* Glitch H1 */}
+        <h1 className="glitch-title mb-2" data-text="KRI$H">
+          KRI$H
+        </h1>
+
+        <div className="font-mono text-base sm:text-xl text-green-500 min-h-[30px] mb-6">
+          {typedTitle}
+          <span className="animate-ping">_</span>
+        </div>
+
+        <p className="max-w-xl text-sm sm:text-base text-gray-400 leading-relaxed mb-8">
+          I build open-source security tools and firmware targeting ESP32, Android kernels, and system vulnerabilities, alongside automated agentic AI workflows.
+        </p>
+
+        <div className="flex gap-4">
+          <a
+            href="#projects"
+            className="px-6 py-2.5 bg-green-500 text-black font-mono text-xs uppercase tracking-wider rounded font-bold hover:bg-green-400 hover:shadow-[0_0_15px_rgba(0,255,0,0.3)] transition-all duration-300"
+          >
+            View Projects
+          </a>
+          <a
+            href="#contact"
+            className="px-6 py-2.5 border border-green-500/40 text-green-500 font-mono text-xs uppercase tracking-wider rounded hover:bg-green-500/10 transition-all duration-300"
+          >
+            Get In Touch
+          </a>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-12 bg-black/40 border-y border-[#1a1a1a] backdrop-blur-sm px-4">
+        <Stats />
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="py-20 px-4 max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <span className="font-mono text-xs uppercase tracking-widest text-green-500">
+            // index_of_operations
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-mono uppercase text-white mt-1">
+            Featured Projects
+          </h2>
+        </div>
+
+        {/* Filter Bar */}
+        <div className="flex flex-wrap justify-center gap-2 mb-10 max-w-2xl mx-auto">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveFilter(cat.id)}
+              className={`px-3 py-1.5 rounded font-mono text-xs uppercase tracking-wider border transition-all duration-200 ${
+                activeFilter === cat.id
+                  ? 'bg-green-500 border-green-500 text-black font-bold'
+                  : 'bg-transparent border-[#1a1a1a] text-gray-500 hover:text-green-500/80 hover:border-green-500/20'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Projects Frame with Serpents & Embers */}
+        <div className="relative w-full flex items-center justify-center gap-4 md:gap-8">
+          {/* Left Serpent */}
+          <svg className="serpent serpent-left" viewBox="0 0 60 700" fill="none" aria-hidden="true">
+            <path className="body-main" d="M30 10 C55 80,5 160,30 230 C55 300,5 380,30 450 C55 520,5 600,30 680" stroke="#0f0" strokeWidth="2.5" strokeLinecap="round" />
+            <path className="body-inner" d="M30 18 C52 82,8 158,30 225 C52 295,8 375,30 445 C52 515,8 595,30 672" stroke="#0f0" strokeWidth=".8" opacity=".15" />
+            <path d="M30 10 C27 3,34 0,30 -4" stroke="#0f0" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M30 680 C34 688,26 694,32 700" stroke="#0f0" strokeWidth="1.5" strokeLinecap="round" />
+            <g className="scales">
+              <path d="M36 40 C44 32,50 38,54 30 C57 24,52 18,56 12" stroke="#0f0" strokeWidth=".7" fill="none" strokeLinecap="round" />
+              <path d="M44 80 C52 68,54 56,48 50 C46 58,42 68,44 80Z" stroke="#0f0" strokeWidth=".8" fill="rgba(0,255,0,.05)" />
+              <circle cx="48" cy="118" r="3.5" stroke="#0f0" strokeWidth=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <path d="M16 180 C8 168,6 156,12 150 C14 158,18 168,16 180Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)" />
+              <path d="M22 200 C14 192,8 198,4 190 C1 184,6 178,2 172" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round" />
+              <circle cx="12" cy="248" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="7" cy="254" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="17" cy="255" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="12" cy="261" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <path d="M46 310 C54 298,56 286,50 280 C48 288,44 298,46 310Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)" />
+              <path d="M42 348 C50 340,54 346,58 338 C60 332,56 326,58 320" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round" />
+              <path d="M14 400 C6 388,4 376,10 370 C12 378,16 388,14 400Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)" />
+              <circle cx="46" cy="455" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="51" cy="461" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="41" cy="462" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="46" cy="468" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <path d="M20 500 C12 492,6 498,2 490 C0 484,4 478,0 472" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round" />
+              <path d="M44 540 C52 528,54 516,48 510 C46 518,42 528,44 540Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)" />
+              <circle cx="14" cy="578" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="9" cy="584" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="19" cy="585" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="14" cy="591" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <path d="M16 640 C8 628,6 616,12 610 C14 618,18 628,16 640Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)" />
+              <path d="M36 660 C44 652,48 658,52 650 C54 644,50 638,54 632" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round" />
+            </g>
+          </svg>
+
+          {/* Projects Grid Container with internal Embers */}
+          <div className="relative flex-1 max-w-[850px] overflow-hidden">
+            <div className="embers" aria-hidden="true">
+              <div className="ember" style={{ left: '5%', bottom: '15%', width: '3px', height: '3px', background: '#0f0', animationDuration: '5.5s', '--drift': '12px' } as React.CSSProperties}></div>
+              <div className="ember" style={{ left: '92%', bottom: '25%', width: '2px', height: '2px', background: '#ff4400', animationDuration: '6.2s', animationDelay: '1.2s', '--drift': '-18px' } as React.CSSProperties}></div>
+              <div className="ember" style={{ left: '8%', bottom: '40%', width: '2px', height: '2px', background: '#0ff', animationDuration: '4.8s', animationDelay: '2.5s', '--drift': '8px' } as React.CSSProperties}></div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#222]">
+              {filteredProjects.map((p) => (
+                <ProjectCard key={p.name} {...p} />
+              ))}
+            </div>
+          </div>
+
+          {/* Right Serpent */}
+          <svg className="serpent serpent-right" viewBox="0 0 60 700" fill="none" aria-hidden="true">
+            <path className="body-main" d="M30 10 C55 80,5 160,30 230 C55 300,5 380,30 450 C55 520,5 600,30 680" stroke="#0f0" strokeWidth="2.5" strokeLinecap="round" />
+            <path className="body-inner" d="M30 18 C52 82,8 158,30 225 C52 295,8 375,30 445 C52 515,8 595,30 672" stroke="#0f0" strokeWidth=".8" opacity=".15" />
+            <path d="M30 10 C27 3,34 0,30 -4" stroke="#0f0" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M30 680 C34 688,26 694,32 700" stroke="#0f0" strokeWidth="1.5" strokeLinecap="round" />
+            <g className="scales">
+              <path d="M36 40 C44 32,50 38,54 30 C57 24,52 18,56 12" stroke="#0f0" strokeWidth=".7" fill="none" stroke-linecap="round" />
+              <path d="M44 80 C52 68,54 56,48 50 C46 58,42 68,44 80Z" stroke="#0f0" strokeWidth=".8" fill="rgba(0,255,0,.05)" />
+              <circle cx="48" cy="118" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <path d="M16 180 C8 168,6 156,12 150 C14 158,18 168,16 180Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)" />
+              <path d="M22 200 C14 192,8 198,4 190 C1 184,6 178,2 172" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round" />
+              <circle cx="12" cy="248" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="7" cy="254" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="17" cy="255" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="12" cy="261" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <path d="M46 310 C54 298,56 286,50 280 C48 288,44 298,46 310Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)" />
+              <path d="M42 348 C50 340,54 346,58 338 C60 332,56 326,58 320" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round" />
+              <path d="M14 400 C6 388,4 376,10 370 C12 378,16 388,14 400Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)" />
+              <circle cx="46" cy="455" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="51" cy="461" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="41" cy="462" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="46" cy="468" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <path d="M20 500 C12 492,6 498,2 490 C0 484,4 478,0 472" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round" />
+              <path d="M44 540 C52 528,54 516,48 510 C46 518,42 528,44 540Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)" />
+              <circle cx="14" cy="578" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="9" cy="584" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="19" cy="585" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="14" cy="591" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <path d="M16 640 C8 628,6 616,12 610 C14 618,18 628,16 640Z" stroke="#0f0" stroke-width=".8" fill="rgba(0,255,0,.05)" />
+              <path d="M36 660 C44 652,48 658,52 650 C54 644,50 638,54 632" stroke="#0f0" stroke-width=".7" fill="none" stroke-linecap="round" />
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      {/* Tech Marquee Section */}
+      <section id="stack" className="overflow-hidden py-6 border-y border-[#1a1a1a] bg-[#050505] relative select-none">
+        <div className="absolute top-0 bottom-0 left-0 w-24 bg-gradient-to-r from-black to-transparent pointer-events-none z-10" />
+        <div className="absolute top-0 bottom-0 right-0 w-24 bg-gradient-to-l from-black to-transparent pointer-events-none z-10" />
+        <div className="flex gap-4 w-max animate-marquee">
+          {[...techMarqueeData, ...techMarqueeData].map((tech, idx) => (
+            <div
+              key={idx}
+              className="flex items-center gap-2 px-5 py-2.5 border border-[#1a1a1a] bg-black text-gray-400 font-mono text-xs hover:border-green-500 hover:text-green-500 hover:shadow-[0_0_12px_rgba(0,255,0,0.15)] transition-all duration-300 uppercase tracking-widest"
+            >
+              <span className="w-1 h-1 bg-green-500/50 rounded-full" />
+              {tech}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* About & Terminal Section */}
+      <section id="about" className="py-20 px-4 bg-black/40 border-b border-[#1a1a1a] backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="font-mono text-xs uppercase tracking-widest text-green-500">
+              // identity_verification
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-mono uppercase text-white mt-1">
+              Terminal Profile
+            </h2>
+          </div>
+
+          <Terminal />
+        </div>
+      </section>
+
+      {/* Timeline Section */}
+      <section id="timeline" className="py-20 px-4 max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <span className="font-mono text-xs uppercase tracking-widest text-green-500">
+            // chronological_log
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-mono uppercase text-white mt-1">
+            Research Timeline
+          </h2>
+        </div>
+
+        <Timeline />
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 px-4 bg-[#050505] border-t border-[#1a1a1a]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="font-mono text-xs uppercase tracking-widest text-green-500">
+              // communication_link
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-mono uppercase text-white mt-1">
+              Establish Connection
+            </h2>
+            <p className="text-sm text-gray-500 mt-2 max-w-md mx-auto">
+              If you have projects requiring reverse engineering, hardware security research, or agentic automation, reach out.
+            </p>
+          </div>
+
+          <Contact />
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 border-t border-[#1a1a1a] text-center font-mono text-xs text-gray-600 bg-black">
+        <p>
+          Built with <span className="text-green-500/80">♥</span> by KRI$H &middot; {new Date().getFullYear()} &middot; Deployed on GitHub Pages
+        </p>
+      </footer>
+    </div>
+  );
+}
+
+export default App;

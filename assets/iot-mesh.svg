@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+<defs>
+  <radialGradient id="ibg" cx="50%" cy="50%" r="75%">
+    <stop offset="0%" stop-color="#0d0d0d"/><stop offset="100%" stop-color="#030303"/>
+  </radialGradient>
+  <radialGradient id="iglow" cx="50%" cy="50%" r="60%">
+    <stop offset="0%" stop-color="#00E676" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="#00E676" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="isf"><feGaussianBlur stdDeviation="2"/></filter>
+</defs>
+<rect width="800" height="600" fill="url(#ibg)"/>
+<rect width="800" height="600" fill="url(#iglow)"/>
+<!-- Background grid -->
+<g stroke="#00E676" stroke-opacity="0.04" stroke-width="0.5">
+  <line x1="0" y1="0" x2="0" y2="600"/>
+  <line x1="30" y1="0" x2="30" y2="600"/>
+  <line x1="60" y1="0" x2="60" y2="600"/>
+  <line x1="90" y1="0" x2="90" y2="600"/>
+  <line x1="120" y1="0" x2="120" y2="600"/>
+  <line x1="150" y1="0" x2="150" y2="600"/>
+  <line x1="180" y1="0" x2="180" y2="600"/>
+  <line x1="210" y1="0" x2="210" y2="600"/>
+  <line x1="240" y1="0" x2="240" y2="600"/>
+  <line x1="270" y1="0" x2="270" y2="600"/>
+  <line x1="300" y1="0" x2="300" y2="600"/>
+  <line x1="330" y1="0" x2="330" y2="600"/>
+  <line x1="360" y1="0" x2="360" y2="600"/>
+  <line x1="390" y1="0" x2="390" y2="600"/>
+  <line x1="420" y1="0" x2="420" y2="600"/>
+  <line x1="450" y1="0" x2="450" y2="600"/>
+  <line x1="480" y1="0" x2="480" y2="600"/>
+  <line x1="510" y1="0" x2="510" y2="600"/>
+  <line x1="540" y1="0" x2="540" y2="600"/>
+  <line x1="570" y1="0" x2="570" y2="600"/>
+  <line x1="600" y1="0" x2="600" y2="600"/>
+  <line x1="630" y1="0" x2="630" y2="600"/>
+  <line x1="660" y1="0" x2="660" y2="600"/>
+  <line x1="690" y1="0" x2="690" y2="600"/>
+  <line x1="720" y1="0" x2="720" y2="600"/>
+  <line x1="750" y1="0" x2="750" y2="600"/>
+  <line x1="780" y1="0" x2="780" y2="600"/>
+  <line x1="0" y1="0" x2="800" y2="0"/>
+  <line x1="0" y1="30" x2="800" y2="30"/>
+  <line x1="0" y1="60" x2="800" y2="60"/>
+  <line x1="0" y1="90" x2="800" y2="90"/>
+  <line x1="0" y1="120" x2="800" y2="120"/>
+  <line x1="0" y1="150" x2="800" y2="150"/>
+  <line x1="0" y1="180" x2="800" y2="180"/>
+  <line x1="0" y1="210" x2="800" y2="210"/>
+  <line x1="0" y1="240" x2="800" y2="240"/>
+  <line x1="0" y1="270" x2="800" y2="270"/>
+  <line x1="0" y1="300" x2="800" y2="300"/>
+  <line x1="0" y1="330" x2="800" y2="330"/>
+  <line x1="0" y1="360" x2="800" y2="360"/>
+  <line x1="0" y1="390" x2="800" y2="390"/>
+  <line x1="0" y1="420" x2="800" y2="420"/>
+  <line x1="0" y1="450" x2="800" y2="450"/>
+  <line x1="0" y1="480" x2="800" y2="480"/>
+  <line x1="0" y1="510" x2="800" y2="510"/>
+  <line x1="0" y1="540" x2="800" y2="540"/>
+  <line x1="0" y1="570" x2="800" y2="570"/>
+  <line x1="0" y1="600" x2="800" y2="600"/>
+</g>
+<!-- Wireless signal arcs -->
+<g fill="none" stroke="#00E676" stroke-opacity="0.08" stroke-width="1.5">
+  <circle cx="150" cy="150" r="40"/>
+  <circle cx="150" cy="150" r="70"/>
+  <circle cx="150" cy="150" r="100"/>
+  <circle cx="650" cy="150" r="40"/>
+  <circle cx="650" cy="150" r="70"/>
+  <circle cx="650" cy="150" r="100"/>
+  <circle cx="400" cy="450" r="40"/>
+  <circle cx="400" cy="450" r="70"/>
+  <circle cx="400" cy="450" r="100"/>
+  <circle cx="250" cy="350" r="40"/>
+  <circle cx="250" cy="350" r="70"/>
+  <circle cx="250" cy="350" r="100"/>
+  <circle cx="550" cy="350" r="40"/>
+  <circle cx="550" cy="350" r="70"/>
+  <circle cx="550" cy="350" r="100"/>
+</g>
+<!-- IoT Nodes -->
+<g font-family="monospace" font-size="9">
+  <line x1="120" y1="120" x2="550" y2="350" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="680" y1="120" x2="550" y2="350" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="400" y1="480" x2="120" y2="120" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="400" y1="480" x2="680" y2="120" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="400" y1="480" x2="250" y2="350" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="400" y1="480" x2="120" y2="400" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="400" y1="480" x2="680" y2="400" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="250" y1="350" x2="400" y2="480" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="550" y1="350" x2="400" y2="480" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="120" y1="400" x2="400" y2="480" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="680" y1="400" x2="400" y2="480" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="250" y1="350" x2="400" y2="300" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="550" y1="350" x2="400" y2="300" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="400" y1="300" x2="400" y2="480" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="300" y1="150" x2="400" y2="300" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="500" y1="150" x2="400" y2="300" stroke="#00E676" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="90" y="100" width="60" height="40" rx="4" fill="#0a1a0a" stroke="#00E676" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="100" cy="110" r="3" fill="#00E676" fill-opacity="0.7"/>
+  <line x1="120" y1="100" x2="120" y2="88" stroke="#00E676" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="120" cy="86" r="2" fill="none" stroke="#00E676" stroke-opacity="0.3" stroke-width="0.8"/>
+  <text x="120" y="123" text-anchor="middle" fill="#00E676" fill-opacity="0.6" font-size="10" font-weight="bold">ESP32</text>
+  <text x="120" y="152" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-size="7">SENSOR_TEMP</text>
+  <rect x="650" y="100" width="60" height="40" rx="4" fill="#0a1a0a" stroke="#00E676" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="660" cy="110" r="3" fill="#00E676" fill-opacity="0.7"/>
+  <line x1="680" y1="100" x2="680" y2="88" stroke="#00E676" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="680" cy="86" r="2" fill="none" stroke="#00E676" stroke-opacity="0.3" stroke-width="0.8"/>
+  <text x="680" y="123" text-anchor="middle" fill="#00E676" fill-opacity="0.6" font-size="10" font-weight="bold">ESP32</text>
+  <text x="680" y="152" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-size="7">SENSOR_HUM</text>
+  <rect x="370" y="460" width="60" height="40" rx="4" fill="#0a1a0a" stroke="#00E676" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="380" cy="470" r="3" fill="#00E676" fill-opacity="0.7"/>
+  <line x1="400" y1="460" x2="400" y2="448" stroke="#00E676" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="400" cy="446" r="2" fill="none" stroke="#00E676" stroke-opacity="0.3" stroke-width="0.8"/>
+  <text x="400" y="483" text-anchor="middle" fill="#00E676" fill-opacity="0.6" font-size="10" font-weight="bold">GATEWAY</text>
+  <text x="400" y="512" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-size="7">MQTT_BROKER</text>
+  <rect x="220" y="330" width="60" height="40" rx="4" fill="#0a1a0a" stroke="#00E676" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="230" cy="340" r="3" fill="#00E676" fill-opacity="0.7"/>
+  <line x1="250" y1="330" x2="250" y2="318" stroke="#00E676" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="250" cy="316" r="2" fill="none" stroke="#00E676" stroke-opacity="0.3" stroke-width="0.8"/>
+  <text x="250" y="353" text-anchor="middle" fill="#00E676" fill-opacity="0.6" font-size="10" font-weight="bold">RPi4</text>
+  <text x="250" y="382" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-size="7">CAM_MODULE</text>
+  <rect x="520" y="330" width="60" height="40" rx="4" fill="#0a1a0a" stroke="#00E676" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="530" cy="340" r="3" fill="#00E676" fill-opacity="0.7"/>
+  <line x1="550" y1="330" x2="550" y2="318" stroke="#00E676" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="550" cy="316" r="2" fill="none" stroke="#00E676" stroke-opacity="0.3" stroke-width="0.8"/>
+  <text x="550" y="353" text-anchor="middle" fill="#00E676" fill-opacity="0.6" font-size="10" font-weight="bold">RPi4</text>
+  <text x="550" y="382" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-size="7">ACTUATOR</text>
+  <rect x="90" y="380" width="60" height="40" rx="4" fill="#0a1a0a" stroke="#00E676" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="100" cy="390" r="3" fill="#00E676" fill-opacity="0.7"/>
+  <line x1="120" y1="380" x2="120" y2="368" stroke="#00E676" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="120" cy="366" r="2" fill="none" stroke="#00E676" stroke-opacity="0.3" stroke-width="0.8"/>
+  <text x="120" y="403" text-anchor="middle" fill="#00E676" fill-opacity="0.6" font-size="10" font-weight="bold">ESP8266</text>
+  <text x="120" y="432" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-size="7">LIGHT_SENSOR</text>
+  <rect x="650" y="380" width="60" height="40" rx="4" fill="#0a1a0a" stroke="#00E676" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="660" cy="390" r="3" fill="#00E676" fill-opacity="0.7"/>
+  <line x1="680" y1="380" x2="680" y2="368" stroke="#00E676" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="680" cy="366" r="2" fill="none" stroke="#00E676" stroke-opacity="0.3" stroke-width="0.8"/>
+  <text x="680" y="403" text-anchor="middle" fill="#00E676" fill-opacity="0.6" font-size="10" font-weight="bold">ESP8266</text>
+  <text x="680" y="432" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-size="7">MOTION_DET</text>
+  <rect x="270" y="130" width="60" height="40" rx="4" fill="#0a1a0a" stroke="#00E676" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="280" cy="140" r="3" fill="#00E676" fill-opacity="0.7"/>
+  <line x1="300" y1="130" x2="300" y2="118" stroke="#00E676" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="300" cy="116" r="2" fill="none" stroke="#00E676" stroke-opacity="0.3" stroke-width="0.8"/>
+  <text x="300" y="153" text-anchor="middle" fill="#00E676" fill-opacity="0.6" font-size="10" font-weight="bold">Arduino</text>
+  <text x="300" y="182" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-size="7">SOIL_SENSOR</text>
+  <rect x="470" y="130" width="60" height="40" rx="4" fill="#0a1a0a" stroke="#00E676" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="480" cy="140" r="3" fill="#00E676" fill-opacity="0.7"/>
+  <line x1="500" y1="130" x2="500" y2="118" stroke="#00E676" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="500" cy="116" r="2" fill="none" stroke="#00E676" stroke-opacity="0.3" stroke-width="0.8"/>
+  <text x="500" y="153" text-anchor="middle" fill="#00E676" fill-opacity="0.6" font-size="10" font-weight="bold">Arduino</text>
+  <text x="500" y="182" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-size="7">WATER_LEVEL</text>
+  <rect x="370" y="280" width="60" height="40" rx="4" fill="#0a1a0a" stroke="#00E676" stroke-opacity="0.4" stroke-width="1.5"/>
+  <circle cx="380" cy="290" r="3" fill="#00E676" fill-opacity="0.7"/>
+  <line x1="400" y1="280" x2="400" y2="268" stroke="#00E676" stroke-opacity="0.3" stroke-width="1"/>
+  <circle cx="400" cy="266" r="2" fill="none" stroke="#00E676" stroke-opacity="0.3" stroke-width="0.8"/>
+  <text x="400" y="303" text-anchor="middle" fill="#00E676" fill-opacity="0.6" font-size="10" font-weight="bold">SBC</text>
+  <text x="400" y="332" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-size="7">EDGE_NODE</text>
+</g>
+<!-- Cloud at top -->
+<g transform="translate(400,60)" fill="none" stroke="#00E676" stroke-opacity="0.2" stroke-width="1.2">
+  <path d="M-60,-10 Q-80,-35 -50,-45 Q-30,-70 0,-60 Q30,-75 50,-55 Q75,-60 80,-35 Q95,-25 85,-5 Z"/>
+  <text x="0" y="15" text-anchor="middle" fill="#00E676" fill-opacity="0.25" font-family="monospace" font-size="11">CLOUD / AWS IOT CORE</text>
+</g>
+<!-- Cloud connections -->
+<g stroke="#00E676" stroke-opacity="0.08" stroke-width="0.8" stroke-dasharray="3,4">
+  <line x1="400" y1="60" x2="120" y2="120"/>
+  <line x1="400" y1="60" x2="680" y2="120"/>
+  <line x1="400" y1="60" x2="400" y2="480"/>
+</g>
+<text x="400" y="565" text-anchor="middle" fill="#00E676" fill-opacity="0.3" font-family="monospace" font-size="11">IOT MESH // MQTT // ESP32 // SENSOR NETWORK</text>
+<text x="400" y="30" text-anchor="middle" fill="#00E676" fill-opacity="0.4" font-family="monospace" font-size="14" font-weight="bold">IOT-MESH // DEVICE FLEET</text>
+</svg>

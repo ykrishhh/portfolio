@@ -20,8 +20,8 @@ const contactMethods: ContactMethod[] = [
   },
   {
     name: 'Twitter / X',
-    value: '@harry6ez',
-    url: 'https://twitter.com/harry6ez',
+    value: '@ykrishhh',
+    url: 'https://x.com/ykrishhh',
     icon: (
       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -30,8 +30,8 @@ const contactMethods: ContactMethod[] = [
   },
   {
     name: 'Telegram',
-    value: '@harry6e',
-    url: 'https://t.me/harry6e',
+    value: '@Mcpaitgbot',
+    url: 'https://t.me/Mcpaitgbot',
     icon: (
       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.74 7.59-3.27 3.61-1.5 4.36-1.76 4.85-1.77.11 0 .35.03.5.15.13.12.17.29.18.41.01.08.02.26.01.34z" />

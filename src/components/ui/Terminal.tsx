@@ -65,8 +65,8 @@ export function Terminal() {
         newHistory.push(
           { type: 'output', text: 'Direct lines:' },
           { type: 'output', text: '  - Email: krishy2122@gmail.com' },
-          { type: 'output', text: '  - Twitter/X: @harry6ez' },
-          { type: 'output', text: '  - Telegram: @harry6e' }
+          { type: 'output', text: '  - Twitter/X: @ykrishhh' },
+          { type: 'output', text: '  - Telegram: @Mcpaitgbot' }
         );
         break;
       case 'clear':

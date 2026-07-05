@@ -499,7 +499,7 @@ function AppContent() {
               </svg>
             </a>
             <a
-              href="https://twitter.com/harry6ez"
+              href="https://x.com/ykrishhh"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-green-500 transition-colors"

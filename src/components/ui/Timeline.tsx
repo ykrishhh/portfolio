@@ -44,12 +44,17 @@ export function Timeline() {
       <div className="absolute top-0 bottom-0 left-[-1px] w-[1px] bg-gradient-to-b from-green-500/80 via-green-500/20 to-transparent shadow-[0_0_8px_rgba(0,255,0,0.5)]" />
 
       {timelineData.map((item, index) => (
-        <div key={index} className="relative group">
-          {/* Node dot */}
-          <div className="absolute left-[-29px] md:left-[-37px] top-1.5 w-3 h-3 rounded-full border border-green-500 bg-black group-hover:bg-green-500 transition-colors duration-300 shadow-[0_0_8px_rgba(0,255,0,0.3)] group-hover:shadow-[0_0_12px_rgba(0,255,0,0.8)]" />
+        <div key={index} className="relative group transition-all duration-300 hover:translate-x-1">
+          {/* Node dot with pulse ring */}
+          <div className="absolute left-[-29px] md:left-[-37px] top-1.5">
+            {/* Pulse ring */}
+            <div className="absolute inset-[-4px] rounded-full border border-green-500/30 opacity-0 group-hover:opacity-100 group-hover:animate-ping transition-opacity" />
+            {/* Core dot */}
+            <div className="relative w-3 h-3 rounded-full border border-green-500 bg-black group-hover:bg-green-500 transition-colors duration-300 shadow-[0_0_8px_rgba(0,255,0,0.3)] group-hover:shadow-[0_0_12px_rgba(0,255,0,0.8)]" />
+          </div>
 
           <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4">
-            <span className="font-mono text-sm font-bold text-green-500 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded w-max">
+            <span className="font-mono text-sm font-bold text-green-500 bg-green-500/10 border border-green-500/20 pl-3 pr-2 py-0.5 rounded w-max border-l-[3px] border-l-green-500">
               {item.date}
             </span>
             <h4 className="text-base font-bold text-gray-200 group-hover:text-green-400 transition-colors">

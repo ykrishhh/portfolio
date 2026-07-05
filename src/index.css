@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,7 +18,7 @@
     --tb: #ccc;
     --pk: #ff0080;
     --cy: #00ffff;
-    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --mono: 'Geist Mono', 'JetBrains Mono', 'Courier New', monospace;
     --sans: 'Inter', -apple-system, sans-serif;
     --ease: cubic-bezier(.4, 0, .2, 1);
     --ease-bounce: cubic-bezier(.34, 1.56, .64, 1);
@@ -59,7 +61,7 @@
   }
 }
 
-/* Glitch Title */
+/* Glitch Title — enhanced */
 .glitch-title {
   font-family: var(--mono);
   font-size: clamp(2.5rem, 7vw, 5rem);
@@ -247,6 +249,125 @@
   }
 }
 
+/* ===== Premium Additions ===== */
+
+/* Section divider gradient line */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.25), transparent);
+}
+
+/* Terminal window decorative frame */
+.terminal-frame {
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  overflow: hidden;
+  font-family: var(--mono);
+}
+.terminal-frame .title-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--bd);
+  background: rgba(0, 0, 0, 0.2);
+}
+.terminal-frame .title-bar .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.terminal-frame .title-bar .dot-red { background: rgba(255, 59, 48, 0.4); border-color: rgba(255, 59, 48, 0.5); }
+.terminal-frame .title-bar .dot-yellow { background: rgba(255, 204, 0, 0.4); border-color: rgba(255, 204, 0, 0.5); }
+.terminal-frame .title-bar .dot-green { background: rgba(48, 209, 88, 0.4); border-color: rgba(48, 209, 88, 0.5); }
+.terminal-frame .title-bar .label {
+  font-size: 10px;
+  color: var(--td);
+  margin-left: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(7, 7, 7, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--bd);
+}
+
+/* Double-bezel card: two layers of border */
+.double-bezel {
+  border: 1px solid var(--bd);
+  position: relative;
+  background: rgba(0, 0, 0, 0.4);
+}
+.double-bezel::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(0, 255, 0, 0.06);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--g), var(--cy));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Button in button (layered CTA) */
+.btn-layer {
+  position: relative;
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  transition: all 0.3s var(--ease);
+}
+.btn-layer::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(0, 255, 0, 0.08);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: border-color 0.3s var(--ease);
+}
+.btn-layer:hover::before {
+  border-color: rgba(0, 255, 0, 0.2);
+}
+
+/* Green left accent border */
+.accent-left {
+  border-left: 2px solid rgba(0, 255, 0, 0.3);
+  padding-left: 16px;
+}
+
+/* Scrollbar for terminal-like containers */
+.terminal-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.terminal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: var(--bl);
+  border-radius: 2px;
+}
+
+/* Link hover with arrow animation */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap 0.3s var(--ease);
+}
+.link-arrow:hover {
+  gap: 8px;
+}
+
 /* Light theme overrides */
 [data-theme="light"] .glitch-title {
   color: #111;
@@ -300,4 +421,24 @@
 [data-theme="light"] [class*="placeholder-gray-"]::placeholder {
   color: #aaa !important;
 }
-
+[data-theme="light"] .glass-card {
+  background: rgba(237, 232, 226, 0.8) !important;
+  border-color: var(--bd) !important;
+}
+[data-theme="light"] .section-divider {
+  background: linear-gradient(90deg, transparent, rgba(0, 176, 48, 0.3), transparent);
+}
+[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #00b030, #00b0b0);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+[data-theme="light"] .accent-left {
+  border-left-color: rgba(0, 176, 48, 0.4);
+}
+[data-theme="light"] .double-bezel::before {
+  border-color: rgba(0, 176, 48, 0.08);
+}
+[data-theme="light"] .terminal-frame {
+  background: rgba(237, 232, 226, 0.3);
+}

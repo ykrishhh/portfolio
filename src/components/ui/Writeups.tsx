@@ -39,7 +39,7 @@ export function Writeups() {
         <span className="font-mono text-xs uppercase tracking-widest text-green-500">
           // research_writeups
         </span>
-        <h2 className="text-2xl sm:text-3xl font-mono uppercase text-white mt-1">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-mono uppercase text-white mt-1">
           Research & Writeups
         </h2>
         <p className="text-sm text-gray-500 mt-2 max-w-lg mx-auto">
@@ -53,7 +53,7 @@ export function Writeups() {
             href={w.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-lg border border-[#1a1a1a] bg-[#070707] hover:border-green-500/30 hover:bg-green-950/5 transition-all duration-300"
+            className="group flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-lg border border-[#1a1a1a] border-l-[3px] border-l-green-500/30 bg-[#070707] hover:border-green-500/30 hover:bg-green-950/5 hover:shadow-glow-green-sm transition-all duration-300"
           >
             <div className="flex-1 min-w-0">
               <h3 className="font-mono text-sm font-bold text-green-500 group-hover:text-green-400 transition-colors">
@@ -73,7 +73,7 @@ export function Writeups() {
                 ))}
               </div>
             </div>
-            <span className="mt-3 sm:mt-0 sm:ml-4 font-mono text-xs text-gray-600 group-hover:text-green-500 transition-colors">
+            <span className="link-arrow mt-3 sm:mt-0 sm:ml-4 font-mono text-xs text-gray-600 group-hover:text-green-500 transition-colors">
               Read more →
             </span>
           </a>

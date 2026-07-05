@@ -40,35 +40,42 @@ export function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 h-16 border-b transition-all duration-300 ${
         scrolled
-          ? 'bg-black/85 backdrop-blur-md border-[#1a1a1a]'
-          : 'bg-transparent border-transparent'
+          ? 'bg-black/80 backdrop-blur-xl border-[#1a1a1a] shadow-[0_0_30px_rgba(0,0,0,0.5)]'
+          : 'bg-black/70 backdrop-blur-lg border-[#1a1a1a]/60'
       }`}
     >
-      <div className="max-w-6xl mx-auto h-full flex items-center justify-between px-4 sm:px-6">
+      {/* Subtle green glow aura on the right */}
+      <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-green-500/5 to-transparent pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto h-full flex items-center justify-between px-4 sm:px-6 relative z-10">
         {/* Logo */}
         <a
           href="#home"
-          className="font-mono text-sm font-bold text-green-500 tracking-wider hover:text-green-400 transition-colors uppercase"
+          className="font-mono text-sm font-bold text-green-500 tracking-wider hover:text-green-400 hover:drop-shadow-[0_0_10px_rgba(0,255,0,0.5)] transition-all duration-300 uppercase"
         >
           KRI$H //
         </a>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-3">
-          <ul className="flex gap-6 list-none p-0 m-0">
+          <ul className="flex gap-6 list-none p-0 m-0 relative">
             {navLinks.map((link) => {
               const id = link.href.substring(1);
               return (
-                <li key={link.href}>
+                <li key={link.href} className="relative">
                   <a
                     href={link.href}
-                    className={`font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
+                    className={`font-mono text-xs uppercase tracking-wider transition-colors duration-200 relative py-4 ${
                       activeSection === id
                         ? 'text-green-500 font-semibold'
                         : 'text-gray-500 hover:text-green-500/80'
                     }`}
                   >
                     {link.label}
+                    {/* Active underline indicator */}
+                    {activeSection === id && (
+                      <span className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-green-500 rounded-full shadow-[0_0_8px_rgba(0,255,0,0.5)]" />
+                    )}
                   </a>
                 </li>
               );
@@ -93,12 +100,12 @@ export function Navbar() {
             )}
           </button>
 
-          {/* Resume */}
+          {/* Resume button - button-in-button */}
           <a
             href="/resume.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-3 py-1.5 border border-green-500/50 hover:bg-green-500 hover:text-black font-mono text-xs text-green-500 uppercase tracking-widest rounded transition-all duration-300"
+            className="btn-layer relative px-3 py-1.5 font-mono text-xs text-green-500 uppercase tracking-widest rounded transition-all duration-300 hover:bg-green-500/10 hover:shadow-glow-green-sm"
           >
             Resume
           </a>
@@ -130,10 +137,13 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed inset-0 z-40 bg-black/98 backdrop-blur-lg flex flex-col items-center justify-center gap-6 transition-all duration-300 ${
+        className={`fixed inset-0 z-40 bg-black/98 backdrop-blur-xl flex flex-col items-center justify-center gap-6 transition-all duration-300 ${
           mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
       >
+        {/* Green gradient border accent */}
+        <div className="absolute inset-x-8 top-20 h-[1px] bg-gradient-to-r from-transparent via-green-500/30 to-transparent" />
+
         <ul className="flex flex-col gap-6 items-center list-none p-0 m-0">
           {navLinks.map((link) => {
             const id = link.href.substring(1);
@@ -170,6 +180,8 @@ export function Navbar() {
             Resume
           </a>
         </div>
+
+        <div className="absolute inset-x-8 bottom-20 h-[1px] bg-gradient-to-r from-transparent via-green-500/30 to-transparent" />
       </div>
     </nav>
   );

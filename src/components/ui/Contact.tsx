@@ -72,9 +72,10 @@ export function Contact() {
             href={method.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-3.5 p-4 rounded-lg border border-[#1a1a1a] bg-[#070707] hover:border-green-500/40 hover:bg-green-950/5 transition-all duration-300"
+            className="group flex items-center gap-3.5 p-4 rounded-lg border border-[#1a1a1a] border-l-[3px] border-l-green-500/30 bg-[#070707] hover:border-green-500/40 hover:bg-green-950/5 transition-all duration-300"
           >
-            <div className="text-green-500 group-hover:text-green-400 group-hover:scale-110 transition-all duration-300">
+            {/* Circular icon container */}
+            <div className="w-10 h-10 rounded-full border border-green-500/20 bg-green-500/10 flex items-center justify-center text-green-500 group-hover:bg-green-500/20 group-hover:border-green-500/40 group-hover:scale-110 transition-all duration-300">
               {method.icon}
             </div>
             <div className="flex flex-col min-w-0">
@@ -98,11 +99,17 @@ export function Contact() {
               placeholder="Your Name"
               value={form.name}
               onChange={(e) => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: '' }); }}
-              className={`w-full px-4 py-2.5 rounded bg-black border font-mono text-sm text-gray-300 placeholder-gray-700 focus:outline-none transition-colors ${
-                errors.name ? 'border-red-500' : 'border-[#1a1a1a] focus:border-green-500/50'
+              className={`w-full px-4 py-2.5 rounded bg-black border font-mono text-sm text-gray-300 placeholder-gray-700 focus:outline-none transition-all duration-200 ${
+                errors.name
+                  ? 'border-red-500 ring-1 ring-red-500/30'
+                  : 'border-[#1a1a1a] focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30'
               }`}
             />
-            {errors.name && <p className="mt-1 text-xs text-red-500 font-mono">{errors.name}</p>}
+            {errors.name && (
+              <div className="mt-1 border-l-[3px] border-l-red-500 pl-3">
+                <p className="text-xs text-red-500 font-mono">{errors.name}</p>
+              </div>
+            )}
           </div>
           <div>
             <input
@@ -110,11 +117,17 @@ export function Contact() {
               placeholder="Your Email"
               value={form.email}
               onChange={(e) => { setForm({ ...form, email: e.target.value }); setErrors({ ...errors, email: '' }); }}
-              className={`w-full px-4 py-2.5 rounded bg-black border font-mono text-sm text-gray-300 placeholder-gray-700 focus:outline-none transition-colors ${
-                errors.email ? 'border-red-500' : 'border-[#1a1a1a] focus:border-green-500/50'
+              className={`w-full px-4 py-2.5 rounded bg-black border font-mono text-sm text-gray-300 placeholder-gray-700 focus:outline-none transition-all duration-200 ${
+                errors.email
+                  ? 'border-red-500 ring-1 ring-red-500/30'
+                  : 'border-[#1a1a1a] focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30'
               }`}
             />
-            {errors.email && <p className="mt-1 text-xs text-red-500 font-mono">{errors.email}</p>}
+            {errors.email && (
+              <div className="mt-1 border-l-[3px] border-l-red-500 pl-3">
+                <p className="text-xs text-red-500 font-mono">{errors.email}</p>
+              </div>
+            )}
           </div>
         </div>
         <div>
@@ -123,16 +136,22 @@ export function Contact() {
             rows={4}
             value={form.message}
             onChange={(e) => { setForm({ ...form, message: e.target.value }); setErrors({ ...errors, message: '' }); }}
-            className={`w-full px-4 py-2.5 rounded bg-black border font-mono text-sm text-gray-300 placeholder-gray-700 focus:outline-none transition-colors resize-none ${
-              errors.message ? 'border-red-500' : 'border-[#1a1a1a] focus:border-green-500/50'
+            className={`w-full px-4 py-2.5 rounded bg-black border font-mono text-sm text-gray-300 placeholder-gray-700 focus:outline-none transition-all duration-200 resize-none ${
+              errors.message
+                ? 'border-red-500 ring-1 ring-red-500/30'
+                : 'border-[#1a1a1a] focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30'
             }`}
           />
-          {errors.message && <p className="mt-1 text-xs text-red-500 font-mono">{errors.message}</p>}
+          {errors.message && (
+            <div className="mt-1 border-l-[3px] border-l-red-500 pl-3">
+              <p className="text-xs text-red-500 font-mono">{errors.message}</p>
+            </div>
+          )}
         </div>
         <div className="flex justify-end">
           <button
             type="submit"
-            className="px-6 py-2.5 bg-green-500 text-black font-mono text-xs uppercase tracking-wider rounded font-bold hover:bg-green-400 hover:shadow-[0_0_15px_rgba(0,255,0,0.3)] transition-all duration-300"
+            className="btn-layer relative px-6 py-2.5 font-mono text-xs uppercase tracking-wider rounded font-bold text-green-500 hover:bg-green-500/10 transition-all duration-300"
           >
             Send Message
           </button>

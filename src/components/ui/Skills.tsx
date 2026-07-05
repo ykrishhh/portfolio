@@ -16,6 +16,7 @@ const skillData: Skill[] = [
 
 function SkillBar({ skill }: { skill: Skill }) {
   const [width, setWidth] = useState(0);
+  const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,7 +25,22 @@ function SkillBar({ skill }: { skill: Skill }) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => setWidth(skill.level), 150);
+          setTimeout(() => {
+            setWidth(skill.level);
+            // Animate percentage count
+            const steps = 30;
+            const increment = skill.level / steps;
+            let current = 0;
+            const timer = setInterval(() => {
+              current += increment;
+              if (current >= skill.level) {
+                setCount(skill.level);
+                clearInterval(timer);
+              } else {
+                setCount(Math.floor(current));
+              }
+            }, 40);
+          }, 150);
           observer.disconnect();
         }
       },
@@ -38,11 +54,11 @@ function SkillBar({ skill }: { skill: Skill }) {
     <div ref={ref} className="space-y-1.5">
       <div className="flex justify-between font-mono text-xs">
         <span className="text-gray-300">{skill.name}</span>
-        <span className="text-green-500">{skill.level}%</span>
+        <span className="text-green-500">{count}%</span>
       </div>
       <div className="h-2 rounded-full bg-[#1a1a1a] overflow-hidden">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-green-500 to-cyan-400 transition-all duration-1000 ease-out"
+          className="h-full rounded-full bg-gradient-to-r from-green-500 to-cyan-400 transition-all duration-1000 ease-out shadow-[0_0_6px_rgba(0,255,0,0.3)]"
           style={{ width: `${width}%` }}
         />
       </div>
@@ -58,7 +74,7 @@ export function Skills() {
           <span className="font-mono text-xs uppercase tracking-widest text-green-500">
             // capability_matrix
           </span>
-          <h2 className="text-2xl sm:text-3xl font-mono uppercase text-white mt-1">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-mono uppercase text-white mt-1">
             Skills & Proficiency
           </h2>
         </div>

@@ -95,46 +95,54 @@ export function Terminal() {
       {/* Top bar */}
       <div className="flex items-center justify-between px-4 py-3 bg-[#0d0d0d] border-b border-[#1a1a1a]">
         <div className="flex gap-2">
-          <div className="w-3 height w-3 h-3 rounded-full bg-red-500/30 border border-red-500/50" />
-          <div className="w-3 height w-3 h-3 rounded-full bg-yellow-500/30 border border-yellow-500/50" />
-          <div className="w-3 height w-3 h-3 rounded-full bg-green-500/30 border border-green-500/50" />
+          <div className="w-3 h-3 rounded-full bg-red-500/50 border border-red-500/60" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500/50 border border-yellow-500/60" />
+          <div className="w-3 h-3 rounded-full bg-green-500/50 border border-green-500/60" />
         </div>
         <span className="font-mono text-xs text-gray-500">KRI$H — ~/research</span>
         <div className="w-10" />
       </div>
 
-      {/* Terminal Screen */}
-      <div className="p-5 h-72 overflow-y-auto font-mono text-sm space-y-2 text-gray-300">
-        {history.map((line, idx) => (
-          <div key={idx} className="whitespace-pre-wrap leading-relaxed">
-            {line.type === 'input' && (
-              <span className="text-green-400">
-                <span className="text-gray-500 mr-2">$</span>
-                {line.text}
-              </span>
-            )}
-            {line.type === 'output' && <span className="text-gray-300">{line.text}</span>}
-            {line.type === 'error' && <span className="text-red-400">{line.text}</span>}
-          </div>
-        ))}
-        <div ref={bottomRef} />
+      {/* Terminal Screen with internal scan lines */}
+      <div className="relative">
+        {/* Internal scan line overlay */}
+        <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,255,0,0.008)_2px,rgba(0,255,0,0.008)_4px)] pointer-events-none z-10 animate-terminal-scan" />
+
+        <div className="p-5 h-72 overflow-y-auto font-mono text-sm space-y-2 text-gray-300 terminal-scroll relative z-0">
+          {history.map((line, idx) => (
+            <div key={idx} className="whitespace-pre-wrap leading-relaxed">
+              {line.type === 'input' && (
+                <span className="text-green-400">
+                  <span className="text-gray-500 mr-2">$</span>
+                  {line.text}
+                </span>
+              )}
+              {line.type === 'output' && <span className="text-gray-300">{line.text}</span>}
+              {line.type === 'error' && <span className="text-red-400">{line.text}</span>}
+            </div>
+          ))}
+          <div ref={bottomRef} />
+        </div>
       </div>
 
       {/* Input row */}
       <div className="flex items-center px-5 py-3 border-t border-[#1a1a1a] bg-[#070707] font-mono text-sm">
         <span className="text-green-500 mr-2">$</span>
-        <input
-          type="text"
-          className="flex-1 bg-transparent text-green-400 focus:outline-none placeholder-green-950"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="type a command..."
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck="false"
-        />
+        <div className="flex-1 flex items-center">
+          <input
+            type="text"
+            className="flex-1 bg-transparent text-green-400 focus:outline-none placeholder-green-950"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="type a command..."
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck="false"
+          />
+          <span className="w-[2px] h-4 bg-green-500 animate-caret-blink" />
+        </div>
       </div>
 
       {/* Quick click options */}
@@ -144,7 +152,7 @@ export function Terminal() {
           <button
             key={cmd}
             onClick={() => executeCommand(cmd)}
-            className="px-2 py-1 rounded border border-green-950 bg-green-950/10 text-green-500 hover:bg-green-500 hover:text-black transition-colors"
+            className="px-2 py-1 rounded border border-green-950 bg-green-950/10 text-green-500 hover:bg-green-500 hover:text-black hover:shadow-glow-green-sm transition-all"
           >
             {cmd}
           </button>

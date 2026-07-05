@@ -163,6 +163,10 @@ const techMarqueeData = [
   'Metasploit', 'Burp Suite', 'SQL', 'HTML/CSS', 'Ollama', 'eBPF', 'Xposed'
 ];
 
+function SectionDivider() {
+  return <div className="section-divider mx-auto max-w-4xl my-0" />;
+}
+
 function AppContent() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [typedTitle, setTypedTitle] = useState('');
@@ -216,6 +220,27 @@ function AppContent() {
         id="home"
         className="relative flex flex-col items-center justify-center min-h-screen pt-20 px-4 max-w-5xl mx-auto text-center"
       >
+        {/* Decorative terminal frame behind hero */}
+        <div className="absolute right-[5%] top-[25%] w-[280px] opacity-20 pointer-events-none hidden lg:block">
+          <div className="terminal-frame">
+            <div className="title-bar">
+              <div className="dot dot-red" />
+              <div className="dot dot-yellow" />
+              <div className="dot dot-green" />
+              <span className="label">KRI$H — ~/terminal</span>
+            </div>
+            <div className="p-3 font-mono text-[11px] leading-relaxed text-gray-500">
+              <span className="text-green-500">$</span> whoami<br />
+              <span className="text-gray-400">&gt; security_researcher<br />
+              &gt; exploit_dev<br />
+              &gt; ai_orchestrator</span><br />
+              <span className="text-green-500">$</span> status<br />
+              <span className="text-gray-400">&gt; node_active</span><br />
+              <span className="text-green-500 animate-caret-blink">▊</span>
+            </div>
+          </div>
+        </div>
+
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/30 rounded-full font-mono text-[10px] uppercase tracking-wider text-green-500 mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(0,255,0,0.8)]" />
           node_status: active
@@ -237,13 +262,13 @@ function AppContent() {
         <div className="flex gap-4">
           <a
             href="#projects"
-            className="px-6 py-2.5 bg-green-500 text-black font-mono text-xs uppercase tracking-wider rounded font-bold hover:bg-green-400 hover:shadow-[0_0_15px_rgba(0,255,0,0.3)] transition-all duration-300"
+            className="btn-layer relative px-6 py-2.5 font-mono text-xs uppercase tracking-wider rounded font-bold text-green-500 hover:bg-green-500/10 hover:shadow-glow-green-sm transition-all duration-300"
           >
             View Projects
           </a>
           <a
             href="#contact"
-            className="px-6 py-2.5 border border-green-500/40 text-green-500 font-mono text-xs uppercase tracking-wider rounded hover:bg-green-500/10 transition-all duration-300"
+            className="btn-layer relative px-6 py-2.5 font-mono text-xs uppercase tracking-wider rounded text-green-500 hover:bg-green-500/10 transition-all duration-300"
           >
             Get In Touch
           </a>
@@ -252,6 +277,7 @@ function AppContent() {
 
       {/* Skills Section */}
       <Skills />
+      <SectionDivider />
 
       {/* Stats Section */}
       <section className="py-12 bg-black/40 border-y border-[#1a1a1a] backdrop-blur-sm px-4">
@@ -263,6 +289,7 @@ function AppContent() {
 
       {/* Testimonials Section */}
       <Testimonials />
+      <SectionDivider />
 
       {/* Projects Section */}
       <section id="projects" className="py-20 px-4 max-w-6xl mx-auto">
@@ -270,7 +297,7 @@ function AppContent() {
           <span className="font-mono text-xs uppercase tracking-widest text-green-500">
             // index_of_operations
           </span>
-          <h2 className="text-2xl sm:text-3xl font-mono uppercase text-white mt-1">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-mono uppercase text-white mt-1">
             Featured Projects
           </h2>
         </div>
@@ -336,7 +363,7 @@ function AppContent() {
               <div className="ember" style={{ left: '8%', bottom: '40%', width: '2px', height: '2px', background: '#0ff', animationDuration: '4.8s', animationDelay: '2.5s', '--drift': '8px' } as React.CSSProperties}></div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#222]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {filteredProjects.map((p) => (
                 <ProjectCard key={p.name} {...p} />
               ))}
@@ -408,7 +435,7 @@ function AppContent() {
             <span className="font-mono text-xs uppercase tracking-widest text-green-500">
               // identity_verification
             </span>
-            <h2 className="text-2xl sm:text-3xl font-mono uppercase text-white mt-1">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-mono uppercase text-white mt-1">
               Terminal Profile
             </h2>
           </div>
@@ -423,7 +450,7 @@ function AppContent() {
           <span className="font-mono text-xs uppercase tracking-widest text-green-500">
             // chronological_log
           </span>
-          <h2 className="text-2xl sm:text-3xl font-mono uppercase text-white mt-1">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-mono uppercase text-white mt-1">
             Research Timeline
           </h2>
         </div>
@@ -438,7 +465,7 @@ function AppContent() {
             <span className="font-mono text-xs uppercase tracking-widest text-green-500">
               // communication_link
             </span>
-            <h2 className="text-2xl sm:text-3xl font-mono uppercase text-white mt-1">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-mono uppercase text-white mt-1">
               Establish Connection
             </h2>
             <p className="text-sm text-gray-500 mt-2 max-w-md mx-auto">
@@ -451,10 +478,40 @@ function AppContent() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-[#1a1a1a] text-center font-mono text-xs text-gray-600 bg-black">
-        <p>
-          Built with <span className="text-green-500/80">♥</span> by KRI$H &middot; {new Date().getFullYear()} &middot; Deployed on GitHub Pages
-        </p>
+      <footer className="py-8 border-t border-[#1a1a1a] relative">
+        {/* Gradient top border */}
+        <div className="absolute top-[-1px] left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-500/40 to-transparent" />
+
+        <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="font-mono text-xs text-gray-600">
+            Built with <span className="text-green-500/80">♥</span> by KRI$H &middot; {new Date().getFullYear()}
+          </p>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/ykrishhh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-green-500 transition-colors"
+              aria-label="GitHub"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+              </svg>
+            </a>
+            <a
+              href="https://twitter.com/harry6ez"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-green-500 transition-colors"
+              aria-label="Twitter / X"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
+            <span className="font-mono text-[10px] text-gray-700 tracking-wider">Deployed on GitHub Pages</span>
+          </div>
+        </div>
       </footer>
     </div>
   );

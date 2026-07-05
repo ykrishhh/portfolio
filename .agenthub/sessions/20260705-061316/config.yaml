@@ -1,0 +1,5 @@
+session_id: 20260705-061316
+task: "Refine the KRI security researcher portfolio (index.html) — each agent adds a different feature"
+agent_count: 3
+base_branch: main
+created: 2026-07-05T00:43:16.323761+00:00

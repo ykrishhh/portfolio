@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react';
+import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/layout/Navbar';
 import {
   ParticlesBg,
+  MatrixRain,
   Terminal,
   ProjectCard,
   Stats,
   Timeline,
   Contact,
+  ProgressBar,
+  ScrollToTop,
+  Skills,
+  Services,
+  Testimonials,
+  Writeups,
 } from './components/ui';
 
 interface Project {
@@ -155,7 +163,7 @@ const techMarqueeData = [
   'Metasploit', 'Burp Suite', 'SQL', 'HTML/CSS', 'Ollama', 'eBPF', 'Xposed'
 ];
 
-function App() {
+function AppContent() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [typedTitle, setTypedTitle] = useState('');
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
@@ -187,7 +195,9 @@ function App() {
 
   return (
     <div className="relative min-h-screen text-gray-300 font-sans selection:bg-green-500 selection:text-black overflow-x-hidden">
-      {/* Visual Identity Overlays */}
+      <ProgressBar />
+      <ScrollToTop />
+
       <div className="bg-gradient-cyber" aria-hidden="true" />
       <div className="noise" aria-hidden="true" />
       <div className="scanlines" aria-hidden="true" />
@@ -197,8 +207,8 @@ function App() {
         aria-hidden="true"
       />
 
-      {/* Dynamic Network Node Background */}
       <ParticlesBg />
+      <MatrixRain />
       <Navbar />
 
       {/* Hero Section */}
@@ -206,13 +216,11 @@ function App() {
         id="home"
         className="relative flex flex-col items-center justify-center min-h-screen pt-20 px-4 max-w-5xl mx-auto text-center"
       >
-        {/* Glowing active node badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/30 rounded-full font-mono text-[10px] uppercase tracking-wider text-green-500 mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(0,255,0,0.8)]" />
           node_status: active
         </div>
 
-        {/* Glitch H1 */}
         <h1 className="glitch-title mb-2" data-text="KRI$H">
           KRI$H
         </h1>
@@ -242,10 +250,19 @@ function App() {
         </div>
       </section>
 
+      {/* Skills Section */}
+      <Skills />
+
       {/* Stats Section */}
       <section className="py-12 bg-black/40 border-y border-[#1a1a1a] backdrop-blur-sm px-4">
         <Stats />
       </section>
+
+      {/* Services Section */}
+      <Services />
+
+      {/* Testimonials Section */}
+      <Testimonials />
 
       {/* Projects Section */}
       <section id="projects" className="py-20 px-4 max-w-6xl mx-auto">
@@ -275,9 +292,7 @@ function App() {
           ))}
         </div>
 
-        {/* Projects Frame with Serpents & Embers */}
         <div className="relative w-full flex items-center justify-center gap-4 md:gap-8">
-          {/* Left Serpent */}
           <svg className="serpent serpent-left" viewBox="0 0 60 700" fill="none" aria-hidden="true">
             <path className="body-main" d="M30 10 C55 80,5 160,30 230 C55 300,5 380,30 450 C55 520,5 600,30 680" stroke="#0f0" strokeWidth="2.5" strokeLinecap="round" />
             <path className="body-inner" d="M30 18 C52 82,8 158,30 225 C52 295,8 375,30 445 C52 515,8 595,30 672" stroke="#0f0" strokeWidth=".8" opacity=".15" />
@@ -314,7 +329,6 @@ function App() {
             </g>
           </svg>
 
-          {/* Projects Grid Container with internal Embers */}
           <div className="relative flex-1 max-w-[850px] overflow-hidden">
             <div className="embers" aria-hidden="true">
               <div className="ember" style={{ left: '5%', bottom: '15%', width: '3px', height: '3px', background: '#0f0', animationDuration: '5.5s', '--drift': '12px' } as React.CSSProperties}></div>
@@ -329,16 +343,15 @@ function App() {
             </div>
           </div>
 
-          {/* Right Serpent */}
           <svg className="serpent serpent-right" viewBox="0 0 60 700" fill="none" aria-hidden="true">
             <path className="body-main" d="M30 10 C55 80,5 160,30 230 C55 300,5 380,30 450 C55 520,5 600,30 680" stroke="#0f0" strokeWidth="2.5" strokeLinecap="round" />
             <path className="body-inner" d="M30 18 C52 82,8 158,30 225 C52 295,8 375,30 445 C52 515,8 595,30 672" stroke="#0f0" strokeWidth=".8" opacity=".15" />
             <path d="M30 10 C27 3,34 0,30 -4" stroke="#0f0" strokeWidth="1.5" strokeLinecap="round" />
             <path d="M30 680 C34 688,26 694,32 700" stroke="#0f0" strokeWidth="1.5" strokeLinecap="round" />
             <g className="scales">
-              <path d="M36 40 C44 32,50 38,54 30 C57 24,52 18,56 12" stroke="#0f0" strokeWidth=".7" fill="none" stroke-linecap="round" />
+              <path d="M36 40 C44 32,50 38,54 30 C57 24,52 18,56 12" stroke="#0f0" strokeWidth=".7" fill="none" strokeLinecap="round" />
               <path d="M44 80 C52 68,54 56,48 50 C46 58,42 68,44 80Z" stroke="#0f0" strokeWidth=".8" fill="rgba(0,255,0,.05)" />
-              <circle cx="48" cy="118" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
+              <circle cx="48" cy="118" r="3.5" stroke="#0f0" strokeWidth=".7" fill="rgba(0,255,0,.05)" />
               <circle cx="53" cy="124" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
               <circle cx="43" cy="125" r="3.5" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
               <circle cx="48" cy="131" r="3" stroke="#0f0" stroke-width=".7" fill="rgba(0,255,0,.05)" />
@@ -368,8 +381,11 @@ function App() {
         </div>
       </section>
 
+      {/* Writeups Section */}
+      <Writeups />
+
       {/* Tech Marquee Section */}
-      <section id="stack" className="overflow-hidden py-6 border-y border-[#1a1a1a] bg-[#050505] relative select-none">
+      <section className="overflow-hidden py-6 border-y border-[#1a1a1a] bg-[#050505] relative select-none">
         <div className="absolute top-0 bottom-0 left-0 w-24 bg-gradient-to-r from-black to-transparent pointer-events-none z-10" />
         <div className="absolute top-0 bottom-0 right-0 w-24 bg-gradient-to-l from-black to-transparent pointer-events-none z-10" />
         <div className="flex gap-4 w-max animate-marquee">
@@ -441,6 +457,14 @@ function App() {
         </p>
       </footer>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
 

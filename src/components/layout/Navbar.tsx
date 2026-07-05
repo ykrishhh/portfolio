@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
 export function Navbar() {
   const [activeSection, setActiveSection] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { theme, toggle } = useTheme();
 
   const navLinks = [
     { label: 'Home', href: '#home' },
@@ -15,10 +17,7 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Toggle scrolled state for navbar background transitions
       setScrolled(window.scrollY > 20);
-
-      // Section tracking
       const scrollPos = window.scrollY + 200;
       for (const link of navLinks) {
         const id = link.href.substring(1);
@@ -33,14 +32,13 @@ export function Navbar() {
         }
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 h-16 border-b border-[#1a1a1a] transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 h-16 border-b transition-all duration-300 ${
         scrolled
           ? 'bg-black/85 backdrop-blur-md border-[#1a1a1a]'
           : 'bg-transparent border-transparent'
@@ -56,7 +54,7 @@ export function Navbar() {
         </a>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-3">
           <ul className="flex gap-6 list-none p-0 m-0">
             {navLinks.map((link) => {
               const id = link.href.substring(1);
@@ -77,6 +75,25 @@ export function Navbar() {
             })}
           </ul>
 
+          {/* Theme Toggle */}
+          <button
+            onClick={toggle}
+            aria-label="Toggle theme"
+            className="flex items-center justify-center w-[34px] h-[34px] rounded border border-[#1a1a1a] text-gray-500 hover:text-green-500 hover:border-green-500 hover:bg-green-500/10 transition-all duration-300"
+          >
+            {theme === 'dark' ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+              </svg>
+            )}
+          </button>
+
+          {/* Resume */}
           <a
             href="/resume.html"
             target="_blank"
@@ -136,15 +153,23 @@ export function Navbar() {
           })}
         </ul>
 
-        <a
-          href="/resume.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => setMobileMenuOpen(false)}
-          className="mt-4 px-6 py-2 border border-green-500/50 text-green-500 font-mono text-sm uppercase tracking-widest rounded hover:bg-green-500 hover:text-black transition-all duration-300"
-        >
-          Resume
-        </a>
+        <div className="flex gap-3">
+          <button
+            onClick={() => { toggle(); setMobileMenuOpen(false); }}
+            className="px-4 py-2 border border-green-500/50 text-green-500 font-mono text-xs uppercase tracking-widest rounded hover:bg-green-500 hover:text-black transition-all duration-300"
+          >
+            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          </button>
+          <a
+            href="/resume.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMobileMenuOpen(false)}
+            className="px-6 py-2 border border-green-500/50 text-green-500 font-mono text-sm uppercase tracking-widest rounded hover:bg-green-500 hover:text-black transition-all duration-300"
+          >
+            Resume
+          </a>
+        </div>
       </div>
     </nav>
   );

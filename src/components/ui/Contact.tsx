@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 interface ContactMethod {
   name: string;
   value: string;
@@ -39,29 +41,103 @@ const contactMethods: ContactMethod[] = [
 ];
 
 export function Contact() {
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validate = () => {
+    const e: Record<string, string> = {};
+    if (!form.name.trim()) e.name = 'Name is required';
+    if (!form.email.trim()) e.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email format';
+    if (!form.message.trim()) e.message = 'Message is required';
+    else if (form.message.trim().length < 10) e.message = 'At least 10 characters';
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+    const mailto = `mailto:krishy2122@gmail.com?subject=Contact from ${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message + '\n\n— ' + form.name + ' (' + form.email + ')')}`;
+    window.location.href = mailto;
+  };
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto w-full">
-      {contactMethods.map((method) => (
-        <a
-          key={method.name}
-          href={method.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center gap-3.5 p-4 rounded-lg border border-[#1a1a1a] bg-[#070707] hover:border-green-500/40 hover:bg-green-950/5 transition-all duration-300"
-        >
-          <div className="text-green-500 group-hover:text-green-400 group-hover:scale-110 transition-all duration-300">
-            {method.icon}
+    <div className="space-y-8 max-w-3xl mx-auto w-full">
+      {/* Contact Links */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {contactMethods.map((method) => (
+          <a
+            key={method.name}
+            href={method.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-3.5 p-4 rounded-lg border border-[#1a1a1a] bg-[#070707] hover:border-green-500/40 hover:bg-green-950/5 transition-all duration-300"
+          >
+            <div className="text-green-500 group-hover:text-green-400 group-hover:scale-110 transition-all duration-300">
+              {method.icon}
+            </div>
+            <div className="flex flex-col min-w-0">
+              <span className="font-mono text-xs text-gray-500 group-hover:text-gray-400 transition-colors uppercase tracking-wider">
+                {method.name}
+              </span>
+              <span className="font-mono text-sm text-gray-300 group-hover:text-green-400 transition-colors truncate">
+                {method.value}
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      {/* Contact Form */}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <input
+              type="text"
+              placeholder="Your Name"
+              value={form.name}
+              onChange={(e) => { setForm({ ...form, name: e.target.value }); setErrors({ ...errors, name: '' }); }}
+              className={`w-full px-4 py-2.5 rounded bg-black border font-mono text-sm text-gray-300 placeholder-gray-700 focus:outline-none transition-colors ${
+                errors.name ? 'border-red-500' : 'border-[#1a1a1a] focus:border-green-500/50'
+              }`}
+            />
+            {errors.name && <p className="mt-1 text-xs text-red-500 font-mono">{errors.name}</p>}
           </div>
-          <div className="flex flex-col min-w-0">
-            <span className="font-mono text-xs text-gray-500 group-hover:text-gray-400 transition-colors uppercase tracking-wider">
-              {method.name}
-            </span>
-            <span className="font-mono text-sm text-gray-300 group-hover:text-green-400 transition-colors truncate">
-              {method.value}
-            </span>
+          <div>
+            <input
+              type="email"
+              placeholder="Your Email"
+              value={form.email}
+              onChange={(e) => { setForm({ ...form, email: e.target.value }); setErrors({ ...errors, email: '' }); }}
+              className={`w-full px-4 py-2.5 rounded bg-black border font-mono text-sm text-gray-300 placeholder-gray-700 focus:outline-none transition-colors ${
+                errors.email ? 'border-red-500' : 'border-[#1a1a1a] focus:border-green-500/50'
+              }`}
+            />
+            {errors.email && <p className="mt-1 text-xs text-red-500 font-mono">{errors.email}</p>}
           </div>
-        </a>
-      ))}
+        </div>
+        <div>
+          <textarea
+            placeholder="Your Message"
+            rows={4}
+            value={form.message}
+            onChange={(e) => { setForm({ ...form, message: e.target.value }); setErrors({ ...errors, message: '' }); }}
+            className={`w-full px-4 py-2.5 rounded bg-black border font-mono text-sm text-gray-300 placeholder-gray-700 focus:outline-none transition-colors resize-none ${
+              errors.message ? 'border-red-500' : 'border-[#1a1a1a] focus:border-green-500/50'
+            }`}
+          />
+          {errors.message && <p className="mt-1 text-xs text-red-500 font-mono">{errors.message}</p>}
+        </div>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="px-6 py-2.5 bg-green-500 text-black font-mono text-xs uppercase tracking-wider rounded font-bold hover:bg-green-400 hover:shadow-[0_0_15px_rgba(0,255,0,0.3)] transition-all duration-300"
+          >
+            Send Message
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,6 +19,13 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - run: npx gh-pages --dotfiles -d dist
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Copy CNAME and .nojekyll into dist
+        run: |
+          cp CNAME dist/CNAME
+          touch dist/.nojekyll
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          cname: harrydev.one

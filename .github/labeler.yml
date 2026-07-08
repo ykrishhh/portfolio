@@ -1,0 +1,24 @@
+frontend:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/**"
+          - "public/**"
+          - "index.html"
+ci:
+  - changed-files:
+      - any-glob-to-any-file: [".github/**"]
+seo:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "public/robots.txt"
+          - "public/sitemap.xml"
+          - "index.html"
+deps:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "package.json"
+          - "bun.lockb"
+          - "package-lock.json"
+docs:
+  - changed-files:
+      - any-glob-to-any-file: ["**/*.md"]

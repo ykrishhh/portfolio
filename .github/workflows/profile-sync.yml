@@ -1,0 +1,92 @@
+# Auto-sync the profile README + user website when the redesign PR (#2) merges.
+# - Updates the authenticated user's `blog` (website) field to harrydev.one.
+# - Re-pins the top curated repos on the profile using `mheap/pin-github-repos`.
+# Requires a fine-grained PAT `PROFILE_SYNC_TOKEN` with `user` (read/write) +
+# `public_repo` scopes, stored as a repo secret.
+name: profile-sync
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      website:
+        description: Website URL to set on the profile.
+        required: false
+        default: https://harrydev.one
+      pins:
+        description: Comma-separated list of repos to pin (owner/repo).
+        required: false
+        default: >-
+          ykrishhh/portfolio,
+          ykrishhh/termux-security-toolkit,
+          ykrishhh/awesome-esp32-security,
+          ykrishhh/android-rooting-masterclass,
+          ykrishhh/ESP32-HARNESS,
+          ykrishhh/HarryPanel
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: sync-profile
+    runs-on: ubuntu-latest
+    # Only fire on the redesign PR merge (#2) or a manual dispatch.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.merged == true && github.event.pull_request.number == 2)
+    steps:
+      - name: Resolve inputs
+        id: cfg
+        run: |
+          echo "website=${{ github.event.inputs.website || 'https://harrydev.one' }}" >> "$GITHUB_OUTPUT"
+          pins="${{ github.event.inputs.pins }}"
+          if [ -z "$pins" ]; then
+            pins="ykrishhh/portfolio,ykrishhh/termux-security-toolkit,ykrishhh/awesome-esp32-security,ykrishhh/android-rooting-masterclass,ykrishhh/ESP32-HARNESS,ykrishhh/HarryPanel"
+          fi
+          # normalise: strip whitespace + newlines
+          pins=$(echo "$pins" | tr -d '[:space:]')
+          echo "pins=$pins" >> "$GITHUB_OUTPUT"
+
+      - name: Update user website (blog field)
+        env:
+          GH_TOKEN: ${{ secrets.PROFILE_SYNC_TOKEN }}
+          WEBSITE: ${{ steps.cfg.outputs.website }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::PROFILE_SYNC_TOKEN secret is not configured; cannot update user profile."
+            exit 1
+          fi
+          curl -sS -f -X PATCH https://api.github.com/user \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -d "{\"blog\": \"$WEBSITE\"}" | jq -r '"Website updated to: " + .blog'
+
+      - name: Pin curated repos on profile
+        uses: mheap/pin-github-repos@v1
+        with:
+          github_token: ${{ secrets.PROFILE_SYNC_TOKEN }}
+          repos: ${{ steps.cfg.outputs.pins }}
+
+      - name: Trigger profile README refresh (snake + metrics + waka)
+        env:
+          GH_TOKEN: ${{ secrets.PROFILE_SYNC_TOKEN }}
+        run: |
+          for wf in snake.yml metrics.yml readme-waka.yml; do
+            echo "Dispatching $wf on ykrishhh/ykrishhh"
+            curl -sS -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/ykrishhh/ykrishhh/actions/workflows/$wf/dispatches" \
+              -d '{"ref":"main"}' || echo "warn: $wf dispatch failed (workflow may not exist yet)"
+          done
+
+      - name: Summary
+        run: |
+          echo "### Profile sync complete" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Website: ${{ steps.cfg.outputs.website }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Pinned: ${{ steps.cfg.outputs.pins }}" >> "$GITHUB_STEP_SUMMARY"

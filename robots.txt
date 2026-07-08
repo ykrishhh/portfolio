@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ykrishhh.github.io/sitemap.xml
+Sitemap: https://harrydev.one/sitemap.xml

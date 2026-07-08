@@ -8,6 +8,15 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   plugins: [react()],
   base: '/portfolio/',
+  server: {
+    port: 3000,
+    open: true,
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    minify: 'terser',
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),

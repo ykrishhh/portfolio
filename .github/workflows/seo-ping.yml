@@ -1,0 +1,30 @@
+name: SEO Ping
+on:
+  push:
+    branches: [main]
+    paths:
+      - "public/sitemap.xml"
+      - "index.html"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Warm site + ping search engines
+        run: |
+          set -e
+          SITE="https://harrydev.one"
+          SITEMAP="$SITE/sitemap.xml"
+          echo "Warming $SITE"
+          curl -fsSL --retry 3 "$SITE" -o /dev/null
+          echo "Pinging Google"
+          curl -fsSL "https://www.google.com/ping?sitemap=$SITEMAP" -o /dev/null || true
+          echo "Pinging Bing (IndexNow)"
+          if [ -n "${{ secrets.INDEXNOW_KEY }}" ]; then
+            curl -fsS -X POST "https://api.indexnow.org/indexnow" \
+              -H "Content-Type: application/json" \
+              -d "{\"host\":\"harrydev.one\",\"key\":\"${{ secrets.INDEXNOW_KEY }}\",\"urlList\":[\"$SITE/\"]}" || true
+          fi

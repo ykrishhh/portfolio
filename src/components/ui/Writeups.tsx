@@ -1,3 +1,5 @@
+import type { CategorizedRepo } from '../../types';
+
 interface Writeup {
   title: string;
   desc: string;
@@ -5,34 +7,34 @@ interface Writeup {
   url: string;
 }
 
-const writeups: Writeup[] = [
-  {
-    title: 'Android Rooting Masterclass',
-    desc: 'Complete guide from user-space DEX editing to Xposed/LSPosed modules to KernelPatch/eBPF kernel patching on Android.',
-    tags: ['android', 'rooting', 'kernel'],
-    url: 'https://github.com/ykrishhh/android-rooting-masterclass',
-  },
-  {
-    title: 'Self-Hosted AI on Termux',
-    desc: 'Step-by-step guide to running Ollama, Open WebUI, and local LLMs entirely on your Android phone via Termux.',
-    tags: ['ai', 'termux', 'privacy'],
-    url: 'https://github.com/ykrishhh/self-hosted-ai-termux',
-  },
-  {
-    title: 'ESP32 Pentesting Firmware',
-    desc: 'Building an advanced ESP32 pentesting and telemetry firmware with 2.4 GHz research, RF24, and forensic capture.',
-    tags: ['esp32', 'firmware', 'iot'],
-    url: 'https://github.com/ykrishhh/ESP32-HARNESS',
-  },
-  {
-    title: 'Linux Hardening Scripts',
-    desc: 'Automated CIS benchmark hardening, firewall rules, auditd policies, kernel parameter tuning, and SELinux configurations.',
-    tags: ['linux', 'security', 'automation'],
-    url: 'https://github.com/ykrishhh/linux-hardening',
-  },
-];
+const WRITEUP_KEYWORDS = ['guide', 'masterclass', 'hardening', 'toolkit', 'poc', 'rooting'];
 
-export function Writeups() {
+function isWriteupRepo(repo: CategorizedRepo): boolean {
+  const text = `${repo.name} ${repo.description ?? ''}`.toLowerCase();
+  return WRITEUP_KEYWORDS.some((kw) => text.includes(kw));
+}
+
+function repoToWriteup(repo: CategorizedRepo): Writeup {
+  const title = repo.name
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+  return {
+    title,
+    desc: repo.description ?? 'No description',
+    tags: repo.topics.length > 0 ? repo.topics.slice(0, 3) : [repo.category],
+    url: repo.html_url,
+  };
+}
+
+interface WriteupsProps {
+  repos: CategorizedRepo[];
+}
+
+export function Writeups({ repos }: WriteupsProps) {
+  const writeups: Writeup[] = repos.filter(isWriteupRepo).map(repoToWriteup);
+
+  if (writeups.length === 0) return null;
+
   return (
     <section className="py-20 px-4 max-w-5xl mx-auto">
       <div className="text-center mb-12">

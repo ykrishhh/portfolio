@@ -16,145 +16,15 @@ import {
   Testimonials,
   Writeups,
 } from './components/ui';
-
-interface Project {
-  name: string;
-  desc: string;
-  detail: string;
-  tags: string[];
-  url: string;
-  category: 'security' | 'ai' | 'iot' | 'devops' | 'all';
-}
-
-const projectsData: Project[] = [
-  {
-    name: 'AW3S0M3-ESP32',
-    desc: 'ESP32 security tools',
-    detail: 'Curated list of ESP32 security tools, firmware, and resources for penetration testers and IoT researchers.',
-    tags: ['esp32', 'iot', 'pentesting'],
-    url: 'https://github.com/ykrishhh/awesome-esp32-security',
-    category: 'iot',
-  },
-  {
-    name: '3SP32-H4RNESS',
-    desc: 'Pentesting firmware',
-    detail: 'Advanced ESP32 pentesting & telemetry firmware — 2.4 GHz research, RF24 experimentation, and on-device forensic capture.',
-    tags: ['esp32', 'firmware', 'rf'],
-    url: 'https://github.com/ykrishhh/ESP32-HARNESS',
-    category: 'iot',
-  },
-  {
-    name: 'CV3-P0C5',
-    desc: 'CVE exploits',
-    detail: 'Proof-of-concept exploits for CVEs — security research, vulnerability analysis, and responsible disclosure.',
-    tags: ['cve', 'exploit', 'poc'],
-    url: 'https://github.com/ykrishhh/cve-pocs',
-    category: 'security',
-  },
-  {
-    name: 'H4RRYP4N3L',
-    desc: 'Hosting control panel',
-    detail: 'Advanced web hosting control panel — server management, database admin, file manager, and deployment tools.',
-    tags: ['python', 'flask', 'devops'],
-    url: 'https://github.com/ykrishhh/HarryPanel',
-    category: 'devops',
-  },
-  {
-    name: 'C0NT3NT-4G3NT',
-    desc: 'AI content agent',
-    detail: 'Autonomous AI content agent for Termux — SEO-optimized posts, GitHub/LinkedIn/Instagram/email automation, and Telegram integration.',
-    tags: ['ai', 'automation', 'termux'],
-    url: 'https://github.com/ykrishhh/content-agent',
-    category: 'ai',
-  },
-  {
-    name: 'PYP3NT3ST-41',
-    desc: 'AI pentesting tool',
-    detail: 'AI-powered security automation scanner for pentesting, exploit analysis, and vulnerability detection.',
-    tags: ['ai', 'pentesting', 'python'],
-    url: 'https://github.com/ykrishhh/pypentest-ai',
-    category: 'ai',
-  },
-  {
-    name: '3SP32-SM4RT-C4M',
-    desc: 'AI security camera',
-    detail: 'Low-cost AI-powered security camera on ESP32 with face detection, computer vision, and local MQTT integration.',
-    tags: ['esp32', 'ai', 'iot'],
-    url: 'https://github.com/ykrishhh/esp32-smart-cam',
-    category: 'ai',
-  },
-  {
-    name: 'AW3S0M3-41-53C',
-    desc: 'AI security tools',
-    detail: 'Curated list of AI-powered security tools, vulnerability scanners, and resources for machine learning threat modeling.',
-    tags: ['ai', 'security', 'awesome'],
-    url: 'https://github.com/ykrishhh/awesome-ai-security-tools',
-    category: 'ai',
-  },
-  {
-    name: '4DR01D-R00T1NG',
-    desc: 'Rooting masterclass',
-    detail: 'Complete guide to Android rooting and hooking — from user-space DEX editing to Xposed/LSPosed modules to kernel patching.',
-    tags: ['android', 'frida', 'kernel'],
-    url: 'https://github.com/ykrishhh/android-rooting-masterclass',
-    category: 'security',
-  },
-  {
-    name: 'L1NUX-H4RD3N',
-    desc: 'Security hardening',
-    detail: 'Security hardening scripts for Linux — firewall config, audit rules, kernel parameters, and CIS benchmarks.',
-    tags: ['linux', 'firewall', 'cis'],
-    url: 'https://github.com/ykrishhh/linux-hardening',
-    category: 'security',
-  },
-  {
-    name: 'T3RMUX-53C',
-    desc: 'Security toolkit',
-    detail: 'Security tools and scripts for Termux — network scanning, password auditing, and ethical hacking on Android.',
-    tags: ['termux', 'pentesting', 'android'],
-    url: 'https://github.com/ykrishhh/termux-security-toolkit',
-    category: 'security',
-  },
-  {
-    name: '53LF-H05T3D-41',
-    desc: 'Self-hosted AI',
-    detail: 'Run AI models on your phone — complete self-hosted AI setup guide for Termux with Ollama, Open WebUI, and more.',
-    tags: ['ollama', 'local-llm', 'privacy'],
-    url: 'https://github.com/ykrishhh/self-hosted-ai-termux',
-    category: 'ai',
-  },
-  {
-    name: '41-4G3NT-C0MP4R3',
-    desc: 'AI agent comparison',
-    detail: 'Honest comparison of AI agent frameworks — LangChain, CrewAI, AutoGPT, Swarm, and alternatives with benchmarks.',
-    tags: ['llm', 'agents', 'benchmark'],
-    url: 'https://github.com/ykrishhh/ai-agent-comparison',
-    category: 'ai',
-  },
-  {
-    name: 'N3TW0RK-5C4NN3R',
-    desc: 'Network scanner',
-    detail: 'Fast Python network scanner — port scanning, service detection, OS fingerprinting, and subnet enumeration.',
-    tags: ['python', 'scapy', 'networking'],
-    url: 'https://github.com/ykrishhh/network-scanner',
-    category: 'security',
-  },
-  {
-    name: 'PR1V4CY-T00L5',
-    desc: 'Privacy utilities',
-    detail: 'Encryption and privacy utilities — file encryption, secure messaging, password generation, and data protection.',
-    tags: ['encryption', 'privacy', 'python'],
-    url: 'https://github.com/ykrishhh/privacy-tools',
-    category: 'security',
-  },
-];
+import { useGitHubRepos } from './hooks/useGitHubRepos';
+import type { RepoCategory } from './types';
 
 const categories = [
-  { id: 'all', label: 'All Projects' },
-  { id: 'security', label: 'Cybersecurity' },
-  { id: 'ai', label: 'AI / LLM' },
-  { id: 'iot', label: 'Embedded & IoT' },
-  { id: 'devops', label: 'Devops / Fullstack' },
+  { id: 'all' as const, label: 'All Projects' },
+  { id: 'security' as const, label: 'Cybersecurity' },
+  { id: 'ai' as const, label: 'AI / LLM' },
+  { id: 'iot' as const, label: 'Embedded & IoT' },
+  { id: 'devops' as const, label: 'Devops / Fullstack' },
 ];
 
 const techMarqueeData = [
@@ -168,10 +38,11 @@ function SectionDivider() {
 }
 
 function AppContent() {
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState<RepoCategory | 'all'>('all');
   const [typedTitle, setTypedTitle] = useState('');
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
   const fullTitle = 'Security Researcher & Developer';
+  const { repos, stats, loading } = useGitHubRepos();
 
   useEffect(() => {
     let index = 0;
@@ -193,8 +64,8 @@ function AppContent() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const filteredProjects = projectsData.filter(
-    (p) => activeFilter === 'all' || p.category === activeFilter
+  const filteredRepos = repos.filter(
+    (r) => activeFilter === 'all' || r.category === activeFilter
   );
 
   return (
@@ -281,7 +152,7 @@ function AppContent() {
 
       {/* Stats Section */}
       <section className="py-12 bg-black/40 border-y border-[#1a1a1a] backdrop-blur-sm px-4">
-        <Stats />
+        <Stats totalRepos={stats.totalRepos} totalStars={stats.totalStars} totalForks={stats.totalForks} lastUpdated={stats.lastUpdated} />
       </section>
 
       {/* Services Section */}
@@ -364,8 +235,8 @@ function AppContent() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {filteredProjects.map((p) => (
-                <ProjectCard key={p.name} {...p} />
+              {filteredRepos.map((repo) => (
+                <ProjectCard key={repo.id} {...repo} />
               ))}
             </div>
           </div>
@@ -409,7 +280,7 @@ function AppContent() {
       </section>
 
       {/* Writeups Section */}
-      <Writeups />
+      <Writeups repos={repos} />
 
       {/* Tech Marquee Section */}
       <section className="overflow-hidden py-6 border-y border-[#1a1a1a] bg-[#050505] relative select-none">

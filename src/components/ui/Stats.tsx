@@ -6,12 +6,12 @@ interface StatItem {
   numeric: number;
 }
 
-const stats: StatItem[] = [
-  { count: '30+', label: 'Repositories', numeric: 30 },
-  { count: '5+', label: 'CVE PoCs', numeric: 5 },
-  { count: '12+', label: 'Custom Tools', numeric: 12 },
-  { count: '6+', label: 'AI Projects', numeric: 6 },
-];
+interface StatsProps {
+  totalRepos: number;
+  totalStars: number;
+  totalForks: number;
+  lastUpdated: string;
+}
 
 function AnimatedStat({ stat }: { stat: StatItem }) {
   const [val, setVal] = useState(0);
@@ -60,7 +60,14 @@ function AnimatedStat({ stat }: { stat: StatItem }) {
   );
 }
 
-export function Stats() {
+export function Stats({ totalRepos, totalStars, totalForks, lastUpdated }: StatsProps) {
+  const stats: StatItem[] = [
+    { count: `${totalRepos}`, label: 'Repositories', numeric: totalRepos },
+    { count: `${totalStars}`, label: 'Stars Earned', numeric: totalStars },
+    { count: `${totalForks}`, label: 'Forks', numeric: totalForks },
+    { count: '100', label: '% Open Source', numeric: 100 },
+  ];
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto w-full">
       {stats.map((stat) => (

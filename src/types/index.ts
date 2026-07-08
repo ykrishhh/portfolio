@@ -1,20 +1,27 @@
-export interface User {
-  id: string;
-  email: string;
+export interface GitHubRepo {
+  id: number;
   name: string;
-  createdAt: Date;
+  description: string | null;
+  html_url: string;
+  stargazers_count: number;
+  forks_count: number;
+  language: string | null;
+  topics: string[];
+  updated_at: string;
+  pushed_at: string;
+  fork: boolean;
+  size: number;
 }
 
-export interface ApiResponse<T> {
-  data: T;
-  message?: string;
-  error?: string;
+export type RepoCategory = 'security' | 'ai' | 'iot' | 'devops' | 'other';
+
+export interface CategorizedRepo extends GitHubRepo {
+  category: RepoCategory;
 }
 
-export interface PaginatedResponse<T> {
-  data: T[];
-  total: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
+export interface RepoStats {
+  totalRepos: number;
+  totalStars: number;
+  totalForks: number;
+  lastUpdated: string;
 }

@@ -19,6 +19,5 @@ jobs:
       - run: |
           git config user.name "ykrishhh"
           git config user.email "krishy2122@gmail.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
       - run: npx gh-pages --dotfiles -d dist
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

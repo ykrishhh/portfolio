@@ -8,25 +8,54 @@ on:
 permissions:
   contents: write
 
+env:
+  NODE_VERSION: 20
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - name: Build frontend
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL || secrets.VITE_API_URL || '' }}
 
-      - name: Deploy to ykrishhh.github.io
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          deploy_key: ${{ secrets.DEPLOY_KEY }}
-          external_repository: ykrishhh/ykrishhh.github.io
-          publish_dir: ./dist
-          publish_branch: main
-          user_name: ykrishhh
-          user_email: krishy2122@gmail.com
-          commit_message: "feat: deploy portfolio update [skip ci]"
+      - name: Deploy frontend to ykrishhh.github.io (merge strategy)
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts 2>/dev/null
+
+          GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key -F /dev/null" \
+            git clone --depth=1 git@github.com:ykrishhh/ykrishhh.github.io.git /tmp/target
+
+          cd /tmp/target
+          rsync -av --exclude='.git' "${{ github.workspace }}/dist/" ./
+
+          REFERRED_JS=$(grep -oP 'src="\K[^"]+\.js' index.html 2>/dev/null || true)
+          REFERRED_CSS=$(grep -oP 'href="\K[^"]+\.css' index.html 2>/dev/null || true)
+          for f in assets/*.js; do
+            [ -f "$f" ] && [[ " $REFERRED_JS " != *" $f "* ]] && git rm --ignore-unmatch "$f" 2>/dev/null || true
+          done
+          for f in assets/*.css; do
+            [ -f "$f" ] && [[ " $REFERRED_CSS " != *" $f "* ]] && git rm --ignore-unmatch "$f" 2>/dev/null || true
+          done
+
+          git config user.name "ykrishhh"
+          git config user.email "krishy2122@gmail.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "feat: deploy portfolio update [skip ci]"
+          GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key -F /dev/null" git push origin main
+
+  # Backend is deployed separately via Railway GitHub integration.
+  # See railway.json in the repo root for config.
+  # Connect your Railway project at: https://railway.app/new

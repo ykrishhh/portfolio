@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'motion/react';
 
 interface ContactMethod {
   name: string;
@@ -43,6 +44,9 @@ const contactMethods: ContactMethod[] = [
 export function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [serverError, setServerError] = useState('');
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -55,27 +59,65 @@ export function Contact() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    const mailto = `mailto:krishy2122@gmail.com?subject=Contact from ${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message + '\n\n— ' + form.name + ' (' + form.email + ')')}`;
-    window.location.href = mailto;
+    setSubmitting(true);
+    setServerError('');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Failed to send');
+      setSubmitted(true);
+      setForm({ name: '', email: '', message: '' });
+    } catch (err: any) {
+      setServerError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
+
+  if (submitted) {
+    return (
+      <div className="text-center py-12">
+        <div className="text-green-500 text-4xl mb-4">✓</div>
+        <p className="font-mono text-green-500 mb-2">Message Sent</p>
+        <p className="text-sm text-gray-500">Thanks for reaching out. I'll respond soon.</p>
+        <motion.button
+          onClick={() => setSubmitted(false)}
+          whileHover={{ scale: 1.05, color: '#22c55e' }}
+          whileTap={{ scale: 0.95 }}
+          className="mt-6 font-mono text-xs text-gray-600 transition-colors"
+        >
+          Send another &rarr;
+        </motion.button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 max-w-3xl mx-auto w-full">
       {/* Contact Links */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {contactMethods.map((method) => (
-          <a
+        {contactMethods.map((method, i) => (
+          <motion.a
             key={method.name}
             href={method.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-3.5 p-4 rounded-lg border border-[#1a1a1a] border-l-[3px] border-l-green-500/30 bg-[#070707] hover:border-green-500/40 hover:bg-green-950/5 transition-all duration-300"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ scale: 1.02, borderColor: 'rgba(34,197,94,0.4)' }}
+            className="group flex items-center gap-3.5 p-4 rounded-lg border border-[#1a1a1a] border-l-[3px] border-l-green-500/30 bg-[#070707]"
           >
             {/* Circular icon container */}
-            <div className="w-10 h-10 rounded-full border border-green-500/20 bg-green-500/10 flex items-center justify-center text-green-500 group-hover:bg-green-500/20 group-hover:border-green-500/40 group-hover:scale-110 transition-all duration-300">
+            <div className="w-10 h-10 rounded-full border border-green-500/20 bg-green-500/10 flex items-center justify-center text-green-500 group-hover:bg-green-500/20 group-hover:border-green-500/40 group-hover:scale-110 transition-[background-color,border-color,transform] duration-300">
               {method.icon}
             </div>
             <div className="flex flex-col min-w-0">
@@ -86,7 +128,7 @@ export function Contact() {
                 {method.value}
               </span>
             </div>
-          </a>
+          </motion.a>
         ))}
       </div>
 
@@ -94,7 +136,9 @@ export function Contact() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
+            <label htmlFor="contact-name" className="sr-only">Your Name</label>
             <input
+              id="contact-name"
               type="text"
               placeholder="Your Name"
               value={form.name}
@@ -106,13 +150,15 @@ export function Contact() {
               }`}
             />
             {errors.name && (
-              <div className="mt-1 border-l-[3px] border-l-red-500 pl-3">
-                <p className="text-xs text-red-500 font-mono">{errors.name}</p>
+              <div className="mt-1 border-l-[3px] border-l-red-500 pl-3" role="alert">
+                <p className="text-xs text-red-400 font-mono">{errors.name}</p>
               </div>
             )}
           </div>
           <div>
+            <label htmlFor="contact-email" className="sr-only">Your Email</label>
             <input
+              id="contact-email"
               type="email"
               placeholder="Your Email"
               value={form.email}
@@ -124,14 +170,16 @@ export function Contact() {
               }`}
             />
             {errors.email && (
-              <div className="mt-1 border-l-[3px] border-l-red-500 pl-3">
-                <p className="text-xs text-red-500 font-mono">{errors.email}</p>
+              <div className="mt-1 border-l-[3px] border-l-red-500 pl-3" role="alert">
+                <p className="text-xs text-red-400 font-mono">{errors.email}</p>
               </div>
             )}
           </div>
         </div>
         <div>
+          <label htmlFor="contact-message" className="sr-only">Your Message</label>
           <textarea
+            id="contact-message"
             placeholder="Your Message"
             rows={4}
             value={form.message}
@@ -143,18 +191,27 @@ export function Contact() {
             }`}
           />
           {errors.message && (
-            <div className="mt-1 border-l-[3px] border-l-red-500 pl-3">
-              <p className="text-xs text-red-500 font-mono">{errors.message}</p>
+            <div className="mt-1 border-l-[3px] border-l-red-500 pl-3" role="alert">
+              <p className="text-xs text-red-400 font-mono">{errors.message}</p>
             </div>
           )}
         </div>
+        {serverError && (
+          <div className="border-l-[3px] border-l-red-500 pl-3" role="alert">
+            <p className="text-xs text-red-400 font-mono">{serverError}</p>
+          </div>
+        )}
+
         <div className="flex justify-end">
-          <button
+          <motion.button
             type="submit"
-            className="btn-layer relative px-6 py-2.5 font-mono text-xs uppercase tracking-wider rounded font-bold text-green-500 hover:bg-green-500/10 transition-all duration-300"
+            disabled={submitting}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="btn-layer relative px-6 py-2.5 font-mono text-xs uppercase tracking-wider rounded font-bold text-green-500 hover:bg-green-500/10 transition-[background-color,opacity] duration-300 disabled:opacity-50"
           >
-            Send Message
-          </button>
+            {submitting ? 'Sending...' : 'Send Message'}
+          </motion.button>
         </div>
       </form>
     </div>

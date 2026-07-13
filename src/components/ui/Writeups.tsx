@@ -1,5 +1,6 @@
-import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { motion } from 'motion/react';
 import type { CategorizedRepo } from '../../types';
+import { staggerContainer, staggerItem } from '../../lib/motion';
 
 interface Writeup {
   title: string;
@@ -33,12 +34,17 @@ interface WriteupsProps {
 
 export function Writeups({ repos }: WriteupsProps) {
   const writeups: Writeup[] = repos.filter(isWriteupRepo).map(repoToWriteup);
-  const ref = useScrollReveal<HTMLElement>();
 
   if (writeups.length === 0) return null;
 
   return (
-    <section ref={ref} className="animate-on-scroll py-20 px-4 max-w-5xl mx-auto">
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-40px 0px' }}
+      variants={staggerContainer}
+      className="py-20 px-4 max-w-5xl mx-auto"
+    >
       <div className="text-center mb-12">
         <span className="font-mono text-xs uppercase tracking-widest text-green-500">
           // research_writeups
@@ -50,15 +56,16 @@ export function Writeups({ repos }: WriteupsProps) {
           Technical deep-dives, guides, and research publications
         </p>
       </div>
-      <div className="space-y-4 stagger-children">
-        {writeups.map((w, idx) => (
-          <a
+      <div className="space-y-4">
+        {writeups.map((w) => (
+          <motion.a
             key={w.title}
             href={w.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="stagger-item group flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-lg glass-panel glass-card-hover border-l-[3px] border-l-green-500/30"
-            style={{ ['--stagger-index' as string]: idx.toString() }}
+            variants={staggerItem}
+            whileHover={{ x: 4, borderColor: 'rgba(34,197,94,0.5)' }}
+            className="group flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-lg glass-panel glass-card-hover border-l-[3px] border-l-green-500/30"
           >
             <div className="flex-1 min-w-0">
               <h3 className="font-mono text-sm font-bold text-green-500 group-hover:text-green-400 transition-colors">
@@ -78,12 +85,16 @@ export function Writeups({ repos }: WriteupsProps) {
                 ))}
               </div>
             </div>
-            <span className="link-arrow mt-3 sm:mt-0 sm:ml-4 font-mono text-xs text-gray-600 group-hover:text-green-500 transition-colors">
+            <motion.span
+              initial={{ x: 0 }}
+              whileHover={{ x: 4 }}
+              className="link-arrow mt-3 sm:mt-0 sm:ml-4 font-mono text-xs text-gray-600 group-hover:text-green-500 transition-colors"
+            >
               Read more →
-            </span>
-          </a>
+            </motion.span>
+          </motion.a>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 }

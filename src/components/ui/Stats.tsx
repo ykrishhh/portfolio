@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useTiltEffect } from '../../hooks/useTiltEffect';
+import { motion } from 'motion/react';
 
 interface StatItem {
   count: string;
@@ -14,10 +14,9 @@ interface StatsProps {
   lastUpdated: string;
 }
 
-function AnimatedStat({ stat }: { stat: StatItem }) {
+function AnimatedStat({ stat, index }: { stat: StatItem; index: number }) {
   const [val, setVal] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const tiltRef = useTiltEffect<HTMLDivElement>({ maxTilt: 5, scale: 1.03 });
 
   useEffect(() => {
     const el = ref.current;
@@ -47,21 +46,23 @@ function AnimatedStat({ stat }: { stat: StatItem }) {
   }, [stat.numeric]);
 
   return (
-    <div
-      ref={(node) => {
-        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-        (tiltRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-      }}
-      className="group relative flex flex-col items-center justify-center p-6 rounded-lg border border-[#1a1a1a] bg-[#070707]/80 backdrop-blur-sm hover:border-green-500/30 tilt-card"
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ scale: 1.03, borderColor: 'rgba(34,197,94,0.3)' }}
+      className="group relative flex flex-col items-center justify-center p-6 rounded-lg border border-[#1a1a1a] bg-[#070707]/80 backdrop-blur-sm"
     >
       <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
-      <span className="font-mono text-3xl md:text-4xl font-extrabold text-green-500 tracking-tight mb-2 group-hover:text-green-400 transition-colors">
+      <span className="tabular-nums font-mono text-3xl md:text-4xl font-extrabold text-green-500 tracking-tight mb-2 group-hover:text-green-400 transition-colors">
         {val}{stat.count.endsWith('+') ? '+' : ''}
       </span>
       <span className="text-xs font-mono uppercase tracking-wider text-gray-500 group-hover:text-gray-400 transition-colors">
         {stat.label}
       </span>
-    </div>
+    </motion.div>
   );
 }
 
@@ -75,8 +76,8 @@ export function Stats({ totalRepos, totalStars, totalForks, lastUpdated }: Stats
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto w-full">
-      {stats.map((stat) => (
-        <AnimatedStat key={stat.label} stat={stat} />
+      {stats.map((stat, i) => (
+        <AnimatedStat key={stat.label} stat={stat} index={i} />
       ))}
     </div>
   );

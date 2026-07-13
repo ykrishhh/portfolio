@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { motion } from 'motion/react';
+import { fadeSlideUp } from '../../lib/motion';
 
 interface Skill {
   name: string;
@@ -15,7 +16,7 @@ const skillData: Skill[] = [
   { name: 'Linux Hardening', level: 90 },
 ];
 
-function SkillBar({ skill }: { skill: Skill }) {
+function SkillBar({ skill, index }: { skill: Skill; index: number }) {
   const [width, setWidth] = useState(0);
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
@@ -28,7 +29,6 @@ function SkillBar({ skill }: { skill: Skill }) {
         if (entry.isIntersecting) {
           setTimeout(() => {
             setWidth(skill.level);
-            // Animate percentage count
             const steps = 30;
             const increment = skill.level / steps;
             let current = 0;
@@ -52,7 +52,14 @@ function SkillBar({ skill }: { skill: Skill }) {
   }, [skill.level]);
 
   return (
-    <div ref={ref} className="space-y-1.5">
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, x: -16 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      className="space-y-1.5"
+    >
       <div className="flex justify-between font-mono text-xs">
         <span className="text-gray-300">{skill.name}</span>
         <span className="text-green-500">{count}%</span>
@@ -63,14 +70,19 @@ function SkillBar({ skill }: { skill: Skill }) {
           style={{ width: `${width}%` }}
         />
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 export function Skills() {
-  const ref = useScrollReveal<HTMLElement>();
   return (
-    <section ref={ref} className="animate-on-scroll py-20 px-4 bg-black/40 border-b border-[#1a1a1a]">
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-40px 0px' }}
+      variants={fadeSlideUp}
+      className="py-20 px-4 bg-black/40 border-b border-[#1a1a1a]"
+    >
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <span className="font-mono text-xs uppercase tracking-widest text-green-500">
@@ -81,11 +93,11 @@ export function Skills() {
           </h2>
         </div>
         <div className="space-y-5">
-          {skillData.map((s) => (
-            <SkillBar key={s.name} skill={s} />
+          {skillData.map((s, i) => (
+            <SkillBar key={s.name} skill={s} index={i} />
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

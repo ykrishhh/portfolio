@@ -1,4 +1,4 @@
-import { useTiltEffect } from '../../hooks/useTiltEffect';
+import { motion } from 'motion/react';
 import type { CategorizedRepo } from '../../types';
 
 const LANGUAGE_COLORS: Record<string, string> = {
@@ -18,16 +18,16 @@ const LANGUAGE_COLORS: Record<string, string> = {
 
 export function ProjectCard({ name, description, html_url, stargazers_count, forks_count, language, topics, category }: CategorizedRepo) {
   const langColor = LANGUAGE_COLORS[language ?? ''] ?? '#6b7280';
-  const tiltRef = useTiltEffect<HTMLAnchorElement>({ maxTilt: 6, scale: 1.02 });
 
   return (
-    <a
-      ref={tiltRef}
+    <motion.a
       href={html_url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex flex-col justify-between p-6 rounded glass-panel glass-card-hover min-h-[180px] md:min-h-[200px] stagger-item tilt-card"
-      style={{ ['--stagger-index' as string]: '0' }}
+      whileHover={{ scale: 1.02, rotateX: 4, rotateY: -4, z: 16 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      className="group relative flex flex-col justify-between p-6 rounded glass-panel glass-card-hover min-h-[180px] md:min-h-[200px]"
+      style={{ perspective: 800, transformStyle: 'preserve-3d' }}
     >
       {/* Outer glitch gradient border on hover */}
       <div className="absolute inset-[-2px] bg-gradient-to-r from-green-500 via-cyan-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[-2] animate-[spin_4s_linear_infinite] rounded" />
@@ -65,7 +65,7 @@ export function ProjectCard({ name, description, html_url, stargazers_count, for
       </div>
 
       {/* Content overlay */}
-      <div className="flex flex-col items-center justify-center text-center w-full transition-all duration-400 group-hover:-translate-y-4 relative z-10">
+      <div className="flex flex-col items-center justify-center text-center w-full transition-all duration-400 group-hover:-translate-y-4 relative z-10" style={{ transformStyle: 'preserve-3d', transform: 'translateZ(24px)' }}>
         <h3 className="font-mono text-sm font-bold text-green-500 tracking-widest uppercase mb-2 drop-shadow-[0_0_8px_rgba(0,255,0,0.5)]">
           {name}
         </h3>
@@ -74,7 +74,7 @@ export function ProjectCard({ name, description, html_url, stargazers_count, for
         </p>
 
         {/* Tags appear on hover */}
-        <div className="flex flex-wrap gap-1.5 justify-center mt-3 max-h-0 opacity-0 group-hover:opacity-100 group-hover:max-h-[50px] overflow-hidden transition-all duration-400">
+        <div className="flex flex-wrap gap-1.5 justify-center mt-3 max-h-0 opacity-0 group-hover:opacity-100 group-hover:max-h-[50px] overflow-hidden transition-[opacity] duration-400">
           {topics.slice(0, 4).map((tag) => (
             <span
               key={tag}
@@ -92,14 +92,14 @@ export function ProjectCard({ name, description, html_url, stargazers_count, for
       </div>
 
       {/* Slide up detail text */}
-      <p className="absolute bottom-4 left-4 right-4 text-[11px] leading-relaxed text-white text-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none z-10">
+      <p className="absolute bottom-4 left-4 right-4 text-[11px] leading-relaxed text-white text-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-[opacity,transform] duration-300 pointer-events-none z-10">
         {description ?? 'No description available'}
       </p>
 
       {/* Persistent subtle arrow in top-right */}
-      <span className="absolute top-3 right-3 text-xs text-gray-600 opacity-30 group-hover:opacity-0 transition-all duration-300 font-mono">
+      <span className="absolute top-3 right-3 text-xs text-gray-600 opacity-30 group-hover:opacity-0 transition-[opacity] duration-300 font-mono">
         ↗
       </span>
-    </a>
+    </motion.a>
   );
 }

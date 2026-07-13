@@ -1,5 +1,5 @@
-import { useScrollReveal } from '../../hooks/useScrollReveal';
-import { useTiltEffect } from '../../hooks/useTiltEffect';
+import { motion } from 'motion/react';
+import { staggerContainer, staggerItem } from '../../lib/motion';
 
 interface Service {
   title: string;
@@ -49,10 +49,14 @@ const services: Service[] = [
 ];
 
 export function Services() {
-  const ref = useScrollReveal<HTMLElement>();
-  const tiltRefs = services.map(() => useTiltEffect<HTMLDivElement>({ maxTilt: 6 }));
   return (
-    <section ref={ref} className="animate-on-scroll py-20 px-4 max-w-6xl mx-auto">
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-40px 0px' }}
+      variants={staggerContainer}
+      className="py-20 px-4 max-w-6xl mx-auto"
+    >
       <div className="text-center mb-12">
         <span className="font-mono text-xs uppercase tracking-widest text-green-500">
           // service_offerings
@@ -61,15 +65,15 @@ export function Services() {
           What I Do
         </h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
-        {services.map((s, idx) => (
-          <div
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {services.map((s) => (
+          <motion.div
             key={s.title}
-            ref={tiltRefs[idx]}
-            className="stagger-item group relative p-6 rounded-lg glass-panel glass-card-hover tilt-card"
-            style={{ ['--stagger-index' as string]: idx.toString() }}
+            variants={staggerItem}
+            whileHover={{ scale: 1.02, y: -4 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            className="group relative p-6 rounded-lg glass-panel glass-card-hover"
           >
-            <div className="tilt-glow" />
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
             
             {/* SVG icon in circular container */}
@@ -83,9 +87,9 @@ export function Services() {
             <p className="text-xs text-gray-500 leading-relaxed group-hover:text-gray-400 transition-colors">
               {s.desc}
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 }

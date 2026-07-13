@@ -1,4 +1,4 @@
-import { useTiltEffect } from '../../hooks/useTiltEffect';
+import { motion } from 'motion/react';
 
 interface TimelineItem {
   date: string;
@@ -40,14 +40,30 @@ const timelineData: TimelineItem[] = [
 ];
 
 export function Timeline() {
-  const tiltRefs = timelineData.map(() => useTiltEffect<HTMLDivElement>({ maxTilt: 4, scale: 1.01 }));
   return (
-    <div className="relative max-w-2xl mx-auto pl-6 md:pl-8 border-l border-green-500/20 py-4 space-y-8">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-40px 0px' }}
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.1 } },
+      }}
+      className="relative max-w-2xl mx-auto pl-6 md:pl-8 border-l border-green-500/20 py-4 space-y-8"
+    >
       {/* Decorative vertical glowing line */}
       <div className="absolute top-0 bottom-0 left-[-1px] w-[1px] bg-gradient-to-b from-green-500/80 via-green-500/20 to-transparent shadow-[0_0_8px rgba(0,255,0,0.5)]" />
 
       {timelineData.map((item, index) => (
-        <div key={index} ref={tiltRefs[index]} className="relative group transition-all duration-300 hover:translate-x-1 tilt-card">
+        <motion.div
+          key={index}
+          variants={{
+            hidden: { opacity: 0, x: -12 },
+            visible: { opacity: 1, x: 0 },
+          }}
+          whileHover={{ x: 4 }}
+          className="relative group"
+        >
           {/* Node dot with pulse ring */}
           <div className="absolute left-[-29px] md:left-[-37px] top-1.5">
             {/* Pulse ring */}
@@ -57,9 +73,12 @@ export function Timeline() {
           </div>
 
           <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4">
-            <span className="font-mono text-sm font-bold text-green-500 bg-green-500/10 border border-green-500/20 pl-3 pr-2 py-0.5 rounded w-max border-l-[3px] border-l-green-500">
+            <motion.span
+              whileHover={{ scale: 1.05 }}
+              className="font-mono text-sm font-bold text-green-500 bg-green-500/10 border border-green-500/20 pl-3 pr-2 py-0.5 rounded w-max border-l-[3px] border-l-green-500"
+            >
               {item.date}
-            </span>
+            </motion.span>
             <h4 className="text-base font-bold text-gray-200 group-hover:text-green-400 transition-colors">
               {item.title}
             </h4>
@@ -68,8 +87,8 @@ export function Timeline() {
           <p className="mt-2 text-sm text-gray-500 leading-relaxed group-hover:text-gray-400 transition-colors">
             {item.desc}
           </p>
-        </div>
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 }

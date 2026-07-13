@@ -6,7 +6,9 @@ node_modules/
 # Build
 .next/
 out/
-dist/
+dist
+deploy-key
+deploy-key.pub/
 build/
 
 # Environment

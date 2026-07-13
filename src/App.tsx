@@ -40,7 +40,7 @@ function AppContent() {
   const [activeFilter, setActiveFilter] = useState<RepoCategory | 'all'>('all');
   const [typedTitle, setTypedTitle] = useState('');
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
-  const fullTitle = 'Security Researcher & Developer';
+  const fullTitle = 'Android · Linux · ESP32 · AI';
   const { repos, stats, loading } = useGitHubRepos();
 
   useEffect(() => {
@@ -126,7 +126,7 @@ function AppContent() {
         </div>
 
         <p className="max-w-xl text-sm sm:text-base text-gray-400 leading-relaxed mb-8">
-          I build open-source security tools and firmware targeting ESP32, Android kernels, and system vulnerabilities, alongside automated agentic AI workflows.
+           Android. Linux. ESP32. AI agents. All open source from Termux.
         </p>
 
         <div className="flex gap-4">
@@ -335,7 +335,7 @@ function AppContent() {
               Establish Connection
             </h2>
             <p className="text-sm text-gray-500 mt-2 max-w-md mx-auto">
-              If you have projects requiring reverse engineering, hardware security research, or agentic automation, reach out.
+              Android. Linux. ESP32. AI agents. Open source. Let's build.
             </p>
           </div>
 

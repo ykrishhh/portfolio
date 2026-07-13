@@ -1,3 +1,5 @@
+import { useScrollReveal } from '../../hooks/useScrollReveal';
+
 interface Service {
   title: string;
   desc: string;
@@ -46,8 +48,9 @@ const services: Service[] = [
 ];
 
 export function Services() {
+  const ref = useScrollReveal<HTMLElement>();
   return (
-    <section className="py-20 px-4 max-w-6xl mx-auto">
+    <section ref={ref} className="animate-on-scroll py-20 px-4 max-w-6xl mx-auto">
       <div className="text-center mb-12">
         <span className="font-mono text-xs uppercase tracking-widest text-green-500">
           // service_offerings
@@ -56,11 +59,12 @@ export function Services() {
           What I Do
         </h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {services.map((s) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
+        {services.map((s, idx) => (
           <div
             key={s.title}
-            className="group relative p-6 rounded-lg border border-[#1a1a1a] bg-[#070707] hover:border-green-500/30 hover:shadow-glow-green-sm hover:scale-[1.02] transition-all duration-300"
+            className="stagger-item group relative p-6 rounded-lg glass-panel glass-card-hover"
+            style={{ ['--stagger-index' as string]: idx.toString() }}
           >
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
             

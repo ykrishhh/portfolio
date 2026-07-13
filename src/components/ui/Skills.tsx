@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 
 interface Skill {
   name: string;
@@ -67,8 +68,9 @@ function SkillBar({ skill }: { skill: Skill }) {
 }
 
 export function Skills() {
+  const ref = useScrollReveal<HTMLElement>();
   return (
-    <section className="py-20 px-4 bg-black/40 border-b border-[#1a1a1a]">
+    <section ref={ref} className="animate-on-scroll py-20 px-4 bg-black/40 border-b border-[#1a1a1a]">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <span className="font-mono text-xs uppercase tracking-widest text-green-500">

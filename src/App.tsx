@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/layout/Navbar';
 import {
@@ -16,6 +16,7 @@ import {
   Writeups,
 } from './components/ui';
 import { useGitHubRepos } from './hooks/useGitHubRepos';
+import { useScrollReveal } from './hooks/useScrollReveal';
 import type { RepoCategory } from './types';
 
 const categories = [
@@ -42,6 +43,16 @@ function AppContent() {
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
   const fullTitle = 'Android · Linux · ESP32 · AI';
   const { repos, stats, loading } = useGitHubRepos();
+
+  const skillsRef = useScrollReveal<HTMLElement>();
+  const statsRef = useScrollReveal<HTMLElement>();
+  const servicesRef = useScrollReveal<HTMLElement>();
+  const projectsRef = useScrollReveal<HTMLElement>();
+  const writeupsRef = useScrollReveal<HTMLElement>();
+  const marqueeRef = useScrollReveal<HTMLElement>();
+  const aboutRef = useScrollReveal<HTMLElement>();
+  const timelineRef = useScrollReveal<HTMLElement>();
+  const contactRef = useScrollReveal<HTMLElement>();
 
   useEffect(() => {
     let index = 0;
@@ -72,7 +83,17 @@ function AppContent() {
       <ProgressBar />
       <ScrollToTop />
 
-      <div className="bg-gradient-cyber" aria-hidden="true" />
+      {/* MotionSites-style backgrounds */}
+      <div className="bg-gradient-mesh" aria-hidden="true" />
+      <div className="hex-grid" aria-hidden="true" />
+      <div className="geo-shapes" aria-hidden="true">
+        <div className="geo-shape" />
+        <div className="geo-shape" />
+        <div className="geo-shape" />
+        <div className="geo-shape" />
+        <div className="geo-shape" />
+        <div className="geo-shape" />
+      </div>
       <div className="noise" aria-hidden="true" />
       <div className="scanlines" aria-hidden="true" />
       <div
@@ -150,7 +171,7 @@ function AppContent() {
       <SectionDivider />
 
       {/* Stats Section */}
-      <section className="py-12 bg-black/40 border-y border-[#1a1a1a] backdrop-blur-sm px-4">
+      <section ref={statsRef as React.RefObject<HTMLDivElement>} className="animate-on-scroll py-12 bg-black/40 border-y border-[#1a1a1a] backdrop-blur-sm px-4">
         <Stats totalRepos={stats.totalRepos} totalStars={stats.totalStars} totalForks={stats.totalForks} lastUpdated={stats.lastUpdated} />
       </section>
 
@@ -158,7 +179,7 @@ function AppContent() {
       <Services />
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 px-4 max-w-6xl mx-auto">
+      <section ref={projectsRef as React.RefObject<HTMLDivElement>} id="projects" className="animate-on-scroll py-20 px-4 max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <span className="font-mono text-xs uppercase tracking-widest text-green-500">
             // index_of_operations
@@ -229,9 +250,11 @@ function AppContent() {
               <div className="ember" style={{ left: '8%', bottom: '40%', width: '2px', height: '2px', background: '#0ff', animationDuration: '4.8s', animationDelay: '2.5s', '--drift': '8px' } as React.CSSProperties}></div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {filteredRepos.map((repo) => (
-                <ProjectCard key={repo.id} {...repo} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 stagger-children">
+              {filteredRepos.map((repo, idx) => (
+                <div key={repo.id} className="stagger-item" style={{ ['--stagger-index' as string]: idx.toString() }}>
+                  <ProjectCard {...repo} />
+                </div>
               ))}
             </div>
           </div>
@@ -278,7 +301,7 @@ function AppContent() {
       <Writeups repos={repos} />
 
       {/* Tech Marquee Section */}
-      <section className="overflow-hidden py-6 border-y border-[#1a1a1a] bg-[#050505] relative select-none">
+      <section ref={marqueeRef as React.RefObject<HTMLDivElement>} className="animate-on-scroll overflow-hidden py-6 border-y border-[#1a1a1a] bg-[#050505] relative select-none">
         <div className="absolute top-0 bottom-0 left-0 w-24 bg-gradient-to-r from-black to-transparent pointer-events-none z-10" />
         <div className="absolute top-0 bottom-0 right-0 w-24 bg-gradient-to-l from-black to-transparent pointer-events-none z-10" />
         <div className="flex gap-4 w-max animate-marquee">
@@ -295,7 +318,7 @@ function AppContent() {
       </section>
 
       {/* About & Terminal Section */}
-      <section id="about" className="py-20 px-4 bg-black/40 border-b border-[#1a1a1a] backdrop-blur-sm">
+      <section ref={aboutRef as React.RefObject<HTMLDivElement>} id="about" className="animate-on-scroll py-20 px-4 bg-black/40 border-b border-[#1a1a1a] backdrop-blur-sm">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <span className="font-mono text-xs uppercase tracking-widest text-green-500">
@@ -311,7 +334,7 @@ function AppContent() {
       </section>
 
       {/* Timeline Section */}
-      <section id="timeline" className="py-20 px-4 max-w-4xl mx-auto">
+      <section ref={timelineRef as React.RefObject<HTMLDivElement>} id="timeline" className="animate-on-scroll py-20 px-4 max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <span className="font-mono text-xs uppercase tracking-widest text-green-500">
             // chronological_log
@@ -325,7 +348,7 @@ function AppContent() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 bg-[#050505] border-t border-[#1a1a1a]">
+      <section ref={contactRef as React.RefObject<HTMLDivElement>} id="contact" className="animate-on-scroll py-20 px-4 bg-[#050505] border-t border-[#1a1a1a]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <span className="font-mono text-xs uppercase tracking-widest text-green-500">

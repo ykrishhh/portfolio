@@ -1,3 +1,4 @@
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 import type { CategorizedRepo } from '../../types';
 
 interface Writeup {
@@ -32,11 +33,12 @@ interface WriteupsProps {
 
 export function Writeups({ repos }: WriteupsProps) {
   const writeups: Writeup[] = repos.filter(isWriteupRepo).map(repoToWriteup);
+  const ref = useScrollReveal<HTMLElement>();
 
   if (writeups.length === 0) return null;
 
   return (
-    <section className="py-20 px-4 max-w-5xl mx-auto">
+    <section ref={ref} className="animate-on-scroll py-20 px-4 max-w-5xl mx-auto">
       <div className="text-center mb-12">
         <span className="font-mono text-xs uppercase tracking-widest text-green-500">
           // research_writeups
@@ -48,14 +50,15 @@ export function Writeups({ repos }: WriteupsProps) {
           Technical deep-dives, guides, and research publications
         </p>
       </div>
-      <div className="space-y-4">
-        {writeups.map((w) => (
+      <div className="space-y-4 stagger-children">
+        {writeups.map((w, idx) => (
           <a
             key={w.title}
             href={w.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-lg border border-[#1a1a1a] border-l-[3px] border-l-green-500/30 bg-[#070707] hover:border-green-500/30 hover:bg-green-950/5 hover:shadow-glow-green-sm transition-all duration-300"
+            className="stagger-item group flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-lg glass-panel glass-card-hover border-l-[3px] border-l-green-500/30"
+            style={{ ['--stagger-index' as string]: idx.toString() }}
           >
             <div className="flex-1 min-w-0">
               <h3 className="font-mono text-sm font-bold text-green-500 group-hover:text-green-400 transition-colors">

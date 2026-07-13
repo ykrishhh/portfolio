@@ -86,6 +86,16 @@ const config: Config = {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0' },
         },
+        'mesh-shift': {
+          '0%, 100%': { transform: 'scale(1) rotate(0deg)' },
+          '50%': { transform: 'scale(1.08) rotate(1deg)' },
+        },
+        'shape-drift': {
+          '0%, 100%': { transform: 'translateY(0) rotate(0deg) scale(1)', opacity: '0.5' },
+          '25%': { transform: 'translateY(-15px) rotate(90deg) scale(1.1)', opacity: '0.8' },
+          '50%': { transform: 'translateY(5px) rotate(180deg) scale(0.9)', opacity: '0.4' },
+          '75%': { transform: 'translateY(-8px) rotate(270deg) scale(1.05)', opacity: '0.7' },
+        },
       },
       animation: {
         'glitch-before': 'glitch-before 4s 3s infinite',
@@ -95,6 +105,8 @@ const config: Config = {
         float: 'float 4s ease-in-out infinite',
         'terminal-scan': 'terminal-scan 8s linear infinite',
         'caret-blink': 'caret-blink 1.2s step-end infinite',
+        'mesh-shift': 'mesh-shift 16s ease-in-out infinite alternate',
+        'shape-drift': 'shape-drift 20s ease-in-out infinite',
       },
     },
   },

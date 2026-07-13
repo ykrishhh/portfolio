@@ -1,4 +1,5 @@
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useTiltEffect } from '../../hooks/useTiltEffect';
 
 interface Service {
   title: string;
@@ -49,6 +50,7 @@ const services: Service[] = [
 
 export function Services() {
   const ref = useScrollReveal<HTMLElement>();
+  const tiltRefs = services.map(() => useTiltEffect<HTMLDivElement>({ maxTilt: 6 }));
   return (
     <section ref={ref} className="animate-on-scroll py-20 px-4 max-w-6xl mx-auto">
       <div className="text-center mb-12">
@@ -63,9 +65,11 @@ export function Services() {
         {services.map((s, idx) => (
           <div
             key={s.title}
-            className="stagger-item group relative p-6 rounded-lg glass-panel glass-card-hover"
+            ref={tiltRefs[idx]}
+            className="stagger-item group relative p-6 rounded-lg glass-panel glass-card-hover tilt-card"
             style={{ ['--stagger-index' as string]: idx.toString() }}
           >
+            <div className="tilt-glow" />
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
             
             {/* SVG icon in circular container */}

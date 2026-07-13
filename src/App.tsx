@@ -14,6 +14,8 @@ import {
   Skills,
   Services,
   Writeups,
+  Hero3D,
+  CursorGlow,
 } from './components/ui';
 import { useGitHubRepos } from './hooks/useGitHubRepos';
 import { useScrollReveal } from './hooks/useScrollReveal';
@@ -40,7 +42,6 @@ function SectionDivider() {
 function AppContent() {
   const [activeFilter, setActiveFilter] = useState<RepoCategory | 'all'>('all');
   const [typedTitle, setTypedTitle] = useState('');
-  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
   const fullTitle = 'Android · Linux · ESP32 · AI';
   const { repos, stats, loading } = useGitHubRepos();
 
@@ -66,14 +67,6 @@ function AppContent() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   const filteredRepos = repos.filter(
     (r) => activeFilter === 'all' || r.category === activeFilter
   );
@@ -96,14 +89,10 @@ function AppContent() {
       </div>
       <div className="noise" aria-hidden="true" />
       <div className="scanlines" aria-hidden="true" />
-      <div
-        id="mouse-glow"
-        style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
-        aria-hidden="true"
-      />
 
       <ParticlesBg />
       <MatrixRain />
+      <CursorGlow />
       <Navbar />
 
       {/* Hero Section */}
@@ -111,25 +100,9 @@ function AppContent() {
         id="home"
         className="relative flex flex-col items-center justify-center min-h-screen pt-20 px-4 max-w-5xl mx-auto text-center"
       >
-        {/* Decorative terminal frame behind hero */}
-        <div className="absolute right-[5%] top-[25%] w-[280px] opacity-20 pointer-events-none hidden lg:block">
-          <div className="terminal-frame">
-            <div className="title-bar">
-              <div className="dot dot-red" />
-              <div className="dot dot-yellow" />
-              <div className="dot dot-green" />
-              <span className="label">KRI$H — ~/terminal</span>
-            </div>
-            <div className="p-3 font-mono text-[11px] leading-relaxed text-gray-500">
-              <span className="text-green-500">$</span> whoami<br />
-              <span className="text-gray-400">&gt; security_researcher<br />
-              &gt; exploit_dev<br />
-              &gt; ai_orchestrator</span><br />
-              <span className="text-green-500">$</span> status<br />
-              <span className="text-gray-400">&gt; node_active</span><br />
-              <span className="text-green-500 animate-caret-blink">▊</span>
-            </div>
-          </div>
+        {/* 3D wireframe canvas behind hero */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-50 hidden lg:block">
+          <Hero3D />
         </div>
 
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/30 rounded-full font-mono text-[10px] uppercase tracking-wider text-green-500 mb-6">

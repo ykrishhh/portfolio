@@ -13,3 +13,5 @@ export { Skills } from './Skills';
 export { Services } from './Services';
 export { Writeups } from './Writeups';
 export { MatrixRain } from './MatrixRain';
+export { Hero3D } from './Hero3D';
+export { CursorGlow } from './CursorGlow';

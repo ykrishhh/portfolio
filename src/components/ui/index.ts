@@ -11,6 +11,5 @@ export { ProgressBar } from './ProgressBar';
 export { ScrollToTop } from './ScrollToTop';
 export { Skills } from './Skills';
 export { Services } from './Services';
-export { Testimonials } from './Testimonials';
 export { Writeups } from './Writeups';
 export { MatrixRain } from './MatrixRain';

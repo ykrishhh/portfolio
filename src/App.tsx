@@ -13,7 +13,6 @@ import {
   ScrollToTop,
   Skills,
   Services,
-  Testimonials,
   Writeups,
 } from './components/ui';
 import { useGitHubRepos } from './hooks/useGitHubRepos';
@@ -157,10 +156,6 @@ function AppContent() {
 
       {/* Services Section */}
       <Services />
-
-      {/* Testimonials Section */}
-      <Testimonials />
-      <SectionDivider />
 
       {/* Projects Section */}
       <section id="projects" className="py-20 px-4 max-w-6xl mx-auto">

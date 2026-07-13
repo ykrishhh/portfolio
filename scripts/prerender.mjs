@@ -88,7 +88,7 @@ async function prerender() {
 
     const addr = server.httpServer.address();
     const port = typeof addr === 'object' ? addr.port : 4173;
-    const url = `http://localhost:${port}/portfolio/`;
+    const url = `http://localhost:${port}/`;
 
     console.log(`[prerender] Preview server at ${url}`);
 

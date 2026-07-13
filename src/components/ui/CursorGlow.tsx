@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { throttle } from '../../utils/throttle';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 
 /**
  * Enhanced cursor glow with trailing particles.
@@ -12,10 +13,11 @@ export function CursorGlow() {
   const posRef = useRef({ x: -200, y: -200, tx: -200, ty: -200 });
   const trailPosRef = useRef({ x: -200, y: -200 });
 
-  // Don't render on touch devices
+  // Don't render on touch devices or when user prefers reduced motion
   const isTouchDevice =
     typeof window !== 'undefined' &&
     ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  const prefersReduced = usePrefersReducedMotion();
 
   useEffect(() => {
     if (isTouchDevice) return;
@@ -98,7 +100,7 @@ export function CursorGlow() {
     };
   }, []);
 
-  if (isTouchDevice) return null;
+  if (isTouchDevice || prefersReduced) return null;
 
   return (
     <>

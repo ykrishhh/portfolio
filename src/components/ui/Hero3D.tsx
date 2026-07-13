@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { throttle, debounce } from '../../utils/throttle';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 
 /**
  * Canvas-based 3D wireframe torus knot.
@@ -19,6 +20,7 @@ export function Hero3D() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: 0, y: 0, vx: 0, vy: 0 });
   const timeRef = useRef(0);
+  const prefersReduced = usePrefersReducedMotion();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -39,18 +41,6 @@ export function Hero3D() {
     window.addEventListener('resize', resizeDebounced);
     resize();
 
-    const handleMouse = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const mx = (e.clientX - rect.left - canvas.width / 2) / canvas.width;
-      const my = (e.clientY - rect.top - canvas.height / 2) / canvas.height;
-      mouseRef.current.vx = mx - mouseRef.current.x;
-      mouseRef.current.vy = my - mouseRef.current.y;
-      mouseRef.current.x = mx;
-      mouseRef.current.y = my;
-    };
-    const throttledMouse = throttle(handleMouse, 50);
-    canvas.addEventListener('mousemove', throttledMouse);
-
     const computeTorusKnot = (t: number, u: number, p: number, q: number, R: number, r: number): Point3D => {
       const cu = Math.cos(u);
       const su = Math.sin(u);
@@ -63,18 +53,74 @@ export function Hero3D() {
     };
 
     const project = (p: Point3D, angleX: number, angleY: number, zoom: number): Projected => {
-      // Rotate Y
       const cosY = Math.cos(angleY), sinY = Math.sin(angleY);
       const x1 = p.x * cosY - p.z * sinY;
       const z1 = p.x * sinY + p.z * cosY;
-      // Rotate X
       const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
       const y1 = p.y * cosX - z1 * sinX;
       const z2 = p.y * sinX + z1 * cosX;
-      // Scale
       const fov = zoom / (zoom + z2);
       return { x: x1 * fov, y: y1 * fov };
     };
+
+    const R = 1.8;
+    const r = 0.7;
+    const p = 2;
+    const q = 3;
+    const segments = 30;
+    const rings = 20;
+
+    if (prefersReduced) {
+      // Static single frame — no animation, no mouse tracking
+      resize();
+      const w = canvas.width / 2;
+      const h = canvas.height / 2;
+      const zoom = 240;
+      ctx.strokeStyle = 'rgba(0, 255, 0, 0.15)';
+      for (let i = 0; i < rings; i++) {
+        const u = (i / rings) * Math.PI * 2;
+        ctx.beginPath();
+        for (let j = 0; j <= segments; j++) {
+          const t = (j / segments) * Math.PI * 2;
+          const pt3 = computeTorusKnot(t, u, p, q, R, r);
+          const proj = project(pt3, 0.5, 0.35, zoom);
+          const sx = proj.x * zoom + w;
+          const sy = proj.y * zoom + h;
+          if (j === 0) ctx.moveTo(sx, sy);
+          else ctx.lineTo(sx, sy);
+        }
+        ctx.stroke();
+      }
+      for (let i = 0; i < segments; i++) {
+        const t = (i / segments) * Math.PI * 2;
+        ctx.beginPath();
+        for (let j = 0; j <= rings; j++) {
+          const u = (j / rings) * Math.PI * 2;
+          const pt3 = computeTorusKnot(t, u, p, q, R, r);
+          const proj = project(pt3, 0.5, 0.35, zoom);
+          const sx = proj.x * zoom + w;
+          const sy = proj.y * zoom + h;
+          if (j === 0) ctx.moveTo(sx, sy);
+          else ctx.lineTo(sx, sy);
+        }
+        ctx.stroke();
+      }
+      return;
+    }
+
+    // --- Normal animated path ---
+
+    const handleMouse = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = (e.clientX - rect.left - canvas.width / 2) / canvas.width;
+      const my = (e.clientY - rect.top - canvas.height / 2) / canvas.height;
+      mouseRef.current.vx = mx - mouseRef.current.x;
+      mouseRef.current.vy = my - mouseRef.current.y;
+      mouseRef.current.x = mx;
+      mouseRef.current.y = my;
+    };
+    const throttledMouse = throttle(handleMouse, 50);
+    canvas.addEventListener('mousemove', throttledMouse);
 
     const draw = () => {
       if (!ctx || !canvas) return;
@@ -83,7 +129,6 @@ export function Hero3D() {
       const w = canvas.width / 2;
       const h = canvas.height / 2;
 
-      // Smooth mouse influence on rotation
       const mx = mouseRef.current.x * 1.5;
       const my = mouseRef.current.y * 1.5;
       mouseRef.current.vx *= 0.92;
@@ -94,14 +139,7 @@ export function Hero3D() {
       const angleY = timeRef.current * 0.7 + mx * 0.5 + mouseRef.current.vx * 2;
 
       const zoom = 240;
-      const R = 1.8;
-      const r = 0.7;
-      const p = 2;
-      const q = 3;
-      const segments = 30;
-      const rings = 20;
 
-      // Draw wireframe lines
       ctx.strokeStyle = 'rgba(0, 255, 0, 0.15)';
 
       for (let i = 0; i < rings; i++) {
@@ -134,7 +172,6 @@ export function Hero3D() {
         ctx.stroke();
       }
 
-      // Bright edge lines near cursor
       for (let i = 0; i < rings; i += 2) {
         const u = (i / rings) * Math.PI * 2;
         for (let j = 0; j < segments; j += 2) {
@@ -163,9 +200,11 @@ export function Hero3D() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', resizeDebounced);
-      canvas.removeEventListener('mousemove', throttledMouse);
+      if (!prefersReduced) {
+        canvas.removeEventListener('mousemove', throttledMouse);
+      }
     };
-  }, []);
+  }, [prefersReduced]);
 
   return (
     <canvas

@@ -348,7 +348,17 @@ function AppContent() {
 
         <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-mono text-xs text-gray-600">
-            Built with <span className="text-green-500/80">♥</span> by KRI$H &middot; {new Date().getFullYear()}
+            Built with <span className="text-green-500/80">♥</span> by KRI$H
+            <span className="mx-2 text-gray-700">/</span>
+            <a
+              href="https://harrydev.one"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#c9a84c]/60 hover:text-[#c9a84c] transition-colors duration-200"
+            >
+              harrydev.one
+            </a>
+            &nbsp;&middot;&nbsp;{new Date().getFullYear()}
           </p>
           <div className="flex items-center gap-4">
             <a

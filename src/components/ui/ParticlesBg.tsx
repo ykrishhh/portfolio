@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { throttle, debounce } from '../../utils/throttle';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 
 interface Particle {
   x: number; y: number;
@@ -11,6 +12,7 @@ interface Particle {
 
 export function ParticlesBg() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const prefersReduced = usePrefersReducedMotion();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -172,6 +174,8 @@ export function ParticlesBg() {
       document.removeEventListener('mouseleave', handleLeave);
     };
   }, []);
+
+  if (prefersReduced) return null;
 
   return (
     <canvas

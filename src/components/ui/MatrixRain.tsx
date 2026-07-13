@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 
 export function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const prefersReduced = usePrefersReducedMotion();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -52,6 +54,8 @@ export function MatrixRain() {
       window.removeEventListener('resize', resize);
     };
   }, []);
+
+  if (prefersReduced) return null;
 
   return (
     <canvas

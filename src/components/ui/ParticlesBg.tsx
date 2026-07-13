@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { throttle, debounce } from '../../utils/throttle';
 
 interface Particle {
   x: number; y: number;
@@ -26,9 +27,10 @@ export function ParticlesBg() {
       canvas.height = window.innerHeight;
       initParticles();
     };
+    const resizeDebounced = debounce(resize, 200);
 
     const initParticles = () => {
-      const count = Math.min(Math.floor((canvas.width * canvas.height) / 12000), 150);
+      const count = Math.min(Math.floor((canvas.width * canvas.height) / 14000), 100);
       particles = [];
       for (let i = 0; i < count; i++) {
         const angle = Math.random() * Math.PI * 2;
@@ -52,11 +54,10 @@ export function ParticlesBg() {
       mouse.y = e.clientY;
       mouse.active = true;
 
-      // Motion detection for velocity-based effects
+      // Motion detection for velocity-based effects (throttled to ~30fps)
       const dx = mouse.x - mouse.px;
       const dy = mouse.y - mouse.py;
-      if (Math.hypot(dx, dy) > 2) {
-        // Spawn a brief bright particle at cursor position
+      if (Math.hypot(dx, dy) > 3) {
         particles.push({
           x: mouse.x,
           y: mouse.y,
@@ -66,14 +67,16 @@ export function ParticlesBg() {
           opacity: 0.8,
           connections: [],
         });
-        // Keep particle count bounded
-        if (particles.length > 200) particles.shift();
+        // Keep particle count bounded — lower cap on mobile
+        const maxP = canvas.width < 768 ? 80 : 150;
+        if (particles.length > maxP) particles.splice(0, particles.length - maxP);
       }
     };
+    const throttledMouse = throttle(handleMouse, 33);
     const handleLeave = () => { mouse.active = false; };
 
-    window.addEventListener('resize', resize);
-    window.addEventListener('mousemove', handleMouse);
+    window.addEventListener('resize', resizeDebounced);
+    window.addEventListener('mousemove', throttledMouse);
     document.addEventListener('mouseleave', handleLeave);
     resize();
 
@@ -130,11 +133,14 @@ export function ParticlesBg() {
         ctx.fill();
 
         // Connection lines (proximity-based constellation)
-        ctx.strokeStyle = 'rgba(0, 255, 0, 0.03)';
         ctx.lineWidth = 0.5;
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
-          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          // Quick reject with manhattan distance before expensive hypot
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          if (Math.abs(dx) > 120 || Math.abs(dy) > 120) continue;
+          const dist = Math.hypot(dx, dy);
           if (dist < 120) {
             // Brighter connections near mouse
             let alpha = 0.03;
@@ -161,8 +167,8 @@ export function ParticlesBg() {
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', handleMouse);
+      window.removeEventListener('resize', resizeDebounced);
+      window.removeEventListener('mousemove', throttledMouse);
       document.removeEventListener('mouseleave', handleLeave);
     };
   }, []);

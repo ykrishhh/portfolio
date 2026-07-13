@@ -1,3 +1,5 @@
+import { useTiltEffect } from '../../hooks/useTiltEffect';
+
 interface TimelineItem {
   date: string;
   title: string;
@@ -38,13 +40,14 @@ const timelineData: TimelineItem[] = [
 ];
 
 export function Timeline() {
+  const tiltRefs = timelineData.map(() => useTiltEffect<HTMLDivElement>({ maxTilt: 4, scale: 1.01 }));
   return (
     <div className="relative max-w-2xl mx-auto pl-6 md:pl-8 border-l border-green-500/20 py-4 space-y-8">
       {/* Decorative vertical glowing line */}
-      <div className="absolute top-0 bottom-0 left-[-1px] w-[1px] bg-gradient-to-b from-green-500/80 via-green-500/20 to-transparent shadow-[0_0_8px_rgba(0,255,0,0.5)]" />
+      <div className="absolute top-0 bottom-0 left-[-1px] w-[1px] bg-gradient-to-b from-green-500/80 via-green-500/20 to-transparent shadow-[0_0_8px rgba(0,255,0,0.5)]" />
 
       {timelineData.map((item, index) => (
-        <div key={index} className="relative group transition-all duration-300 hover:translate-x-1">
+        <div key={index} ref={tiltRefs[index]} className="relative group transition-all duration-300 hover:translate-x-1 tilt-card">
           {/* Node dot with pulse ring */}
           <div className="absolute left-[-29px] md:left-[-37px] top-1.5">
             {/* Pulse ring */}

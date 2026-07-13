@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
+import { throttle } from '../../utils/throttle';
 
 /**
  * Enhanced cursor glow with trailing particles.
  * Deferred ring follows the cursor with spring-like motion.
+ * Automatically disables on touch devices to avoid visual clutter.
  */
 export function CursorGlow() {
   const glowRef = useRef<HTMLDivElement>(null);
@@ -10,7 +12,13 @@ export function CursorGlow() {
   const posRef = useRef({ x: -200, y: -200, tx: -200, ty: -200 });
   const trailPosRef = useRef({ x: -200, y: -200 });
 
+  // Don't render on touch devices
+  const isTouchDevice =
+    typeof window !== 'undefined' &&
+    ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
   useEffect(() => {
+    if (isTouchDevice) return;
     const glow = glowRef.current;
     const trail = trailRef.current;
     if (!glow || !trail) return;
@@ -30,7 +38,7 @@ export function CursorGlow() {
       posRef.current.x = e.clientX;
       posRef.current.y = e.clientY;
 
-      // Spawn trailing particle
+      // Spawn trailing particle (throttled via the wrapper)
       if (trailParticles.length >= MAX_TRAIL) {
         const oldest = trailParticles.shift()!;
         trailContainer.removeChild(oldest);
@@ -60,8 +68,9 @@ export function CursorGlow() {
         }, 1200);
       });
     };
+    const throttledMouse = throttle(handleMouse, 50);
 
-    window.addEventListener('mousemove', handleMouse);
+    window.addEventListener('mousemove', throttledMouse);
 
     // Smooth follower animation
     const animate = () => {
@@ -84,10 +93,12 @@ export function CursorGlow() {
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener('mousemove', handleMouse);
+      window.removeEventListener('mousemove', throttledMouse);
       trailContainer.remove();
     };
   }, []);
+
+  if (isTouchDevice) return null;
 
   return (
     <>

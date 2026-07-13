@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useTiltEffect } from '../../hooks/useTiltEffect';
 
 interface StatItem {
   count: string;
@@ -16,6 +17,7 @@ interface StatsProps {
 function AnimatedStat({ stat }: { stat: StatItem }) {
   const [val, setVal] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
+  const tiltRef = useTiltEffect<HTMLDivElement>({ maxTilt: 5, scale: 1.03 });
 
   useEffect(() => {
     const el = ref.current;
@@ -46,8 +48,11 @@ function AnimatedStat({ stat }: { stat: StatItem }) {
 
   return (
     <div
-      ref={ref}
-      className="group relative flex flex-col items-center justify-center p-6 rounded-lg border border-[#1a1a1a] bg-[#070707]/80 backdrop-blur-sm hover:border-green-500/30 hover:scale-[1.02] transition-all duration-300"
+      ref={(node) => {
+        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        (tiltRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+      }}
+      className="group relative flex flex-col items-center justify-center p-6 rounded-lg border border-[#1a1a1a] bg-[#070707]/80 backdrop-blur-sm hover:border-green-500/30 tilt-card"
     >
       <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
       <span className="font-mono text-3xl md:text-4xl font-extrabold text-green-500 tracking-tight mb-2 group-hover:text-green-400 transition-colors">

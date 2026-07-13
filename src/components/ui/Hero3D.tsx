@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { throttle, debounce } from '../../utils/throttle';
 
 /**
  * Canvas-based 3D wireframe torus knot.
@@ -33,8 +34,9 @@ export function Hero3D() {
       canvas.width = Math.min(480, window.innerWidth * 0.8);
       canvas.height = canvas.width;
     };
+    const resizeDebounced = debounce(resize, 150);
 
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resizeDebounced);
     resize();
 
     const handleMouse = (e: MouseEvent) => {
@@ -46,7 +48,8 @@ export function Hero3D() {
       mouseRef.current.x = mx;
       mouseRef.current.y = my;
     };
-    canvas.addEventListener('mousemove', handleMouse);
+    const throttledMouse = throttle(handleMouse, 50);
+    canvas.addEventListener('mousemove', throttledMouse);
 
     const computeTorusKnot = (t: number, u: number, p: number, q: number, R: number, r: number): Point3D => {
       const cu = Math.cos(u);
@@ -159,8 +162,8 @@ export function Hero3D() {
 
     return () => {
       cancelAnimationFrame(animId);
-      window.removeEventListener('resize', resize);
-      canvas.removeEventListener('mousemove', handleMouse);
+      window.removeEventListener('resize', resizeDebounced);
+      canvas.removeEventListener('mousemove', throttledMouse);
     };
   }, []);
 

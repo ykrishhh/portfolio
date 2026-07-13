@@ -82,22 +82,35 @@ export function Navbar() {
             })}
           </ul>
 
-          {/* Theme Toggle */}
+          {/* Theme Toggle — animated pill */}
           <button
             onClick={toggle}
             aria-label="Toggle theme"
-            className="flex items-center justify-center w-[34px] h-[34px] rounded border border-[#1a1a1a] text-gray-500 hover:text-green-500 hover:border-green-500 hover:bg-green-500/10 transition-all duration-300"
+            className={`relative flex items-center w-[56px] h-[28px] rounded-full border transition-all duration-300 ${
+              theme === 'dark'
+                ? 'border-green-500/30 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/50'
+                : 'border-cyan-500/30 bg-cyan-500/5 hover:bg-cyan-500/10 hover:border-cyan-500/50'
+            }`}
           >
-            {theme === 'dark' ? (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-              </svg>
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-              </svg>
-            )}
+            {/* Sliding knob */}
+            <span
+              className={`absolute flex items-center justify-center w-[22px] h-[22px] rounded-full transition-all duration-300 ${
+                theme === 'dark'
+                  ? 'left-[3px] bg-green-500/20 text-green-500 shadow-[0_0_8px_rgba(0,255,0,0.3)]'
+                  : 'left-[31px] bg-cyan-500/20 text-cyan-500 shadow-[0_0_8px_rgba(0,200,255,0.3)]'
+              }`}
+            >
+              {theme === 'dark' ? (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <circle cx="12" cy="12" r="5" />
+                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                </svg>
+              ) : (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                </svg>
+              )}
+            </span>
           </button>
 
           {/* Resume button - button-in-button */}

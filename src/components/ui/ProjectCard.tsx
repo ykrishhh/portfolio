@@ -1,3 +1,4 @@
+import { useTiltEffect } from '../../hooks/useTiltEffect';
 import type { CategorizedRepo } from '../../types';
 
 const LANGUAGE_COLORS: Record<string, string> = {
@@ -17,13 +18,15 @@ const LANGUAGE_COLORS: Record<string, string> = {
 
 export function ProjectCard({ name, description, html_url, stargazers_count, forks_count, language, topics, category }: CategorizedRepo) {
   const langColor = LANGUAGE_COLORS[language ?? ''] ?? '#6b7280';
+  const tiltRef = useTiltEffect<HTMLAnchorElement>({ maxTilt: 6, scale: 1.02 });
 
   return (
     <a
+      ref={tiltRef}
       href={html_url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex flex-col justify-between p-6 rounded glass-panel glass-card-hover min-h-[180px] md:min-h-[200px] stagger-item"
+      className="group relative flex flex-col justify-between p-6 rounded glass-panel glass-card-hover min-h-[180px] md:min-h-[200px] stagger-item tilt-card"
       style={{ ['--stagger-index' as string]: '0' }}
     >
       {/* Outer glitch gradient border on hover */}

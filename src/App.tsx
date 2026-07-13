@@ -100,9 +100,11 @@ function AppContent() {
         id="home"
         className="relative flex flex-col items-center justify-center min-h-screen pt-20 px-4 max-w-5xl mx-auto text-center"
       >
-        {/* 3D wireframe canvas behind hero */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-50 hidden lg:block">
-          <Hero3D />
+        {/* 3D wireframe canvas behind hero — responsive sizing */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40 sm:opacity-50">
+          <div className="flex items-center justify-center h-full">
+            <Hero3D />
+          </div>
         </div>
 
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/30 rounded-full font-mono text-[10px] uppercase tracking-wider text-green-500 mb-6">

@@ -7,7 +7,7 @@ interface Writeup {
   url: string;
 }
 
-const WRITEUP_KEYWORDS = ['guide', 'masterclass', 'hardening', 'toolkit', 'poc', 'rooting'];
+const WRITEUP_KEYWORDS = ['writeup', 'guide', 'masterclass', 'research', 'hardening', 'toolkit', 'poc', 'rooting', 'reversing'];
 
 function isWriteupRepo(repo: CategorizedRepo): boolean {
   const text = `${repo.name} ${repo.description ?? ''}`.toLowerCase();

@@ -430,35 +430,35 @@ const BENTO = [
     tag: "Firmware",
     title: "GLiTCh BadgE",
     desc: "RP2040 + iCE40 fault-injection playground.",
-    img: "https://images.pexels.com/photos/8108728/pexels-photo-8108728.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1200&fit=crop",
+    img: "https://picsum.photos/seed/glitchbadge/1200/1200",
   },
   {
     cls: "bento-b",
     tag: "Extraction",
     title: "CH55x Dumper",
     desc: "Timing-attack firmware readout over UART.",
-    img: "https://images.pexels.com/photos/1432794/pexels-photo-1432794.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop",
+    img: "https://picsum.photos/seed/ch55xdump/1200/600",
   },
   {
     cls: "bento-c",
     tag: "Exploitation",
     title: "ret2dso",
     desc: "Full RELRO bypass via loader metadata.",
-    img: "https://images.pexels.com/photos/5380664/pexels-photo-5380664.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
+    img: "https://picsum.photos/seed/ret2dso/600/600",
   },
   {
     cls: "bento-d",
     tag: "Side-Channel",
     title: "ChipWhisperer",
     desc: "AES key recovery from power traces.",
-    img: "https://images.pexels.com/photos/7858248/pexels-photo-7858248.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
+    img: "https://picsum.photos/seed/chipwhisperer/600/600",
   },
   {
     cls: "bento-e",
     tag: "IoT",
     title: "Echo Show eMMC",
     desc: "Hardware tap to root a smart display.",
-    img: "https://images.pexels.com/photos/163170/board-printed-circuit-board-computer-electronics-163170.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop",
+    img: "https://picsum.photos/seed/echoshowemmc/1200/600",
   },
 ];
 
@@ -513,10 +513,10 @@ function Marquee() {
 
 /* ========== Horizontal Accordion (research domains) ========== */
 const DOMAINS = [
-  { tag: "01", title: "Fault Injection", img: "https://images.pexels.com/photos/8033476/pexels-photo-8033476.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
-  { tag: "02", title: "Side-Channel", img: "https://images.pexels.com/photos/8100056/pexels-photo-8100056.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
-  { tag: "03", title: "Embedded/IoT", img: "https://images.pexels.com/photos/6636497/pexels-photo-6636497.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
-  { tag: "04", title: "Loader Exploits", img: "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
+  { tag: "01", title: "Fault Injection", img: "https://picsum.photos/seed/faultinjection/800/1000" },
+  { tag: "02", title: "Side-Channel", img: "https://picsum.photos/seed/sidechannel/800/1000" },
+  { tag: "03", title: "Embedded/IoT", img: "https://picsum.photos/seed/embeddediot/800/1000" },
+  { tag: "04", title: "Loader Exploits", img: "https://picsum.photos/seed/loaderexploit/800/1000" },
 ];
 
 function DomainAccordion() {
@@ -669,10 +669,10 @@ function App() {
             muted
             loop
             playsInline
-            poster="/hero-poster.jpg"
+            poster="https://picsum.photos/seed/securitycode/1920/1080"
           >
             <source
-              src="https://assets.mixkit.co/videos/45378/45378-720.mp4"
+              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4"
               type="video/mp4"
             />
           </video>

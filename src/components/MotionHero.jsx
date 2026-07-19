@@ -239,7 +239,7 @@ export function MotionHero() {
     const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
     const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "";
     const isMobile = /mobile|android|iphone|ipad/i.test(navigator.userAgent);
-    const isLowEnd = /intel|adreno|mali.*4[0-9]|mali.*5[0-9]|videocore/i.test(renderer);
+    const isLowEnd = /adreno.*5[0-9][0-9]|mali.*4[0-9][0-9]|mali-?4[0-9]0|powervr|videocore|swiftshader/i.test(renderer) && !/iris|arc|radeon.*rx|gtx|rtx/i.test(renderer);
     
     if (isMobile || isLowEnd) {
       setDeviceTier("low");

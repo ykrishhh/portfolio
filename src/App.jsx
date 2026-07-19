@@ -13,6 +13,11 @@ import { ProjectCard, WriteupCard } from "./components/ProjectCard";
 import { Stack, Timeline } from "./components/Timeline";
 import { MotionHero } from "./components/MotionHero";
 import { LenisProvider } from "./components/LenisProvider";
+import {
+  useScrubText,
+  usePinGallery,
+  useScrollReveal,
+} from "./components/animations";
 
 function GithubIcon({ className }) {
   return (
@@ -394,6 +399,180 @@ function ProjectGrid({ projects }) {
   );
 }
 
+/* ========== Gapless Bento Grid (grid-flow-dense) ========== */
+const BENTO = [
+  {
+    cls: "bento-a",
+    tag: "[ FLAGSHIP ]",
+    title: "ESP32-HARNESS",
+    desc: "Telemetry firmware for 2.4GHz RF research.",
+    img: "https://picsum.photos/seed/esp32circuit/1200/1200",
+  },
+  {
+    cls: "bento-b",
+    tag: "[ RED TEAM ]",
+    title: "OU.edu Hunt",
+    desc: "6 validated CVEs, full PoC chain.",
+    img: "https://picsum.photos/seed/terminalcode/1200/600",
+  },
+  {
+    cls: "bento-c",
+    tag: "[ ANDROID ]",
+    title: "Rooting",
+    desc: "KernelSU deep dive.",
+    img: "https://picsum.photos/seed/androidboard/600/600",
+  },
+  {
+    cls: "bento-d",
+    tag: "[ AI ]",
+    title: "pypentest",
+    desc: "Agentic recon.",
+    img: "https://picsum.photos/seed/neuralnet/600/600",
+  },
+  {
+    cls: "bento-e",
+    tag: "[ WEB ]",
+    title: "HarryPanel",
+    desc: "Hosting control plane, Flask + deployment.",
+    img: "https://picsum.photos/seed/serverrack/1200/600",
+  },
+];
+
+function BentoGrid() {
+  return (
+    <div className="bento-grid mt-12">
+      {BENTO.map((cell) => (
+        <a
+          key={cell.title}
+          href="#work"
+          className={`bento-cell ${cell.cls} group reveal`}
+        >
+          <img src={cell.img} alt={cell.title} loading="lazy" />
+          <span className="tag tag-accent bento-cell__tag">{cell.tag}</span>
+          <div className="bento-cell__label">
+            <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[var(--color-text)]">
+              {cell.title}
+            </h3>
+            <p className="mt-1 font-mono text-xs uppercase tracking-[0.05em] text-[var(--color-text-muted)]">
+              {cell.desc}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+/* ========== Infinite Marquee ========== */
+const MARQUEE_ITEMS = [
+  "Python", "C", "ESP32", "Frida", "eBPF", "Android", "Linux",
+  "FastAPI", "LangChain", "React", "Bash", "Kernel", "RF24", "Xposed",
+];
+
+function Marquee() {
+  const row = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+  return (
+    <div className="marquee py-6" aria-hidden="true">
+      <div className="marquee__track">
+        {row.map((item, i) => (
+          <span key={i} className="marquee__item">{item}</span>
+        ))}
+      </div>
+      <div className="marquee__track">
+        {row.map((item, i) => (
+          <span key={i} className="marquee__item">{item}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ========== Horizontal Accordion (research domains) ========== */
+const DOMAINS = [
+  { tag: "01", title: "Offensive Security", img: "https://picsum.photos/seed/redteamlock/800/1000" },
+  { tag: "02", title: "Hardware Hacking", img: "https://picsum.photos/seed/chipset/800/1000" },
+  { tag: "03", title: "Android Research", img: "https://picsum.photos/seed/mobilechip/800/1000" },
+  { tag: "04", title: "AI Pentesting", img: "https://picsum.photos/seed/aimodel/800/1000" },
+];
+
+function DomainAccordion() {
+  return (
+    <div className="accordion mt-12">
+      {DOMAINS.map((d) => (
+        <div key={d.tag} className="accordion__panel group">
+          <img src={d.img} alt={d.title} loading="lazy" />
+          <span className="accordion__panel__index">{d.tag}</span>
+          <div className="accordion__panel__label">
+            <h3 className="font-display text-xl font-bold uppercase tracking-tight text-[var(--color-text)]">
+              {d.title}
+            </h3>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ========== Desire: pinned title + scrubbing text reveal ========== */
+const SCRUB_PARAGRAPH =
+  "I treat every system as a puzzle with a hidden exit. Firmware, kernels, cloud, and the models sitting on top of them all leak the same way. The work is patience, repetition, and a refusal to accept the documented behavior as the real one.";
+
+function DesireSection() {
+  const pinRef = useRef(null);
+  const containerRef = useRef(null);
+  const scrubRef = useRef(null);
+  usePinGallery(pinRef, containerRef);
+  useScrubText(scrubRef);
+
+  return (
+    <section
+      ref={containerRef}
+      className="border-t border-[var(--color-hairline)] py-32 md:py-48"
+    >
+      <div className="container grid gap-12 lg:grid-cols-2">
+        <div ref={pinRef} className="pin-title">
+          <span className="section-bracket reveal">Method</span>
+          <h2 className="section-title reveal stagger-1 mt-4">
+            How I
+            <br />
+            Operate
+          </h2>
+          <div className="mt-8 h-px w-24 bg-[var(--color-accent)]" />
+        </div>
+        <div className="flex flex-col justify-center">
+          <p
+            ref={scrubRef}
+            className="font-display text-2xl font-medium leading-snug tracking-tight text-[var(--color-text)] md:text-3xl"
+          >
+            {SCRUB_PARAGRAPH.split(" ").map((w, i) => (
+              <span key={i} className="scrub-word" data-word>
+                {w}
+              </span>
+            ))}
+          </p>
+          <div className="mt-12 grid grid-cols-2 gap-4">
+            {[
+              ["2022", "First CVE"],
+              ["40+", "Repos shipped"],
+              ["6", "Validated vulns"],
+              ["∞", "Things broken"],
+            ].map(([n, l]) => (
+              <div key={l} className="border border-[var(--color-hairline)] p-5">
+                <div className="font-display text-3xl font-bold text-[var(--color-accent)]">
+                  {n}
+                </div>
+                <div className="mt-1 font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-text-muted)]">
+                  {l}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function WriteupGrid({ writeups }) {
   const ref = useReveal();
   return (
@@ -418,22 +597,37 @@ function App() {
 
   return (
     <LenisProvider>
-      <div className="relative min-h-screen font-sans text-[var(--color-text)]">
+      <main className="relative min-h-screen w-full max-w-full overflow-x-hidden font-sans text-[var(--color-text)]">
         <div className="bg-scanlines" aria-hidden="true" />
         <div className="bg-noise" aria-hidden="true" />
 
         <FluidNav open={menuOpen} setOpen={setMenuOpen} />
 
-        {/* Hero — particle field background + foreground content */}
+        {/* Hero — full-bleed video + particle field + foreground content */}
         <section
           id="home"
           className="relative flex min-h-[100dvh] items-center overflow-hidden"
         >
-          <div className="absolute inset-0" style={{ zIndex: 0 }}>
+          <video
+            className="hero-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="https://picsum.photos/seed/securitycode/1920/1080"
+          >
+            <source
+              src="https://cdn.coverr.co/videos/coverr-typing-on-a-keyboard-1584/1080p.mp4"
+              type="video/mp4"
+            />
+          </video>
+          <div className="hero-video-wash" aria-hidden="true" />
+          <div className="absolute inset-0 opacity-40" style={{ zIndex: 1 }}>
             <MotionHero />
           </div>
+
           <div className="container relative" style={{ zIndex: 2 }}>
-            <div className="max-w-4xl">
+            <div className="max-w-6xl">
               <div className="mb-6 flex items-center gap-3">
                 <span className="reg-mark">[ SYS://ONLINE ]</span>
                 <span className="warning-stripe" style={{ width: "48px" }} />
@@ -441,16 +635,15 @@ function App() {
               <h1
                 className="font-display uppercase"
                 style={{
-                  fontSize: "clamp(3rem, 12vw, 9rem)",
+                  fontSize: "clamp(2.75rem, 7vw, 6.5rem)",
                   fontWeight: 900,
-                  lineHeight: 0.85,
+                  lineHeight: 0.9,
                   letterSpacing: "-0.04em",
                   color: "var(--color-text)",
+                  maxWidth: "18ch",
                 }}
               >
-                KRISHNA
-                <br />
-                <span style={{ color: "var(--color-accent)" }}>SECURITY</span>
+                I break systems so they can't break you.
               </h1>
               <p
                 className="mt-8 max-w-xl font-mono text-sm uppercase tracking-[0.05em] text-[var(--color-text-muted)]"
@@ -531,6 +724,11 @@ function App() {
           </div>
         </section>
 
+        {/* Gapless Bento Grid */}
+        <Section eyebrow="Selected" title="Field Notes" desc="A cross-section of the work: firmware, red team, and the tooling in between.">
+          <BentoGrid />
+        </Section>
+
         {/* Timeline */}
         <Section eyebrow="Timeline" title="Journey" desc="Four years of breaking, building, and researching in public.">
           <div className="mt-16">
@@ -590,6 +788,17 @@ function App() {
             </a>
           </div>
         </Section>
+
+        {/* Infinite Marquee — trusted tooling */}
+        <Marquee />
+
+        {/* Horizontal Accordion — research domains */}
+        <Section eyebrow="Domains" title="Where I Work" desc="Four lanes, one obsession: finding the path that was not supposed to exist.">
+          <DomainAccordion />
+        </Section>
+
+        {/* Desire — pinned title + scrubbing text reveal */}
+        <DesireSection />
 
         {/* Stack / Arsenal */}
         <Stack items={STACK} subtitle="Tech Stack" title="Arsenal" />
@@ -654,7 +863,7 @@ function App() {
             </div>
           </div>
         </footer>
-      </div>
+      </main>
     </LenisProvider>
   );
 }

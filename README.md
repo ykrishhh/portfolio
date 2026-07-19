@@ -1,4 +1,3 @@
-
 <div align="center">
 
 # Portfolio · KRISH
@@ -12,7 +11,7 @@
 
 </div>
 
-Bento grid layout, dark terminal aesthetic, live data from the GitHub API. Built because every other portfolio template felt like wearing someone else's clothes.
+Bento grid, dark terminal aesthetic, live data from the GitHub API. Built because most portfolio templates dress you in someone else's clothes.
 
 **Sections:** Hero → Skills → Stats → Services → Projects → Writeups → Terminal Profile → Timeline → Contact
 

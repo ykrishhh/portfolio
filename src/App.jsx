@@ -50,7 +50,7 @@ const STATS = [
 const PROJECTS = [
   {
     name: "termux-security-toolkit",
-    desc: "Security tools and scripts for Termux — network scanning, password auditing, and ethical hacking on Android.",
+    desc: "Security tools and scripts for Termux — network scanning, password auditing, and pentesting on Android.",
     stars: 5,
     url: "https://github.com/ykrishhh/termux-security-toolkit",
     icon: Terminal,
@@ -74,7 +74,7 @@ const PROJECTS = [
   },
   {
     name: "pypentest-ai",
-    desc: "AI-powered Python pentesting — exploit analysis, vulnerability detection, 10x faster reconnaissance.",
+    desc: "AI-assisted Python pentesting — exploit analysis and vulnerability detection for reconnaissance.",
     stars: 0,
     url: "https://github.com/ykrishhh/pypentest-ai",
     icon: Brain,
@@ -295,11 +295,11 @@ export default function App() {
               className="text-3xl font-medium leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
               style={{ animation: "fadeSlideUp 0.8s ease 0.4s both" }}
             >
-              Breaking systems
+              Security work
               <br />
-              to build them
+              across hardware
               <br />
-              unbreakable.
+              and software.
             </h1>
           </div>
 
@@ -309,7 +309,7 @@ export default function App() {
               style={{ animation: "fadeSlideUp 0.8s ease 0.7s both" }}
             >
               Offensive security, hardware hacking, and autonomous AI — from bare
-              metal to agentic pipelines, built entirely on a phone.
+              metal to agentic pipelines.
             </p>
             <div
               className="flex flex-wrap items-center gap-3"
@@ -405,7 +405,7 @@ export default function App() {
                     <span className="text-white/70">
                       Workspace:{" "}
                       <span className="text-white">
-                        Termux on Nothing Phone
+                        Linux (Termux) on Android
                       </span>
                     </span>
                   </div>
@@ -618,9 +618,9 @@ export default function App() {
       <section className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-medium tracking-tight sm:text-4xl md:text-5xl">
-            Let&apos;s build something
+            Let&apos;s work on
             <br />
-            unbreakable.
+            something useful.
           </h2>
           <p className="mx-auto mt-6 max-w-lg text-sm leading-relaxed text-white/50 sm:text-base">
             Open to security research collaborations, pentesting engagements,
@@ -692,7 +692,7 @@ export default function App() {
       <footer className="border-t border-white/10 px-6 py-8 md:px-12 lg:px-16">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-xs text-white/30">
-            © 2026 Krishna. Built from a phone.
+            © 2026 Krishna.
           </p>
           <p className="text-xs text-white/30">
             India • Offensive Security • Hardware/IoT • Autonomous AI

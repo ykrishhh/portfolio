@@ -50,7 +50,7 @@ const STATS = [
 const PROJECTS = [
   {
     name: "termux-security-toolkit",
-    desc: "Security tools and scripts for Termux — network scanning, password auditing, and pentesting on Android.",
+    desc: "Security tools and scripts for Termux: network scanning, password auditing, and pentesting on Android.",
     stars: 5,
     url: "https://github.com/ykrishhh/termux-security-toolkit",
     icon: Terminal,
@@ -58,7 +58,7 @@ const PROJECTS = [
   },
   {
     name: "ESP32-HARNESS",
-    desc: "Advanced ESP32 pentesting and telemetry firmware — 2.4 GHz research, RF24 experimentation, on-device forensic capture.",
+    desc: "Advanced ESP32 pentesting and telemetry firmware for 2.4 GHz research, RF24 experimentation, and on-device forensic capture.",
     stars: 1,
     url: "https://github.com/ykrishhh/ESP32-HARNESS",
     icon: Cpu,
@@ -66,7 +66,7 @@ const PROJECTS = [
   },
   {
     name: "ou-hunt-report",
-    desc: "OU.edu Red Team Hunt — 6 validated vulnerabilities with proof-of-concept exploits.",
+    desc: "OU.edu Red Team Hunt: 6 validated vulnerabilities with proof-of-concept exploits.",
     stars: 1,
     url: "https://github.com/ykrishhh/ou-hunt-report",
     icon: Shield,
@@ -74,7 +74,7 @@ const PROJECTS = [
   },
   {
     name: "pypentest-ai",
-    desc: "AI-assisted Python pentesting — exploit analysis and vulnerability detection for reconnaissance.",
+    desc: "AI-assisted Python pentesting: exploit analysis and vulnerability detection for reconnaissance.",
     stars: 0,
     url: "https://github.com/ykrishhh/pypentest-ai",
     icon: Brain,
@@ -82,7 +82,7 @@ const PROJECTS = [
   },
   {
     name: "HarryPanel",
-    desc: "Advanced web hosting control panel — server management, database admin, file manager, deployment tools.",
+    desc: "Advanced web hosting control panel: server management, database admin, file manager, and deployment tools.",
     stars: 1,
     url: "https://github.com/ykrishhh/HarryPanel",
     icon: Terminal,
@@ -90,7 +90,7 @@ const PROJECTS = [
   },
   {
     name: "android-rooting-masterclass",
-    desc: "Complete guide to Android rooting and hooking — from user-space DEX editing to Xposed and KernelSU.",
+    desc: "Complete guide to Android rooting and hooking, from user-space DEX editing to Xposed and KernelSU.",
     stars: 1,
     url: "https://github.com/ykrishhh/android-rooting-masterclass",
     icon: Shield,
@@ -156,7 +156,7 @@ const JOURNEY = [
   {
     year: "2025",
     title: "Red Team Engagements",
-    desc: "OU.edu Red Team Hunt — 6 validated vulnerabilities with full PoC chain.",
+    desc: "OU.edu Red Team Hunt: 6 validated vulnerabilities with full PoC chain.",
     icon: Zap,
   },
   {
@@ -308,7 +308,7 @@ export default function App() {
               className="mb-5 max-w-sm text-sm leading-relaxed text-white/60 sm:mb-6 sm:max-w-lg sm:text-base md:text-lg"
               style={{ animation: "fadeSlideUp 0.8s ease 0.7s both" }}
             >
-              Offensive security, hardware hacking, and autonomous AI — from bare
+              Offensive security, hardware hacking, and autonomous AI, from bare
               metal to agentic pipelines.
             </p>
             <div
@@ -371,7 +371,7 @@ export default function App() {
                 </p>
                 <p>
                   From fuzzing ESP32 firmware to orchestrating multi-agent
-                  pentesting pipelines, my work spans the full stack — bare metal
+                  pentesting pipelines, my work spans the full stack, from bare metal
                   to cloud, kernel to API.
                 </p>
                 <p>

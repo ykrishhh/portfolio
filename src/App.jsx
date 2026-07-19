@@ -168,7 +168,6 @@ function useReveal({
 
     if (!targets.length) return undefined;
 
-    // Check prefers-reduced-motion: all visible immediately
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -178,7 +177,6 @@ function useReveal({
       return undefined;
     }
 
-    // Chain delay: each section after hero gets an extra cumulative delay
     const chainDelay = chainIndex > 0 ? chainIndex * 120 : 0;
 
     const observer = new IntersectionObserver(
@@ -186,13 +184,10 @@ function useReveal({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const el = entry.target;
-            // Add chain delay if the element is a section-level reveal target
             if (chainDelay > 0 && !el.closest(".bento-cell, .accordion__panel")) {
               const existingDelay = parseFloat(getComputedStyle(el).transitionDelay) || 0;
-              // Apply chain delay as additional stagger on top of existing stagger
               el.style.transitionDelay = `${existingDelay + chainDelay}ms`;
             }
-            // Use rAF to ensure the style is applied before adding visible
             requestAnimationFrame(() => {
               requestAnimationFrame(() => {
                 el.classList.add("visible");
@@ -212,6 +207,7 @@ function useReveal({
   return ref;
 }
 
+/* ========== FluidNav with glassmorphism ========== */
 function FluidNav({ open, setOpen }) {
   const sentinelRef = useRef(null);
   const [hidden, setHidden] = useState(false);
@@ -254,16 +250,15 @@ function FluidNav({ open, setOpen }) {
         style={{ zIndex: "var(--z-nav)" }}
       >
         <nav
-          className="pointer-events-auto mx-auto mt-6 flex w-max items-center gap-1 border border-[var(--color-hairline)] bg-[var(--color-void)] px-2 py-2"
+          className="pointer-events-auto mx-auto mt-5 flex w-max items-center gap-1 glass-nav px-2 py-2"
           style={{
             transform: hidden ? "translateY(-160%)" : "translateY(0)",
-            transition:
-              "transform var(--duration-smooth) var(--ease-expo)",
+            transition: "transform var(--duration-smooth) var(--ease-expo)",
           }}
         >
           <a
             href="#home"
-            className="px-4 font-semibold text-sm text-[var(--color-text)]"
+            className="px-4 font-semibold text-sm tracking-tight text-[var(--color-accent)]"
           >
             KRISH
           </a>
@@ -300,8 +295,7 @@ function FluidNav({ open, setOpen }) {
                 style={{
                   top: open ? "50%" : "2px",
                   transform: open ? "translateY(-50%) rotate(45deg)" : "none",
-                  transition:
-                    "top var(--duration-base) var(--ease-expo), transform var(--duration-base) var(--ease-spring)",
+                  transition: "top var(--duration-base) var(--ease-expo), transform var(--duration-base) var(--ease-spring)",
                 }}
               />
               <span
@@ -317,8 +311,7 @@ function FluidNav({ open, setOpen }) {
                 style={{
                   bottom: open ? "50%" : "2px",
                   transform: open ? "translateY(50%) rotate(-45deg)" : "none",
-                  transition:
-                    "bottom var(--duration-base) var(--ease-expo), transform var(--duration-base) var(--ease-spring)",
+                  transition: "bottom var(--duration-base) var(--ease-expo), transform var(--duration-base) var(--ease-spring)",
                 }}
               />
             </span>
@@ -336,8 +329,7 @@ function FluidNav({ open, setOpen }) {
           opacity: open ? 1 : 0,
           pointerEvents: open ? "auto" : "none",
           transform: open ? "scale(1)" : "scale(1.04)",
-          transition:
-            "opacity var(--duration-smooth) var(--ease-expo), transform var(--duration-smooth) var(--ease-expo)",
+          transition: "opacity var(--duration-smooth) var(--ease-expo), transform var(--duration-smooth) var(--ease-expo)",
         }}
       >
         <nav className="flex flex-col gap-2">
@@ -392,7 +384,7 @@ function Section({ id, eyebrow, title, desc, children, bordered = true, classNam
       ref={revealRef}
       className={[
         bordered ? "border-t border-[var(--color-hairline)]" : "",
-        "py-24 md:py-32 lg:py-40",
+        "py-28 md:py-40 lg:py-48",
         className,
       ]
         .filter(Boolean)
@@ -551,12 +543,11 @@ function DesireSection() {
   return (
     <section
       ref={containerRef}
-      className="border-t border-[var(--color-hairline)] py-32 md:py-48"
+      className="py-32 md:py-48"
     >
       <div className="container grid gap-12 lg:grid-cols-2">
         <div ref={pinRef} className="pin-title">
-          <span className="section-header">Method</span>
-          <h2 className="section-title stagger-1 mt-4">
+          <h2 className="section-title mt-4">
             How I
             <br />
             Operate
@@ -575,9 +566,9 @@ function DesireSection() {
               ["2022", "First CVE"],
               ["40+", "Repos shipped"],
               ["6", "Validated vulns"],
-              ["∞", "Things broken"],
+              ["\u221e", "Things broken"],
             ].map(([n, l]) => (
-              <div key={l} className="border border-[var(--color-hairline)] p-5">
+              <div key={l} className="stat-cell">
                 <div className="font-display text-3xl font-bold text-[var(--color-accent)]">
                   {n}
                 </div>
@@ -715,18 +706,17 @@ function App() {
           </div>
         </section>
 
-        {/* About */}
+        {/* About — bordered */}
         <section
           id="about"
           ref={aboutRevealRef}
-          className="border-t border-[var(--color-hairline)] py-24 md:py-32 lg:py-40"
+          className="border-t border-[var(--color-hairline)] py-28 md:py-40 lg:py-48"
         >
           <div className="container">
             <div className="grid gap-12 lg:grid-cols-2">
               <div>
-                <span className="section-header reveal">About</span>
-                <h2 className="section-title reveal stagger-1">Krishna</h2>
-                <div className="mt-6 space-y-4 text-base leading-relaxed text-[var(--color-text-muted)] reveal stagger-2">
+                <h2 className="section-title reveal">Krishna</h2>
+                <div className="mt-6 space-y-4 text-base leading-relaxed text-[var(--color-text-muted)] reveal stagger-1">
                   <p>
                     Security engineer. I break systems to learn how they work,
                     then rebuild them stronger.
@@ -742,20 +732,20 @@ function App() {
                 </div>
               </div>
               <div className="flex flex-col justify-center">
-                <Card variant="elevated" className="reveal-scale stagger-3">
+                <Card variant="elevated" className="reveal-scale stagger-2">
                   <CardHeader>
                     <CardTitle>Quick Facts</CardTitle>
-                    <CardDescription>Quick facts.</CardDescription>
+                    <CardDescription>At a glance.</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
                     {[
                       ["Location", "India"],
-                      ["Focus", "OffSec · Hardware · AI"],
+                      ["Focus", "OffSec \u00b7 Hardware \u00b7 AI"],
                       ["Workspace", "Linux (Termux) on Android"],
                       ["Active since", "2022"],
                     ].map(([k, v]) => (
                       <div key={k} className="flex items-center gap-3">
-                        <span className="text-[#E61919]">→</span>
+                        <span className="text-[var(--color-accent)]">\u2192</span>
                         <span className="text-[var(--color-text-muted)]">
                           {k}: <span className="text-[var(--color-text)]">{v}</span>
                         </span>
@@ -768,16 +758,16 @@ function App() {
           </div>
         </section>
 
-        {/* Gapless Bento Grid */}
-        <Section chainIndex={1} eyebrow="Log" title="Signal Log" desc="A cross-section of the work: firmware, red team, and the tooling in between.">
+        {/* Gapless Bento Grid — no border, let the grid breathe */}
+        <Section chainIndex={1} title="Signal Log" desc="A cross-section of the work: firmware, red team, and the tooling in between." bordered={false}>
           <BentoGrid />
         </Section>
 
-        {/* Projects */}
+        {/* Projects — bordered */}
         <Section
           id="work"
           chainIndex={2}
-          eyebrow="Build"
+          bordered
           title="Projects"
           desc="Open-source tools, hardware research, agentic pentest frameworks."
         >
@@ -806,10 +796,10 @@ function App() {
           </div>
         </Section>
 
-        {/* Writeups */}
+        {/* Writeups — no border for rhythm */}
         <Section
           id="writeups"
-          eyebrow="Disassembly"
+          bordered={false}
           title="Writeups"
           desc="Vulnerability analysis from real engagements."
         >
@@ -830,30 +820,29 @@ function App() {
         {/* Infinite Marquee — trusted tooling */}
         <Marquee />
 
-        {/* Horizontal Accordion — research domains */}
-        <Section eyebrow="Domains" title="Where I Work" desc="Four lanes, one obsession: finding the path that was not supposed to exist.">
+        {/* Horizontal Accordion — research domains, bordered */}
+        <Section bordered title="Where I Work" desc="Four lanes, one obsession: finding the path that was not supposed to exist.">
           <DomainAccordion />
         </Section>
 
-        {/* Desire — pinned title + scrubbing text reveal */}
+        {/* Desire — pinned title + scrubbing text reveal, no border */}
         <DesireSection />
 
-        {/* Timeline — moved after Desire for ascending narrative arc */}
-        <Section eyebrow="History" title="Journey" desc="Four years of breaking and building in public.">
+        {/* Timeline — bordered */}
+        <Section bordered title="Journey" desc="Four years of breaking and building in public.">
           <div className="mt-16">
             <Timeline items={JOURNEY} />
           </div>
         </Section>
 
-        {/* Stack / Arsenal */}
-        <Stack items={STACK} subtitle="Tech Stack" title="Arsenal" />
+        {/* Stack / Arsenal — no border */}
+        <Stack items={STACK} title="Arsenal" />
 
-        {/* Contact */}
-        <Section id="contact">
+        {/* Contact — bordered, centered CTA */}
+        <Section id="contact" bordered>
           <div className="mx-auto max-w-3xl text-center">
-            <span className="section-header reveal">Contact</span>
             <h2
-              className="reveal stagger-1 font-display font-bold tracking-tight"
+              className="reveal font-display font-bold tracking-tight"
               style={{
                 fontSize: "clamp(2.5rem, 7vw, 6rem)",
                 lineHeight: 0.95,
@@ -862,11 +851,11 @@ function App() {
             >
               Let's Build
             </h2>
-            <p className="reveal stagger-2 mx-auto mt-6 max-w-lg text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg">
+            <p className="reveal stagger-1 mx-auto mt-6 max-w-lg text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg">
               Open to red team engagements, vuln research collabs, and hard
               reverse-engineering work.
             </p>
-            <ButtonGroup className="reveal stagger-3 mt-8 flex-wrap justify-center gap-3">
+            <ButtonGroup className="reveal stagger-2 mt-8 flex-wrap justify-center gap-3">
               <Button asChild variant="primary">
                 <a href="mailto:krishy2122@gmail.com">
                   <Mail className="h-4 w-4" />
@@ -889,7 +878,13 @@ function App() {
         {/* Konami Easter Egg: override accent to success green while active */}
         {konamiActive && (
           <style>{`
-            :root { --color-accent: #4af626; --color-accent-strong: #6cff47; --color-accent-glow: rgba(74,246,38,0.3); --color-border-accent: #4af626; --color-text-accent: #4af626; }
+            :root {
+              --color-accent: #4af626;
+              --color-accent-strong: #6cff47;
+              --color-accent-glow: rgba(74,246,38,0.3);
+              --color-border-accent: #4af626;
+              --color-text-accent: #4af626;
+            }
           `}</style>
         )}
 

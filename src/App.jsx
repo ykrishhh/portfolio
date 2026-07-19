@@ -431,21 +431,21 @@ const BENTO = [
     tag: "[ GLITCH ]",
     title: "GLiTCh BadgE",
     desc: "RP2040 + iCE40 fault-injection playground.",
-    img: "https://images.pexels.com/photos/2182863/pexels-photo-2182863.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1200&fit=crop",
+    img: "https://images.pexels.com/photos/8108728/pexels-photo-8108728.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1200&fit=crop",
   },
   {
     cls: "bento-b",
     tag: "[ EXTRACT ]",
     title: "CH55x Dumper",
     desc: "Timing-attack firmware readout over UART.",
-    img: "https://images.pexels.com/photos/1448561/pexels-photo-1448561.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop",
+    img: "https://images.pexels.com/photos/1432794/pexels-photo-1432794.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop",
   },
   {
     cls: "bento-c",
     tag: "[ EXPLOIT ]",
     title: "ret2dso",
     desc: "Full RELRO bypass via loader metadata.",
-    img: "https://images.pexels.com/photos/1089438/pexels-photo-1089438.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
+    img: "https://images.pexels.com/photos/5380664/pexels-photo-5380664.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
   {
     cls: "bento-d",
@@ -459,7 +459,7 @@ const BENTO = [
     tag: "[ IOT ]",
     title: "Echo Show eMMC",
     desc: "Hardware tap to root a smart display.",
-    img: "https://images.pexels.com/photos/36169769/pexels-photo-36169769.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop",
+    img: "https://images.pexels.com/photos/163170/board-printed-circuit-board-computer-electronics-163170.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop",
   },
 ];
 
@@ -514,10 +514,10 @@ function Marquee() {
 
 /* ========== Horizontal Accordion (research domains) ========== */
 const DOMAINS = [
-  { tag: "01", title: "Fault Injection", img: "https://images.pexels.com/photos/3520697/pexels-photo-3520697.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
-  { tag: "02", title: "Side-Channel", img: "https://images.pexels.com/photos/132700/pexels-photo-132700.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
-  { tag: "03", title: "Embedded/IoT", img: "https://images.pexels.com/photos/57007/pexels-photo-57007.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
-  { tag: "04", title: "Loader Exploits", img: "https://images.pexels.com/photos/207580/pexels-photo-207580.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
+  { tag: "01", title: "Fault Injection", img: "https://images.pexels.com/photos/8033476/pexels-photo-8033476.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
+  { tag: "02", title: "Side-Channel", img: "https://images.pexels.com/photos/8100056/pexels-photo-8100056.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
+  { tag: "03", title: "Embedded/IoT", img: "https://images.pexels.com/photos/6636497/pexels-photo-6636497.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
+  { tag: "04", title: "Loader Exploits", img: "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop" },
 ];
 
 function DomainAccordion() {
@@ -644,6 +644,7 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [projectFilter, setProjectFilter] = useState("All");
   const konamiActive = useKonamiCode({ duration: 10000 });
+  const flashTimerRef = useRef(null);
 
   const visibleProjects =
     projectFilter === "All"
@@ -657,12 +658,18 @@ function App() {
     if (!konamiActive) return;
     const wrapper = document.querySelector(".hero-media-wrapper");
     if (!wrapper) return;
+    // Clear any pending flash timer on re-trigger to prevent style lingering
+    if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
     wrapper.style.transition = "filter 0.2s ease";
     wrapper.style.filter = "brightness(1.5) hue-rotate(120deg)";
-    const timer = setTimeout(() => {
+    flashTimerRef.current = setTimeout(() => {
       wrapper.style.filter = "";
+      flashTimerRef.current = null;
     }, 200);
-    return () => clearTimeout(timer);
+    return () => {
+      if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
+      flashTimerRef.current = null;
+    };
   }, [konamiActive]);
 
   const aboutRevealRef = useReveal({ chainIndex: 0 });
@@ -687,15 +694,10 @@ function App() {
               muted
               loop
               playsInline
-              poster="https://images.pexels.com/photos/6424585/pexels-photo-6424585.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
+              poster="https://images.pexels.com/photos/6424589/pexels-photo-6424589.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
             >
               <source
-                src="https://assets.mixkit.co/videos/50736/50736-1080.mp4"
-                type="video/mp4"
-                media="(min-width: 769px)"
-              />
-              <source
-                src="https://assets.mixkit.co/videos/50736/50736-720.mp4"
+                src="https://assets.mixkit.co/videos/45378/45378-720.mp4"
                 type="video/mp4"
               />
             </video>

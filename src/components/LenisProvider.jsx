@@ -28,9 +28,10 @@ export function LenisProvider({ children }) {
     lenisRef.current = lenis;
 
     // Single driver: GSAP ticker drives Lenis (prevents double-rAF conflicts)
-    gsap.ticker.add((time) => {
+    const tickerCallback = (time) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(tickerCallback);
     gsap.ticker.lagSmoothing(0);
 
     // Force a resize after first paint so Lenis captures correct dimensions
@@ -43,7 +44,7 @@ export function LenisProvider({ children }) {
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => lenis.raf(time * 1000));
+      gsap.ticker.remove(tickerCallback);
     };
   }, []);
 

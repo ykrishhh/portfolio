@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { AsciiRenderer } from "@react-three/drei";
 import { Points, BufferGeometry, BufferAttribute, ShaderMaterial, AdditiveBlending } from "three";
 
 const PARTICLE_COUNT = 3500;
@@ -211,6 +212,13 @@ export function MotionHeroCanvas({
         explodeAmt={explodeAmt}
         hoverIntensity={hoverIntensity}
         mouse={mouse}
+      />
+      <AsciiRenderer
+        bgColor="transparent"
+        fgColor="#EAEAEA"
+        characters=" .:-+*=%@#"
+        invert={true}
+        resolution={0.175}
       />
     </Canvas>
   );

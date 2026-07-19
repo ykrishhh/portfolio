@@ -11,16 +11,21 @@ const KONAMI_SEQUENCE = [
 export function useKonamiCode({ duration = 10000 } = {}) {
   const [active, setActive] = useState(false);
   const bufferRef = useRef([]);
+  const timerRef = useRef(null);
 
   const activate = useCallback(() => {
+    // Clear any existing timeout on re-trigger
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
     setActive(true);
-    const timer = setTimeout(() => setActive(false), duration);
-    return () => clearTimeout(timer);
+    timerRef.current = setTimeout(() => {
+      setActive(false);
+      timerRef.current = null;
+    }, duration);
   }, [duration]);
 
   useEffect(() => {
-    let cleanupTimer = null;
-
     const handleKeyDown = (e) => {
       // Ignore if user is typing in an input
       if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable) {
@@ -39,7 +44,7 @@ export function useKonamiCode({ duration = 10000 } = {}) {
       if (next.length === KONAMI_SEQUENCE.length &&
           next.every((k, i) => k === KONAMI_SEQUENCE[i])) {
         bufferRef.current = [];
-        cleanupTimer = activate();
+        activate();
       }
     };
 
@@ -47,7 +52,10 @@ export function useKonamiCode({ duration = 10000 } = {}) {
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      if (cleanupTimer) cleanupTimer();
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
     };
   }, [activate]);
 

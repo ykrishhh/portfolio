@@ -40,6 +40,8 @@ const SOCIALS = [
   { name: "harrydev.one", url: "https://harrydev.one", icon: Globe },
 ];
 
+const PROJECT_CATEGORIES = ["All", "Hardware", "AI", "Web", "Android"];
+
 const PROJECTS = [
   {
     name: "termux-security-toolkit",
@@ -47,6 +49,7 @@ const PROJECTS = [
     stars: 5,
     url: "https://github.com/ykrishhh/termux-security-toolkit",
     icon: Terminal,
+    category: "Android",
     tags: ["android", "termux", "pentesting"],
   },
   {
@@ -55,6 +58,7 @@ const PROJECTS = [
     stars: 1,
     url: "https://github.com/ykrishhh/ESP32-HARNESS",
     icon: Cpu,
+    category: "Hardware",
     tags: ["esp32", "firmware", "iot"],
   },
   {
@@ -63,6 +67,7 @@ const PROJECTS = [
     stars: 1,
     url: "https://github.com/ykrishhh/ou-hunt-report",
     icon: Shield,
+    category: "Web",
     tags: ["red-team", "cve", "python"],
   },
   {
@@ -71,6 +76,7 @@ const PROJECTS = [
     stars: 0,
     url: "https://github.com/ykrishhh/pypentest-ai",
     icon: Brain,
+    category: "AI",
     tags: ["ai", "pentesting", "python"],
   },
   {
@@ -79,6 +85,7 @@ const PROJECTS = [
     stars: 1,
     url: "https://github.com/ykrishhh/HarryPanel",
     icon: Terminal,
+    category: "Web",
     tags: ["flask", "devops", "hosting"],
   },
   {
@@ -87,6 +94,7 @@ const PROJECTS = [
     stars: 1,
     url: "https://github.com/ykrishhh/android-rooting-masterclass",
     icon: Shield,
+    category: "Android",
     tags: ["android", "frida", "kernel"],
   },
 ];
@@ -162,6 +170,12 @@ const JOURNEY = [
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [projectFilter, setProjectFilter] = useState("All");
+
+  const visibleProjects =
+    projectFilter === "All"
+      ? PROJECTS
+      : PROJECTS.filter((p) => p.category === projectFilter);
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0a] font-sans text-white">
@@ -216,7 +230,7 @@ export default function App() {
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="relative z-50 flex h-10 w-10 items-center justify-center active:scale-90 md:hidden"
+            className="relative z-50 flex h-11 w-11 items-center justify-center active:scale-90 md:hidden"
             aria-label="Toggle menu"
           >
             <span
@@ -461,8 +475,34 @@ export default function App() {
             pentesting frameworks.
           </p>
 
+          {/* Category filter — stable height, no layout shift on press */}
+          <div
+            className="mb-8 flex min-h-[44px] flex-wrap gap-2"
+            role="group"
+            aria-label="Filter projects by category"
+          >
+            {PROJECT_CATEGORIES.map((cat) => {
+              const active = projectFilter === cat;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setProjectFilter(cat)}
+                  aria-pressed={active}
+                  className={`rounded-lg border px-4 py-2 text-sm transition-colors ${
+                    active
+                      ? "border-white/40 bg-white/10 text-white"
+                      : "border-white/10 bg-white/[0.02] text-white/50 hover:border-white/25 hover:text-white/80"
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
+
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {PROJECTS.map((p) => (
+            {visibleProjects.map((p) => (
               <a
                 key={p.name}
                 href={p.url}
@@ -603,8 +643,8 @@ export default function App() {
             something useful.
           </h2>
           <p className="mx-auto mt-6 max-w-lg text-sm leading-relaxed text-white/50 sm:text-base">
-            Open to security research collaborations, pentesting engagements,
-            and building autonomous systems together.
+            Have a threat model to break, an firmware to audit, or a pipeline to
+            automate? That is the work I want to hear about.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <a
@@ -640,8 +680,7 @@ export default function App() {
             Contact
           </h2>
           <p className="mb-8 max-w-lg text-sm leading-relaxed text-white/50 sm:text-base">
-            Open to collaborations, security research, and building cool things
-            together.
+            Email is fastest. Otherwise find me on GitHub or X.
           </p>
 
           <div className="flex flex-wrap gap-4">

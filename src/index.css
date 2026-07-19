@@ -3,6 +3,16 @@
 @theme {
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-display: "Instrument Serif", Georgia, serif;
+
+  /* Semantic tokens — token-driven theming, no ad-hoc hex per section */
+  --color-bg: #0a0a0a;
+  --color-surface: rgba(255, 255, 255, 0.02);
+  --color-surface-hover: rgba(255, 255, 255, 0.05);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-hover: rgba(255, 255, 255, 0.25);
+  --color-muted: rgba(255, 255, 255, 0.5);
+  --color-faint: rgba(255, 255, 255, 0.3);
+  --color-accent: #4e85bf;
 }
 
 * {
@@ -16,6 +26,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Visible focus for keyboard nav (skill: focus states required) */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 @keyframes fadeSlideUp {
   from {
     opacity: 0;
@@ -24,5 +40,17 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Respect reduced-motion: kill decorative motion (skill pre-delivery) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

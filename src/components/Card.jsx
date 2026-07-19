@@ -17,7 +17,7 @@ const shellBase = {
 
 const shellVariants = {
   default: {},
-  interactive: { cursor: "pointer" },
+  interactive: {},
   elevated: { background: "var(--color-surface-elevated)" },
   glass: { background: "var(--color-surface)" },
 };
@@ -49,7 +49,7 @@ export const Card = forwardRef(function Card(
       data-interactive={isInteractive ? "" : undefined}
       className={cn("card-brutal", `card-brutal--${resolved}`, className)}
       style={shellStyle}
-      tabIndex={isInteractive ? props.tabIndex ?? 0 : props.tabIndex}
+      tabIndex={props.tabIndex}
       {...props}
     >
       {children}

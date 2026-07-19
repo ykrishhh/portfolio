@@ -22,7 +22,7 @@ export function useScrubText(ref, deps = []) {
       { opacity: 0.12 },
       {
         opacity: 1,
-        stagger: 0.5,
+        stagger: 0.2,
         ease: "none",
         scrollTrigger: {
           trigger: el,
@@ -53,7 +53,7 @@ export function usePinGallery(pinRef, containerRef, deps = []) {
       start: "top 18%",
       end: "bottom 85%",
       pin,
-      pinSpacing: false,
+      pinSpacing: true,
     });
 
     return () => st.kill();

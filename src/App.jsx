@@ -291,9 +291,11 @@ function FluidNav({ open, setOpen }) {
 
           <button
             type="button"
+            role="button"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="mobile-menu"
             className="relative flex h-11 w-11 items-center justify-center text-[var(--color-text)] active:scale-90 md:hidden"
           >
             <span className="relative block h-4 w-5">
@@ -330,6 +332,7 @@ function FluidNav({ open, setOpen }) {
 
       {/* Mobile full-screen overlay */}
       <div
+        id="mobile-menu"
         className="fixed inset-0 flex flex-col justify-center px-8 md:hidden"
         style={{
           zIndex: "var(--z-overlay)",
@@ -680,11 +683,16 @@ function App() {
         <div className="bg-scanlines" aria-hidden="true" />
         <div className="bg-noise" aria-hidden="true" />
 
+        <a href="#home" className="skip-link">
+          Skip to content
+        </a>
+
         <FluidNav open={menuOpen} setOpen={setMenuOpen} />
 
         {/* Hero — full-bleed video + particle field + foreground content */}
         <section
           id="home"
+          aria-labelledby="hero-heading"
           className="relative flex min-h-[100dvh] items-center overflow-hidden"
         >
           <div className="hero-media-wrapper" aria-hidden="true">
@@ -718,6 +726,7 @@ function App() {
                 <span className="warning-stripe" style={{ width: "48px" }} />
               </div>
               <h1
+                id="hero-heading"
                 className="font-display uppercase hero-headline"
                 style={{
                   fontSize: "clamp(2.75rem, 7vw, 6.5rem)",

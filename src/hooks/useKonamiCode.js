@@ -32,8 +32,9 @@ export function useKonamiCode({ duration = 10000 } = {}) {
         return;
       }
 
-      // Prevent browser back/forward from Konami arrows
-      if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+      // Only prevent default if the arrow matches the expected next key
+      const isArrowKey = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key);
+      if (isArrowKey && e.key === KONAMI_SEQUENCE[bufferRef.current.length]) {
         e.preventDefault();
       }
 

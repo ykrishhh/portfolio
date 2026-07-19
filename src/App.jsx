@@ -403,38 +403,38 @@ function ProjectGrid({ projects }) {
 const BENTO = [
   {
     cls: "bento-a",
-    tag: "[ FLAGSHIP ]",
-    title: "ESP32-HARNESS",
-    desc: "Telemetry firmware for 2.4GHz RF research.",
-    img: "https://picsum.photos/seed/esp32circuit/1200/1200",
+    tag: "[ GLITCH ]",
+    title: "GLiTCh BadgE",
+    desc: "RP2040 + iCE40 fault-injection playground.",
+    img: "https://picsum.photos/seed/glitchbadge/1200/1200",
   },
   {
     cls: "bento-b",
-    tag: "[ RED TEAM ]",
-    title: "OU.edu Hunt",
-    desc: "6 validated CVEs, full PoC chain.",
-    img: "https://picsum.photos/seed/terminalcode/1200/600",
+    tag: "[ EXTRACT ]",
+    title: "CH55x Dumper",
+    desc: "Timing-attack firmware readout over UART.",
+    img: "https://picsum.photos/seed/ch55xdump/1200/600",
   },
   {
     cls: "bento-c",
-    tag: "[ ANDROID ]",
-    title: "Rooting",
-    desc: "KernelSU deep dive.",
-    img: "https://picsum.photos/seed/androidboard/600/600",
+    tag: "[ EXPLOIT ]",
+    title: "ret2dso",
+    desc: "Full RELRO bypass via loader metadata.",
+    img: "https://picsum.photos/seed/ret2dso/600/600",
   },
   {
     cls: "bento-d",
-    tag: "[ AI ]",
-    title: "pypentest",
-    desc: "Agentic recon.",
-    img: "https://picsum.photos/seed/neuralnet/600/600",
+    tag: "[ SIDE-CH ]",
+    title: "ChipWhisperer",
+    desc: "AES key recovery from power traces.",
+    img: "https://picsum.photos/seed/chipwhisperer/600/600",
   },
   {
     cls: "bento-e",
-    tag: "[ WEB ]",
-    title: "HarryPanel",
-    desc: "Hosting control plane, Flask + deployment.",
-    img: "https://picsum.photos/seed/serverrack/1200/600",
+    tag: "[ IOT ]",
+    title: "Echo Show eMMC",
+    desc: "Hardware tap to root a smart display.",
+    img: "https://picsum.photos/seed/echoshowemmc/1200/600",
   },
 ];
 
@@ -465,8 +465,8 @@ function BentoGrid() {
 
 /* ========== Infinite Marquee ========== */
 const MARQUEE_ITEMS = [
-  "Python", "C", "ESP32", "Frida", "eBPF", "Android", "Linux",
-  "FastAPI", "LangChain", "React", "Bash", "Kernel", "RF24", "Xposed",
+  "RP2350", "CH55x", "STM32", "iCE40", "ESP32", "nRF52", "Frida",
+  "eBPF", "Kernel", "RF24", "Xposed", "LaserFI",
 ];
 
 function Marquee() {
@@ -489,10 +489,10 @@ function Marquee() {
 
 /* ========== Horizontal Accordion (research domains) ========== */
 const DOMAINS = [
-  { tag: "01", title: "Offensive Security", img: "https://picsum.photos/seed/redteamlock/800/1000" },
-  { tag: "02", title: "Hardware Hacking", img: "https://picsum.photos/seed/chipset/800/1000" },
-  { tag: "03", title: "Android Research", img: "https://picsum.photos/seed/mobilechip/800/1000" },
-  { tag: "04", title: "AI Pentesting", img: "https://picsum.photos/seed/aimodel/800/1000" },
+  { tag: "01", title: "Fault Injection", img: "https://picsum.photos/seed/faultinjection/800/1000" },
+  { tag: "02", title: "Side-Channel", img: "https://picsum.photos/seed/sidechannel/800/1000" },
+  { tag: "03", title: "Embedded/IoT", img: "https://picsum.photos/seed/embeddediot/800/1000" },
+  { tag: "04", title: "Loader Exploits", img: "https://picsum.photos/seed/loaderexploit/800/1000" },
 ];
 
 function DomainAccordion() {
@@ -734,12 +734,12 @@ function App() {
         </section>
 
         {/* Gapless Bento Grid */}
-        <Section eyebrow="Selected" title="Field Notes" desc="A cross-section of the work: firmware, red team, and the tooling in between.">
+        <Section eyebrow="[ LOG ]" title="Signal Log" desc="A cross-section of the work: firmware, red team, and the tooling in between.">
           <BentoGrid />
         </Section>
 
         {/* Timeline */}
-        <Section eyebrow="Timeline" title="Journey" desc="Four years of breaking and building in public.">
+        <Section eyebrow="[ HISTORY ]" title="Journey" desc="Four years of breaking and building in public.">
           <div className="mt-16">
             <Timeline items={JOURNEY} />
           </div>
@@ -748,7 +748,7 @@ function App() {
         {/* Projects */}
         <Section
           id="work"
-          eyebrow="Featured Work"
+          eyebrow="[ BUILD ]"
           title="Projects"
           desc="Open-source tools, hardware research, agentic pentest frameworks."
         >
@@ -780,7 +780,7 @@ function App() {
         {/* Writeups */}
         <Section
           id="writeups"
-          eyebrow="Deep Dives"
+          eyebrow="Disassembly"
           title="Writeups"
           desc="Vulnerability analysis from real engagements."
         >
@@ -802,7 +802,7 @@ function App() {
         <Marquee />
 
         {/* Horizontal Accordion — research domains */}
-        <Section eyebrow="Domains" title="Where I Work" desc="Four lanes, one obsession: finding the path that was not supposed to exist.">
+        <Section eyebrow="[ DOMAINS ]" title="Where I Work" desc="Four lanes, one obsession: finding the path that was not supposed to exist.">
           <DomainAccordion />
         </Section>
 
@@ -815,7 +815,7 @@ function App() {
         {/* Contact */}
         <Section id="contact">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="section-bracket reveal">Get In Touch</span>
+            <span className="section-bracket reveal">[ CONTACT ]</span>
             <h2
               className="reveal stagger-1 font-display uppercase tracking-tight"
               style={{

@@ -1,29 +1,101 @@
 import { forwardRef } from "react";
 
+function cn(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
+const SHELL_RADIUS = "var(--radius-3xl)";
+const CORE_RADIUS = "calc(var(--radius-3xl) - 0.5rem)";
+
+const shellBase = {
+  position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  borderRadius: SHELL_RADIUS,
+  padding: "var(--space-2)",
+  border: "1px solid var(--color-hairline)",
+  transition:
+    "border-color var(--duration-smooth) var(--ease-smooth), box-shadow var(--duration-smooth) var(--ease-smooth), transform var(--duration-smooth) var(--ease-spring)",
+};
+
+const coreBase = {
+  position: "relative",
+  zIndex: 1,
+  display: "flex",
+  flexDirection: "column",
+  flex: "1 1 auto",
+  borderRadius: CORE_RADIUS,
+  boxShadow: "var(--shadow-inner-sm)",
+  transition:
+    "background-color var(--duration-smooth) var(--ease-smooth), box-shadow var(--duration-smooth) var(--ease-smooth)",
+};
+
+const shellVariants = {
+  default: {
+    background: "var(--color-surface)",
+    boxShadow: "var(--shadow-sm)",
+  },
+  interactive: {
+    background: "var(--color-surface)",
+    boxShadow: "var(--shadow-sm)",
+    cursor: "pointer",
+  },
+  elevated: {
+    background: "var(--color-surface-elevated)",
+    boxShadow: "var(--shadow-lg)",
+  },
+  glass: {
+    background: "var(--color-surface)",
+    backdropFilter: "blur(20px) saturate(1.4)",
+    WebkitBackdropFilter: "blur(20px) saturate(1.4)",
+    boxShadow: "var(--shadow-md)",
+  },
+};
+
+const coreVariants = {
+  default: { background: "var(--color-surface-elevated)" },
+  interactive: { background: "var(--color-surface-elevated)" },
+  elevated: { background: "var(--color-void-elevated)" },
+  glass: { background: "rgba(255, 255, 255, 0.02)" },
+};
+
 export const Card = forwardRef(function Card(
-  { className = "", children, variant = "default", ...props },
+  {
+    className = "",
+    style,
+    children,
+    variant = "default",
+    interactive: interactiveProp,
+    ...props
+  },
   ref
 ) {
-  const variants = {
-    default:
-      "rounded-xl border border-white/10 bg-white/[0.02] transition-colors duration-200",
-    hover:
-      "rounded-xl border border-white/10 bg-white/[0.02] transition-colors duration-200 hover:border-white/25 hover:bg-white/[0.05]",
-    interactive:
-      "rounded-xl border border-white/10 bg-white/[0.02] transition-colors duration-200 hover:border-white/25 hover:bg-white/[0.05] cursor-pointer active:bg-white/[0.08]",
+  const resolved = shellVariants[variant] ? variant : "default";
+  const isInteractive = interactiveProp ?? resolved === "interactive";
+
+  const shellStyle = {
+    ...shellBase,
+    ...shellVariants[resolved],
+    ...style,
   };
 
   return (
     <div
       ref={ref}
-      className={`${variants[variant]} ${className}`}
+      data-variant={resolved}
+      data-interactive={isInteractive ? "" : undefined}
+      className={cn("card-doppelrand", `card-doppelrand--${resolved}`, className)}
+      style={shellStyle}
+      tabIndex={isInteractive ? props.tabIndex ?? 0 : props.tabIndex}
       {...props}
     >
-      {children}
+      <span aria-hidden="true" className="card-doppelrand__sheen" />
+      <div className="card-doppelrand__core" style={{ ...coreBase, ...coreVariants[resolved] }}>
+        {children}
+      </div>
     </div>
   );
 });
-
 Card.displayName = "Card";
 
 export const CardHeader = forwardRef(function CardHeader(
@@ -33,7 +105,11 @@ export const CardHeader = forwardRef(function CardHeader(
   return (
     <div
       ref={ref}
-      className={`px-5 pt-5 pb-2 ${className}`}
+      className={cn("flex flex-col", className)}
+      style={{
+        gap: "var(--space-1)",
+        padding: "var(--space-6) var(--space-6) var(--space-2)",
+      }}
       {...props}
     >
       {children}
@@ -43,17 +119,25 @@ export const CardHeader = forwardRef(function CardHeader(
 CardHeader.displayName = "CardHeader";
 
 export const CardTitle = forwardRef(function CardTitle(
-  { className = "", children, ...props },
+  { className = "", children, as: Component = "h3", ...props },
   ref
 ) {
   return (
-    <h3
+    <Component
       ref={ref}
-      className={`text-lg font-medium text-white ${className}`}
+      className={className}
+      style={{
+        fontFamily: "var(--font-display)",
+        fontSize: "1.125rem",
+        fontWeight: 600,
+        lineHeight: 1.2,
+        letterSpacing: "-0.01em",
+        color: "var(--color-text)",
+      }}
       {...props}
     >
       {children}
-    </h3>
+    </Component>
   );
 });
 CardTitle.displayName = "CardTitle";
@@ -65,7 +149,12 @@ export const CardDescription = forwardRef(function CardDescription(
   return (
     <p
       ref={ref}
-      className={`mt-1 text-sm text-white/50 ${className}`}
+      className={className}
+      style={{
+        fontSize: "0.875rem",
+        lineHeight: 1.6,
+        color: "var(--color-text-muted)",
+      }}
       {...props}
     >
       {children}
@@ -81,7 +170,8 @@ export const CardContent = forwardRef(function CardContent(
   return (
     <div
       ref={ref}
-      className={`px-5 pb-5 ${className}`}
+      className={cn("flex-1", className)}
+      style={{ padding: "var(--space-2) var(--space-6) var(--space-6)" }}
       {...props}
     >
       {children}
@@ -97,7 +187,13 @@ export const CardFooter = forwardRef(function CardFooter(
   return (
     <div
       ref={ref}
-      className={`flex items-center gap-3 px-5 pb-5 ${className}`}
+      className={cn("flex items-center", className)}
+      style={{
+        gap: "var(--space-3)",
+        padding: "var(--space-2) var(--space-6) var(--space-6)",
+        borderTop: "1px solid var(--color-hairline)",
+        marginTop: "auto",
+      }}
       {...props}
     >
       {children}

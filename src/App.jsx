@@ -1,10 +1,16 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Mail } from "lucide-react";
-import { Button } from "./components/Button";
-import { Card } from "./components/Card";
+import { Button, ButtonGroup, ButtonIcon } from "./components/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./components/Card";
 import { FilterTabList } from "./components/FilterTabs";
 import { ProjectCard, WriteupCard } from "./components/ProjectCard";
 import { Stack, Timeline } from "./components/Timeline";
-import { useState } from "react";
 
 function GithubIcon({ className }) {
   return (
@@ -48,7 +54,7 @@ const PROJECTS = [
     desc: "OU.edu Red Team Hunt: 6 validated vulnerabilities with proof-of-concept exploits.",
     stars: 1,
     url: "https://github.com/ykrishhh/ou-hunt-report",
-    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 1 10z"/></svg>,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
     category: "Web",
     tags: ["red-team", "cve", "python"],
   },
@@ -150,190 +156,384 @@ const JOURNEY = [
   },
 ];
 
+/* ========================================================================== */
+/*  useReveal — scroll-reveal via IntersectionObserver, toggles `.visible`      */
+/* ========================================================================== */
+
+function useReveal({ threshold = 0.15, rootMargin = "0px 0px -10% 0px" } = {}) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return undefined;
+
+    const targets = root.matches?.(".reveal, .reveal-fade, .reveal-scale")
+      ? [root, ...root.querySelectorAll(".reveal, .reveal-fade, .reveal-scale")]
+      : Array.from(root.querySelectorAll(".reveal, .reveal-fade, .reveal-scale"));
+
+    if (!targets.length) return undefined;
+
+    if (typeof IntersectionObserver === "undefined") {
+      targets.forEach((el) => el.classList.add("visible"));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold, rootMargin }
+    );
+
+    targets.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [threshold, rootMargin]);
+
+  return ref;
+}
+
+/* ========================================================================== */
+/*  FluidNav — floating pill island, scroll-aware, morphing hamburger          */
+/* ========================================================================== */
+
+function FluidNav({ open, setOpen }) {
+  const sentinelRef = useRef(null);
+  const [hidden, setHidden] = useState(false);
+  const [atTop, setAtTop] = useState(true);
+  const lastY = useRef(0);
+
+  useEffect(() => {
+    lastY.current = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setAtTop(y < 24);
+      if (open) {
+        setHidden(false);
+      } else if (y > lastY.current && y > 120) {
+        setHidden(true);
+      } else if (y < lastY.current) {
+        setHidden(false);
+      }
+      lastY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [open]);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => setAtTop(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <>
+      <div ref={sentinelRef} aria-hidden="true" className="absolute left-0 top-0 h-6 w-px" />
+
+      <header
+        className="pointer-events-none fixed inset-x-0 top-0 flex justify-center px-4"
+        style={{ zIndex: "var(--z-nav)" }}
+      >
+        <nav
+          className="pointer-events-auto mx-auto mt-6 flex w-max items-center gap-1 rounded-full border border-[var(--color-hairline)] bg-[var(--color-void)]/80 px-2 py-2 backdrop-blur-2xl"
+          style={{
+            boxShadow: atTop ? "var(--shadow-md)" : "var(--shadow-lg)",
+            transform: hidden ? "translateY(-160%)" : "translateY(0)",
+            transition:
+              "transform var(--duration-smooth) var(--ease-expo), box-shadow var(--duration-smooth) var(--ease-smooth)",
+          }}
+        >
+          <a
+            href="#home"
+            className="px-4 text-sm font-semibold tracking-tight text-[var(--color-text)]"
+          >
+            KRISH
+          </a>
+
+          <div className="hidden items-center md:flex">
+            {NAV_LINKS.map((link) => (
+              <a key={link} href={`#${link.toLowerCase()}`} className="nav-link">
+                {link}
+              </a>
+            ))}
+          </div>
+
+          <Button
+            asChild
+            variant="primary"
+            size="sm"
+            className="ml-1 hidden md:inline-flex"
+          >
+            <a href="#contact">Connect</a>
+          </Button>
+
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="relative flex h-11 w-11 items-center justify-center rounded-full text-[var(--color-text)] active:scale-90 md:hidden"
+          >
+            <span className="relative block h-4 w-5">
+              <span
+                className="absolute left-0 block h-[1.5px] w-full rounded-full bg-current"
+                style={{
+                  top: open ? "50%" : "2px",
+                  transform: open ? "translateY(-50%) rotate(45deg)" : "none",
+                  transition:
+                    "top var(--duration-base) var(--ease-expo), transform var(--duration-base) var(--ease-spring)",
+                }}
+              />
+              <span
+                className="absolute left-0 top-1/2 block h-[1.5px] w-full -translate-y-1/2 rounded-full bg-current"
+                style={{
+                  opacity: open ? 0 : 1,
+                  transform: open ? "scaleX(0)" : "scaleX(1)",
+                  transition: "opacity var(--duration-fast) var(--ease-smooth), transform var(--duration-fast) var(--ease-smooth)",
+                }}
+              />
+              <span
+                className="absolute left-0 block h-[1.5px] w-full rounded-full bg-current"
+                style={{
+                  bottom: open ? "50%" : "2px",
+                  transform: open ? "translateY(50%) rotate(-45deg)" : "none",
+                  transition:
+                    "bottom var(--duration-base) var(--ease-expo), transform var(--duration-base) var(--ease-spring)",
+                }}
+              />
+            </span>
+          </button>
+        </nav>
+      </header>
+
+      {/* Mobile full-screen overlay */}
+      <div
+        className="fixed inset-0 flex flex-col justify-center px-8 backdrop-blur-3xl md:hidden"
+        style={{
+          zIndex: "var(--z-overlay)",
+          background: "rgba(3, 3, 3, 0.9)",
+          opacity: open ? 1 : 0,
+          pointerEvents: open ? "auto" : "none",
+          transform: open ? "scale(1)" : "scale(1.04)",
+          transition:
+            "opacity var(--duration-smooth) var(--ease-expo), transform var(--duration-smooth) var(--ease-expo)",
+        }}
+      >
+        <nav className="flex flex-col gap-2">
+          {NAV_LINKS.map((link, i) => (
+            <a
+              key={link}
+              href={`#${link.toLowerCase()}`}
+              onClick={() => setOpen(false)}
+              className="font-display text-4xl font-semibold italic tracking-tight text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+              style={{
+                opacity: open ? 1 : 0,
+                transform: open ? "translateY(0)" : "translateY(16px)",
+                transition: `opacity var(--duration-slow) var(--ease-expo) ${100 + i * 60}ms, transform var(--duration-slow) var(--ease-spring) ${100 + i * 60}ms`,
+              }}
+            >
+              {link}
+            </a>
+          ))}
+        </nav>
+
+        <div
+          className="mt-10 flex flex-wrap gap-3"
+          style={{
+            opacity: open ? 1 : 0,
+            transform: open ? "translateY(0)" : "translateY(16px)",
+            transition: `opacity var(--duration-slow) var(--ease-expo) ${100 + NAV_LINKS.length * 60}ms, transform var(--duration-slow) var(--ease-spring) ${100 + NAV_LINKS.length * 60}ms`,
+          }}
+        >
+          {SOCIALS.map((s) => (
+            <a
+              key={s.name}
+              href={s.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="tag"
+            >
+              {s.name}
+            </a>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ========================================================================== */
+/*  Section — eyebrow + title + desc + border, wired with scroll reveal        */
+/* ========================================================================== */
+
+function Section({ id, eyebrow, title, desc, children, bordered = true, className = "" }) {
+  const revealRef = useReveal();
+  return (
+    <section
+      id={id}
+      ref={revealRef}
+      className={[
+        bordered ? "border-t border-[var(--color-hairline)]" : "",
+        "py-24 md:py-32 lg:py-40",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      <div className="container">
+        {(eyebrow || title || desc) && (
+          <div className="max-w-2xl">
+            {eyebrow && <span className="section-eyebrow reveal">{eyebrow}</span>}
+            {title && <h2 className="section-title reveal stagger-1">{title}</h2>}
+            {desc && <p className="section-desc reveal stagger-2">{desc}</p>}
+          </div>
+        )}
+        {children}
+      </div>
+    </section>
+  );
+}
+
+/* ========================================================================== */
+/*  App                                                                        */
+/* ========================================================================== */
+
 export default function App() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [projectFilter, setProjectFilter] = useState("All");
+  const heroRef = useReveal({ threshold: 0.05 });
 
   const visibleProjects =
     projectFilter === "All"
       ? PROJECTS
       : PROJECTS.filter((p) => p.category === projectFilter);
 
+  const onFilterChange = useCallback((v) => setProjectFilter(v), []);
+
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a] font-sans text-white">
-      {/* Subtle drift mesh */}
-      <div
-        className="pointer-events-none fixed inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(40% 40% at 20% 20%, rgba(78,133,191,0.18), transparent 60%), radial-gradient(35% 35% at 80% 30%, rgba(137,170,204,0.14), transparent 60%), radial-gradient(45% 45% at 50% 90%, rgba(78,133,191,0.10), transparent 60%)",
-          filter: "blur(20px)",
-        }}
-      />
-      
-      {/* Hero Section */}
-      <section className="relative h-screen w-full overflow-hidden">
+    <div className="relative min-h-screen font-sans text-[var(--color-text)]">
+      <div className="bg-mesh" aria-hidden="true" />
+      <div className="bg-noise" aria-hidden="true" />
+
+      <FluidNav open={menuOpen} setOpen={setMenuOpen} />
+
+      {/* Hero */}
+      <section id="home" className="relative min-h-[100dvh] w-full overflow-hidden">
         <video
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: "70% center" }}
+          className="hero-video"
           src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4"
         />
-        <nav className="relative z-30 flex items-center justify-between px-6 py-5 md:px-12 lg:px-16">
-          <a href="#" className="text-lg font-semibold tracking-tight text-white sm:text-xl">
-            KRISH
-          </a>
-          <div className="hidden items-center gap-8 md:flex">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                className="text-sm text-white/80 transition-colors hover:text-white"
-              >
-                {link}
-              </a>
-            ))}
-          </div>
-          <a
-            href="mailto:krishy2122@gmail.com"
-            className="hidden rounded-lg bg-white px-5 py-2 text-sm font-medium text-black transition-transform hover:scale-105 md:block"
-          >
-            Let's Connect
-          </a>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="relative z-50 flex h-11 w-11 items-center justify-center active:scale-90 md:hidden"
-            aria-label="Toggle menu"
-          >
-            <span
-              className={`absolute transition-all duration-300 ${
-                mobileMenuOpen
-                  ? "rotate-90 scale-0 opacity-0"
-                  : "rotate-0 scale-100 opacity-100"
-              }`}
-            >
-              <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-            </span>
-            <span
-              className={`absolute transition-all duration-300 ${
-                mobileMenuOpen
-                  ? "rotate-0 scale-100 opacity-100"
-                  : "-rotate-90 scale-0 opacity-0"
-              }`}
-            >
-              <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </span>
-          </button>
-        </nav>
-
-        {/* Mobile Menu */}
+        <div className="bg-mesh" aria-hidden="true" style={{ position: "absolute", zIndex: 1 }} />
         <div
-          className={`absolute inset-x-0 top-0 z-20 overflow-hidden bg-black/98 backdrop-blur-xl transition-[height,opacity] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            mobileMenuOpen
-              ? "h-screen opacity-100"
-              : "pointer-events-none h-0 opacity-0"
-          }`}
-        >
-          <div className="flex h-full flex-col justify-center px-8">
-            <div
-              className={`transition-all duration-500 delay-100 ${
-                mobileMenuOpen
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-8 opacity-0"
-              }`}
-            >
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase()}`}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="mb-6 block text-3xl font-medium text-white/90 transition-colors hover:text-white"
-                >
-                  {link}
-                </a>
-              ))}
-              <div className="mt-8 flex gap-4">
-                {SOCIALS.map((s) => (
-                  <a
-                    key={s.name}
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-full border border-white/20 px-5 py-2.5 text-sm font-medium text-white/80 transition-colors hover:border-white/50 hover:text-white"
-                  >
-                    {s.name}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+          className="absolute inset-0"
+          aria-hidden="true"
+          style={{
+            zIndex: 1,
+            background:
+              "linear-gradient(180deg, rgba(3,3,3,0.35) 0%, rgba(3,3,3,0.15) 40%, rgba(3,3,3,0.85) 100%)",
+          }}
+        />
 
-        {/* Hero Content */}
-        <div className="relative z-10 flex h-[calc(100vh-80px)] flex-col justify-between px-6 pb-10 pt-12 sm:pb-12 sm:pt-16 md:px-12 md:pb-16 md:pt-20 lg:px-16">
-          <div className="max-w-3xl">
-            <p
-              className="mb-4 text-xs text-white/90 sm:mb-6 sm:text-sm"
-              style={{ animation: "fadeSlideUp 0.8s ease 0.2s both" }}
-            >
-              Security Engineer & AI Researcher
-            </p>
-            <h1
-              className="font-display text-4xl italic leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl"
-              style={{ animation: "fadeSlideUp 0.8s ease 0.4s both" }}
-            >
-              Security work
-              <br />
-              across hardware
-              <br />
-              and software.
-            </h1>
-          </div>
-          <div>
-            <p
-              className="mb-5 max-w-sm text-sm leading-relaxed text-white/60 sm:mb-6 sm:max-w-lg sm:text-base md:text-lg"
-              style={{ animation: "fadeSlideUp 0.8s ease 0.7s both" }}
-            >
-              Offensive security, hardware hacking, and autonomous AI, from bare
-              metal to agentic pipelines.
-            </p>
-            <div
-              className="flex flex-wrap items-center gap-3"
-              style={{ animation: "fadeSlideUp 0.8s ease 0.9s both" }}
-            >
-              <Button variant="primary" asChild>
-                <a href="#work">View Projects <ArrowUpRight className="h-4 w-4" /></a>
-              </Button>
-              <Button variant="secondary" asChild>
-                <a href="#writeups">Read Writeups</a>
-              </Button>
-            </div>
+        <div className="container relative z-10 flex min-h-[100dvh] flex-col justify-end pb-16 pt-32">
+          <p
+            className="section-eyebrow"
+            style={{ animation: "fadeSlideUp 0.8s var(--ease-expo) 0.2s both" }}
+          >
+            Security Engineer &amp; AI Researcher
+          </p>
+          <h1
+            className="font-display italic tracking-tight text-[var(--color-text)]"
+            style={{
+              fontSize: "clamp(3rem, 8vw, 8rem)",
+              lineHeight: 1.02,
+              letterSpacing: "-0.03em",
+              animation: "fadeSlideUp 0.8s var(--ease-expo) 0.4s both",
+            }}
+          >
+            Security work across
+            <br />
+            hardware and software.
+          </h1>
+          <p
+            className="mt-6 max-w-xl text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg"
+            style={{ animation: "fadeSlideUp 0.8s var(--ease-expo) 0.7s both" }}
+          >
+            Offensive security, hardware hacking, and autonomous AI, from bare
+            metal to agentic pipelines.
+          </p>
+          <ButtonGroup
+            className="mt-8 flex-wrap gap-3"
+            style={{ animation: "fadeSlideUp 0.8s var(--ease-expo) 0.9s both" }}
+          >
+            <Button asChild variant="primary">
+              <a href="#work">
+                View Projects
+                <ButtonIcon>
+                  <ArrowUpRight className="h-4 w-4" />
+                </ButtonIcon>
+              </a>
+            </Button>
+            <Button asChild variant="secondary">
+              <a href="#writeups">Read Writeups</a>
+            </Button>
+          </ButtonGroup>
+
+          {/* Scroll indicator: animated line draw */}
+          <div
+            className="mt-14 flex items-center gap-3 text-[var(--color-text-faint)]"
+            style={{ animation: "fadeIn 1s var(--ease-smooth) 1.2s both" }}
+          >
+            <span
+              aria-hidden="true"
+              className="block w-px"
+              style={{
+                height: "48px",
+                background:
+                  "linear-gradient(180deg, var(--color-accent) 0%, transparent 100%)",
+                animation: "lineDraw 1.4s var(--ease-expo) 1.3s both",
+              }}
+            />
+            <span className="text-xs uppercase tracking-[0.2em]">Scroll</span>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="px-6 py-24 md:px-12 lg:px-16">
-        <div className="mx-auto max-w-6xl">
+      {/* About */}
+      <section
+        id="about"
+        ref={heroRef}
+        className="border-t border-[var(--color-hairline)] py-24 md:py-32 lg:py-40"
+      >
+        <div className="container">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
-              <p className="mb-3 text-xs text-white/50 sm:text-sm">About</p>
-              <h2 className="mb-6 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
-                Krishna
-              </h2>
-              <div className="space-y-4 text-sm leading-relaxed text-white/60 sm:text-base">
+              <span className="section-eyebrow reveal">About</span>
+              <h2 className="section-title reveal stagger-1">Krishna</h2>
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-[var(--color-text-muted)] reveal stagger-2">
                 <p>
                   Security engineer focused on offensive security, hardware
                   hacking, and building autonomous AI systems. I break things to
                   understand how they work, then build them stronger.
                 </p>
                 <p>
-                  ESP32 firmware fuzzing, multi-agent pentest pipelines, and Android
-                  attestation research. The work runs from kernel to cloud.
+                  ESP32 firmware fuzzing, multi-agent pentest pipelines, and
+                  Android attestation research. The work runs from kernel to
+                  cloud.
                 </p>
                 <p>
                   Currently building open-source security tools, writing deep-dive
@@ -343,183 +543,147 @@ export default function App() {
               </div>
             </div>
             <div className="flex flex-col justify-center">
-              <Card variant="default" className="p-6">
-                <p className="mb-4 text-xs text-white/40">Quick Facts</p>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center gap-3">
-                    <span className="text-white/30">→</span>
-                    <span className="text-white/70">
-                      Location: <span className="text-white">India</span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-white/30">→</span>
-                    <span className="text-white/70">
-                      Focus:{" "}
-                      <span className="text-white">
-                        OffSec · Hardware · AI
+              <Card variant="elevated" className="reveal-scale stagger-3">
+                <CardHeader>
+                  <CardTitle>Quick Facts</CardTitle>
+                  <CardDescription>The essentials, at a glance.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  {[
+                    ["Location", "India"],
+                    ["Focus", "OffSec · Hardware · AI"],
+                    ["Workspace", "Linux (Termux) on Android"],
+                    ["Active since", "2022"],
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex items-center gap-3">
+                      <span className="text-[var(--color-accent)]">→</span>
+                      <span className="text-[var(--color-text-muted)]">
+                        {k}: <span className="text-[var(--color-text)]">{v}</span>
                       </span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-white/30">→</span>
-                    <span className="text-white/70">
-                      Workspace:{" "}
-                      <span className="text-white">
-                        Linux (Termux) on Android
-                      </span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-white/30">→</span>
-                    <span className="text-white/70">
-                      Active since:{" "}
-                      <span className="text-white">2022</span>
-                    </span>
-                  </div>
-                </div>
+                    </div>
+                  ))}
+                </CardContent>
               </Card>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Journey Section */}
-      <section className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16">
-        <div className="mx-auto max-w-6xl">
-          <p className="mb-3 text-xs text-white/50 sm:text-sm">Timeline</p>
-          <h2 className="mb-12 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
-            Journey
-          </h2>
+      {/* Timeline */}
+      <Section eyebrow="Timeline" title="Journey" desc="Four years of breaking, building, and researching in public.">
+        <div className="mt-16">
           <Timeline items={JOURNEY} />
         </div>
-      </section>
+      </Section>
 
-      {/* Projects Section */}
-      <section id="work" className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16">
-        <div className="mx-auto max-w-6xl">
-          <p className="mb-3 text-xs text-white/50 sm:text-sm">Featured Work</p>
-          <h2 className="mb-4 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
-            Projects
-          </h2>
-          <p className="mb-12 max-w-lg text-sm leading-relaxed text-white/50 sm:text-base">
-            Open-source security tools, hardware research, and AI-powered
-            pentesting frameworks.
-          </p>
-
+      {/* Projects */}
+      <Section
+        id="work"
+        eyebrow="Featured Work"
+        title="Projects"
+        desc="Open-source security tools, hardware research, and AI-powered pentesting frameworks."
+      >
+        <div className="mt-12">
           <FilterTabList
             options={PROJECT_CATEGORIES.map((c) => ({ value: c, label: c }))}
             value={projectFilter}
-            onChange={setProjectFilter}
-            className="mb-8 flex min-h-[44px] flex-wrap gap-2"
-            role="group"
-            aria-label="Filter projects by category"
+            onChange={onFilterChange}
+            className="mb-8"
+            ariaLabel="Filter projects by category"
           />
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {visibleProjects.map((p) => (
-              <ProjectCard key={p.name} project={p} />
-            ))}
-          </div>
+          <ProjectGrid key={projectFilter} projects={visibleProjects} />
 
-          <div className="mt-8">
+          <div className="mt-10">
             <a
               href="https://github.com/ykrishhh?tab=repositories"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
+              className="group inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
             >
               View all repos on GitHub
-              <ArrowUpRight className="h-3.5 w-3.5" />
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* Writeups Section */}
-      <section
+      {/* Writeups */}
+      <Section
         id="writeups"
-        className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16"
+        eyebrow="Deep Dives"
+        title="Writeups"
+        desc="Technical research and vulnerability analysis from real-world engagements."
       >
-        <div className="mx-auto max-w-6xl">
-          <p className="mb-3 text-xs text-white/50 sm:text-sm">Deep Dives</p>
-          <h2 className="mb-4 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
-            Writeups
-          </h2>
-          <p className="mb-12 max-w-lg text-sm leading-relaxed text-white/50 sm:text-base">
-            Technical research and vulnerability analysis from real-world
-            engagements.
-          </p>
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {WRITEUPS.map((w) => (
-              <WriteupCard key={w.title} writeup={w} />
-            ))}
-          </div>
-
-          <div className="mt-8">
-            <a
-              href="https://harrydev.one"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
-            >
-              Browse all writeups
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
-          </div>
+        <WriteupGrid writeups={WRITEUPS} />
+        <div className="mt-10">
+          <a
+            href="https://harrydev.one"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+          >
+            Browse all writeups
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
         </div>
-      </section>
+      </Section>
 
-      {/* Stack Section */}
-      <Stack
-        items={STACK}
-        subtitle="Tech Stack"
-        title="Arsenal"
-      />
+      {/* Stack / Arsenal */}
+      <Stack items={STACK} subtitle="Tech Stack" title="Arsenal" />
 
-      {/* Contact Section */}
-      <section className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16">
+      {/* Contact */}
+      <Section id="contact">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-3 text-xs text-white/50 sm:text-sm">Get In Touch</p>
-          <h2 className="mb-4 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
+          <span className="section-eyebrow reveal">Get In Touch</span>
+          <h2
+            className="reveal stagger-1 font-display italic tracking-tight"
+            style={{
+              fontSize: "clamp(2.5rem, 7vw, 6rem)",
+              lineHeight: 1.02,
+              letterSpacing: "-0.03em",
+            }}
+          >
             Let's Build
           </h2>
-          <p className="mb-8 max-w-lg mx-auto text-sm leading-relaxed text-white/50 sm:text-base">
+          <p className="reveal stagger-2 mx-auto mt-6 max-w-lg text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg">
             Open to security research collaborations, red team engagements, and
             interesting problems.
           </p>
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Button variant="primary" asChild>
+          <ButtonGroup className="reveal stagger-3 mt-8 flex-wrap justify-center gap-3">
+            <Button asChild variant="primary">
               <a href="mailto:krishy2122@gmail.com">
                 <Mail className="h-4 w-4" />
                 Email Me
+                <ButtonIcon>
+                  <ArrowUpRight className="h-4 w-4" />
+                </ButtonIcon>
               </a>
             </Button>
-            <Button variant="secondary" asChild>
+            <Button asChild variant="secondary">
               <a href="https://github.com/ykrishhh" target="_blank" rel="noopener noreferrer">
                 <GithubIcon className="h-4 w-4" />
                 GitHub
               </a>
             </Button>
-          </div>
+          </ButtonGroup>
         </div>
-      </section>
+      </Section>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 px-6 py-12 md:px-12 lg:px-16">
-        <div className="mx-auto max-w-6xl flex flex-col items-center justify-between gap-4 md:flex-row">
-          <p className="text-sm text-white/40">
+      <footer className="border-t border-[var(--color-hairline)] py-12">
+        <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
+          <p className="text-sm text-[var(--color-text-faint)]">
             Built with React 19, Vite 8, Tailwind v4, and zero fluff.
           </p>
-          <div className="flex gap-6">
+          <div className="flex gap-2">
             {SOCIALS.map((s) => (
               <a
                 key={s.name}
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-white/40 transition-colors hover:text-white"
+                className="nav-link"
               >
                 {s.name}
               </a>
@@ -527,6 +691,32 @@ export default function App() {
           </div>
         </div>
       </footer>
+    </div>
+  );
+}
+
+/* ========================================================================== */
+/*  Grids — own reveal observer so cards fade/stagger on scroll                 */
+/* ========================================================================== */
+
+function ProjectGrid({ projects }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {projects.map((p, i) => (
+        <ProjectCard key={p.name} project={p} staggerIndex={(i % 6) + 1} />
+      ))}
+    </div>
+  );
+}
+
+function WriteupGrid({ writeups }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {writeups.map((w, i) => (
+        <WriteupCard key={w.title} writeup={w} staggerIndex={(i % 6) + 1} />
+      ))}
     </div>
   );
 }

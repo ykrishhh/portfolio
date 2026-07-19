@@ -40,13 +40,6 @@ const SOCIALS = [
   { name: "harrydev.one", url: "https://harrydev.one", icon: Globe },
 ];
 
-const STATS = [
-  { label: "Repos", value: "30+" },
-  { label: "Vulns Found", value: "6" },
-  { label: "Writeups", value: "12+" },
-  { label: "Stars", value: "10+" },
-];
-
 const PROJECTS = [
   {
     name: "termux-security-toolkit",
@@ -171,7 +164,16 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-black font-geist text-white">
+    <div className="relative min-h-screen bg-[#0a0a0a] font-sans text-white">
+      {/* subtle drift mesh, matches writeups.harrydev.one */}
+      <div
+        className="pointer-events-none fixed inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(40% 40% at 20% 20%, rgba(78,133,191,0.18), transparent 60%), radial-gradient(35% 35% at 80% 30%, rgba(137,170,204,0.14), transparent 60%), radial-gradient(45% 45% at 50% 90%, rgba(78,133,191,0.10), transparent 60%)",
+          filter: "blur(20px)",
+        }}
+      />
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden">
         <video
@@ -292,7 +294,7 @@ export default function App() {
               Security Engineer &amp; AI Researcher
             </p>
             <h1
-              className="text-3xl font-medium leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+              className="font-display text-4xl italic leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl"
               style={{ animation: "fadeSlideUp 0.8s ease 0.4s both" }}
             >
               Security work
@@ -333,34 +335,13 @@ export default function App() {
         </div>
       </section>
 
-      {/* Stats Bar */}
-      <section className="border-t border-white/10 border-b border-white/10">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 md:grid-cols-4">
-          {STATS.map((s, i) => (
-            <div
-              key={s.label}
-              className={`px-6 py-8 text-center ${
-                i < 3 ? "border-r border-white/10" : ""
-              } ${i < 2 ? "border-b md:border-b-0 border-white/10" : ""} ${
-                i === 2 ? "border-b md:border-b-0 md:border-r border-white/10" : ""
-              }`}
-            >
-              <p className="text-2xl font-medium text-white sm:text-3xl">
-                {s.value}
-              </p>
-              <p className="mt-1 text-xs text-white/40 sm:text-sm">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* About Section */}
       <section id="about" className="px-6 py-24 md:px-12 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
               <p className="mb-3 text-xs text-white/50 sm:text-sm">About</p>
-              <h2 className="mb-6 text-3xl font-medium tracking-tight sm:text-4xl md:text-5xl">
+              <h2 className="mb-6 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
                 Krishna
               </h2>
               <div className="space-y-4 text-sm leading-relaxed text-white/60 sm:text-base">
@@ -427,7 +408,7 @@ export default function App() {
       <section className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <p className="mb-3 text-xs text-white/50 sm:text-sm">Timeline</p>
-          <h2 className="mb-12 text-3xl font-medium tracking-tight sm:text-4xl md:text-5xl">
+          <h2 className="mb-12 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
             Journey
           </h2>
 
@@ -473,7 +454,7 @@ export default function App() {
           <p className="mb-3 text-xs text-white/50 sm:text-sm">
             Featured Work
           </p>
-          <h2 className="mb-4 text-3xl font-medium tracking-tight sm:text-4xl md:text-5xl">
+          <h2 className="mb-4 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
             Projects
           </h2>
           <p className="mb-12 max-w-lg text-sm leading-relaxed text-white/50 sm:text-base">
@@ -544,7 +525,7 @@ export default function App() {
           <p className="mb-3 text-xs text-white/50 sm:text-sm">
             Deep Dives
           </p>
-          <h2 className="mb-4 text-3xl font-medium tracking-tight sm:text-4xl md:text-5xl">
+          <h2 className="mb-4 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
             Writeups
           </h2>
           <p className="mb-12 max-w-lg text-sm leading-relaxed text-white/50 sm:text-base">
@@ -598,7 +579,7 @@ export default function App() {
           <p className="mb-3 text-xs text-white/50 sm:text-sm">
             Tech Stack
           </p>
-          <h2 className="mb-8 text-3xl font-medium tracking-tight sm:text-4xl md:text-5xl">
+          <h2 className="mb-8 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
             Arsenal
           </h2>
           <div className="flex flex-wrap gap-3">
@@ -617,7 +598,7 @@ export default function App() {
       {/* CTA Section */}
       <section className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-medium tracking-tight sm:text-4xl md:text-5xl">
+          <h2 className="font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
             Let&apos;s work on
             <br />
             something useful.
@@ -656,7 +637,7 @@ export default function App() {
           <p className="mb-3 text-xs text-white/50 sm:text-sm">
             Get in Touch
           </p>
-          <h2 className="mb-4 text-3xl font-medium tracking-tight sm:text-4xl md:text-5xl">
+          <h2 className="mb-4 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
             Contact
           </h2>
           <p className="mb-8 max-w-lg text-sm leading-relaxed text-white/50 sm:text-base">

@@ -58,31 +58,4 @@ export function usePinGallery(pinRef, containerRef, deps = []) {
 }
 
 /* Generic reveal: scale 0.85 -> 1 + fade as element enters, darken as it leaves */
-export function useScrollReveal(ref, deps = []) {
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || prefersReduced()) return undefined;
-
-    const tween = gsap.fromTo(
-      el,
-      { scale: 0.85, opacity: 0.2 },
-      {
-        scale: 1,
-        opacity: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-          end: "top 45%",
-          scrub: true,
-        },
-      }
-    );
-
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
-}
+/* Unused — kept for reference */

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,7 +9,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function LenisProvider({ children }) {
   const lenisRef = useRef(null);
-  const [_isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -40,8 +39,6 @@ export function LenisProvider({ children }) {
     ScrollTrigger.addEventListener("refresh", () => lenis.resize());
     lenis.on("scroll", ScrollTrigger.update);
 
-    setIsReady(true);
-
     return () => {
       lenis.destroy();
       gsap.ticker.remove(tickerCallback);
@@ -49,8 +46,4 @@ export function LenisProvider({ children }) {
   }, []);
 
   return <>{children}</>;
-}
-
-export function useLenis() {
-  return lenisRef.current;
 }

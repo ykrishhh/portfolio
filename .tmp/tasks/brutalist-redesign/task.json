@@ -1,0 +1,37 @@
+{
+  "id": "brutalist-redesign",
+  "name": "Brutalist Portfolio Redesign",
+  "status": "active",
+  "objective": "Redesign foldcraft portfolio with tactical telemetry/industrial brutalist aesthetic: #0A0A0A bg, #EAEAEA fg, #E61919 red accent, zero radius, solid borders, CRT scanline overlay",
+  "context_files": [
+    "/home/harry/.config/opencode/context/ui/web/ui-styling-standards.md"
+  ],
+  "reference_files": [
+    "src/index.css",
+    "src/App.jsx",
+    "src/components/Button.jsx",
+    "src/components/Card.jsx",
+    "src/components/FilterTabs.jsx",
+    "src/components/MotionHero.jsx",
+    "src/components/ProjectCard.jsx",
+    "src/components/Timeline.jsx"
+  ],
+  "exit_criteria": [
+    "All color tokens updated to brutalist palette (bg:#0A0A0A, fg:#EAEAEA, accent:#E61919)",
+    "All border-radius values set to 0 — no rounded corners anywhere",
+    "All shadow and glow effects removed",
+    "CRT scanline overlay visible on background",
+    "JetBrains Mono font imported and used for telemetry/UI labels",
+    "ASCII bracket section headers `[ TITLE ]` replace section-eyebrow",
+    "Nav uses `[ KRISH ]` branding with mono uppercase links",
+    "Button.jsx: flat rectangles, uppercase mono labels, red primary accent",
+    "Card.jsx: solid bg, 1px border, zero radius, no double-bezel",
+    "Particle colors changed from cyan to white + red accent",
+    "prefers-reduced-motion support preserved",
+    "LenisProvider and Three.js particle system remain functional",
+    "No data arrays (PROJECTS, WRITEUPS, JOURNEY, STACK, SOCIALS) modified"
+  ],
+  "subtask_count": 9,
+  "completed_count": 0,
+  "created_at": "2026-07-19T12:00:00Z"
+}

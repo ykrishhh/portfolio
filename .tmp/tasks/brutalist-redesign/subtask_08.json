@@ -1,0 +1,40 @@
+{
+  "id": "brutalist-redesign-08",
+  "seq": "08",
+  "title": "Redesign Timeline.jsx — solid vertical accent bar, mono year labels, red dots, flat cards",
+  "status": "completed",
+  "depends_on": ["01"],
+  "parallel": true,
+  "suggested_agent": "OpenFrontendSpecialist",
+  "context_files": [
+    "/home/harry/.config/opencode/context/ui/web/ui-styling-standards.md"
+  ],
+  "reference_files": [
+    "src/components/Timeline.jsx"
+  ],
+  "acceptance_criteria": [
+    "Replace animated line draw (height-based --progress animation) with solid vertical bar of --color-accent red",
+    "lineTrackStyle: 1px solid var(--color-hairline) background track",
+    "lineDrawStyle: remove gradient, replace with solid var(--color-accent) background",
+    "Remove borderRadius from lineDrawStyle",
+    "Remove boxShadow from lineDrawStyle",
+    "Remove --progress CSS variable and IntersectionObserver-driven height animation",
+    "Dot: replace double-bezel dot (outer+inner with border-radius) with single solid red circle",
+    "dotOuterStyle: no border-radius hack, just 12px circle with var(--color-accent) bg",
+    "Active dot: slightly brighter or larger, no glow/shadow",
+    "Year label: JetBrains Mono, uppercase, letter-spacing 0.05em",
+    "Year tag style: replace accent-cyan with accent-red, no border-radius, no bg",
+    "TimelineItem content: replace card-shell/card-core with direct solid bg + 1px border",
+    "Remove box-shadow from timeline cards",
+    "Remove gradient from timeline cards",
+    "Eyebrow style in Stack component: no border-radius, mono font",
+    "StackPill: remove magnetic hover lift animation (translate/scale on mouse move)",
+    "StackPill: simplify to solid border tags, no shadow-glow on hover",
+    "Stack component section: brutalist border-t hairline, consistent padding",
+    "Keep IntersectionObserver-based reveal for scroll triggering",
+    "Keep TimelineItem layout (alternating left/right on desktop) intact"
+  ],
+  "deliverables": [
+    "src/components/Timeline.jsx"
+  ]
+}

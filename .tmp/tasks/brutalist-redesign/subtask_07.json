@@ -1,0 +1,39 @@
+{
+  "id": "brutalist-redesign-07",
+  "seq": "07",
+  "title": "Redesign FluidNav + Section eyebrow + Background in App.jsx — ASCII brackets, mono links, CRT bg",
+  "status": "completed",
+  "depends_on": ["01"],
+  "parallel": true,
+  "suggested_agent": "OpenFrontendSpecialist",
+  "context_files": [
+    "/home/harry/.config/opencode/context/ui/web/ui-styling-standards.md"
+  ],
+  "reference_files": [
+    "src/App.jsx"
+  ],
+  "acceptance_criteria": [
+    "FluidNav branding changed to `[ KRISH ]` format with ASCII bracket decoration",
+    "Nav links: uppercase, JetBrains Mono, letter-spacing 0.05em, font-size 0.8125rem",
+    "Remove rounded-full from nav container — use 0 border-radius",
+    "Remove backdrop-blur-2xl from nav background",
+    "Remove box-shadow transitions on nav (atTop shadow logic removed)",
+    "Nav background: solid var(--color-void) with 1px border var(--color-hairline)",
+    "Remove background: rgba(3,3,3,0.9) and backdrop-blur-3xl from mobile overlay — use solid bg",
+    "Mobile nav links: Geist Extra Bold uppercase, no italic, no tracking-tight override needed",
+    "Mobile overlay: solid #0A0A0A bg",
+    "Replace `section-eyebrow` span in Section component with `[ {eyebrow} ]` format in mono uppercase",
+    "Remove .section-eyebrow class usage from Section component",
+    "Remove bg-mesh div (`<div className=\"bg-mesh\" ... />`) from App — CRT scanline handles bg texture",
+    "Keep bg-noise div (opacity now 0.04 from index.css change)",
+    "CRT scanline overlay wired in index.css as pseudo-element — verify it renders",
+    "Button 'Connect' in nav: use redesigned Button primary with red accent",
+    "Footer: no changes needed beyond inheriting global styles",
+    "Do NOT modify PROJECTS, WRITEUPS, JOURNEY, STACK, SOCIALS data arrays",
+    "Keep LenisProvider import and usage intact",
+    "Keep useReveal and useRef hooks unchanged"
+  ],
+  "deliverables": [
+    "src/App.jsx"
+  ]
+}

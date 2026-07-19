@@ -795,7 +795,7 @@ function App() {
                       ["Active since", "2022"],
                     ].map(([k, v]) => (
                       <div key={k} className="flex items-center gap-3">
-                        <span className="text-[var(--color-accent)]">→</span>
+                        <span className="text-[#FF4444]">→</span>
                         <span className="text-[var(--color-text-muted)]">
                           {k}: <span className="text-[var(--color-text)]">{v}</span>
                         </span>
@@ -849,7 +849,7 @@ function App() {
         {/* Writeups */}
         <Section
           id="writeups"
-          eyebrow="Disassembly"
+          eyebrow="[ DISASSEMBLY ]"
           title="Writeups"
           desc="Vulnerability analysis from real engagements."
         >

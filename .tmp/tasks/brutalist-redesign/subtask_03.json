@@ -1,0 +1,35 @@
+{
+  "id": "brutalist-redesign-03",
+  "seq": "03",
+  "title": "Redesign Card.jsx — strip double-bezel, solid bg, 1px border, zero radius, ASCII bracket header",
+  "status": "completed",
+  "depends_on": ["01"],
+  "parallel": true,
+  "suggested_agent": "OpenFrontendSpecialist",
+  "context_files": [
+    "/home/harry/.config/opencode/context/ui/web/ui-styling-standards.md"
+  ],
+  "reference_files": [
+    "src/components/Card.jsx"
+  ],
+  "acceptance_criteria": [
+    "Remove shell/core nesting architecture entirely (shellBase, coreBase objects, card-doppelrand classes)",
+    "Card renders as a single flat div: solid var(--color-surface) bg, 1px solid var(--color-hairline) border",
+    "border-radius: 0 everywhere — no SHELL_RADIUS, no CORE_RADIUS",
+    "No box-shadow or inset shadow on shell or core",
+    "No backdrop-filter or blur on any variant",
+    "Variant system simplified: default = surface bg, elevated = surface-elevated bg",
+    "CardHeader: ASCII bracket prefix — render `[ TITLE ]` in mono, uppercase format",
+    "CardTitle: JetBrains Mono, uppercase, letter-spacing 0.05em",
+    "CardDescription: muted text, no changes needed beyond font",
+    "CardContent: standard padding, no changes",
+    "CardFooter: standard padding, border-top 1px hairline",
+    "Interactive variant: cursor pointer, border-color changes to hairline-hover on hover",
+    "No transform animations on hover (no translateY, no scale)",
+    "No glow/sheen elements",
+    "focus-visible: use red accent ring"
+  ],
+  "deliverables": [
+    "src/components/Card.jsx"
+  ]
+}

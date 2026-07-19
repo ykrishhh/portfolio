@@ -1,0 +1,32 @@
+{
+  "id": "brutalist-redesign-04",
+  "seq": "04",
+  "title": "Redesign FilterTabs.jsx — solid border indicator on selected tab, mono uppercase labels",
+  "status": "completed",
+  "depends_on": ["01"],
+  "parallel": true,
+  "suggested_agent": "OpenFrontendSpecialist",
+  "context_files": [
+    "/home/harry/.config/opencode/context/ui/web/ui-styling-standards.md"
+  ],
+  "reference_files": [
+    "src/components/FilterTabs.jsx"
+  ],
+  "acceptance_criteria": [
+    "Remove sliding pill indicator (the animated <span> with width/height transforms)",
+    "Replace with: selected tab gets a solid 1px bottom-border or full border in accent red (--color-accent)",
+    "All tab labels: uppercase, JetBrains Mono font, 0.7rem-0.875rem size, tracking 0.05em",
+    "Remove rounded-full from all tab buttons and container",
+    "border-radius: 0 on FilterTabs container and FilterTab buttons",
+    "Remove backdrop-blur from inactive tabs",
+    "Remove shadow-glow and all shadow tokens",
+    "Remove gradient color from indicator",
+    "Keep keyboard navigation (ArrowLeft/Right, Home/End, role='tablist') intact",
+    "Keep focus-visible ring in accent red",
+    "Active tab: red border, white text; Inactive: hairline border, muted text",
+    "min-h-[44px] accessibility kept"
+  ],
+  "deliverables": [
+    "src/components/FilterTabs.jsx"
+  ]
+}

@@ -393,7 +393,7 @@ export const Stack = forwardRef(function Stack(
   return (
     <section
       ref={setRefs}
-      className={cn("border-t border-white/10 px-6 py-24", className)}
+      className={cn("border-t border-[var(--color-hairline)] px-6 py-24", className)}
       style={style}
       {...props}
     >

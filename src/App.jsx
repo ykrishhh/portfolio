@@ -16,7 +16,6 @@ import { LenisProvider } from "./components/LenisProvider";
 import {
   useScrubText,
   usePinGallery,
-  useScrollReveal,
 } from "./components/animations";
 
 function GithubIcon({ className }) {
@@ -192,14 +191,12 @@ function useReveal({ threshold = 0.15, rootMargin = "0px 0px -10% 0px" } = {}) {
 function FluidNav({ open, setOpen }) {
   const sentinelRef = useRef(null);
   const [hidden, setHidden] = useState(false);
-  const [atTop, setAtTop] = useState(true);
   const lastY = useRef(0);
 
   useEffect(() => {
     lastY.current = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
-      setAtTop(y < 24);
       if (open) {
         setHidden(false);
       } else if (y > lastY.current && y > 120) {
@@ -217,7 +214,7 @@ function FluidNav({ open, setOpen }) {
     const el = sentinelRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return undefined;
     const io = new IntersectionObserver(
-      ([entry]) => setAtTop(entry.isIntersecting),
+      ([entry]) => setHidden(!entry.isIntersecting && window.scrollY > 120),
       { threshold: 0 }
     );
     io.observe(el);

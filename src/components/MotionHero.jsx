@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Points, BufferGeometry, BufferAttribute, ShaderMaterial, AdditiveBlending, Color } from "three";
+import { Points, BufferGeometry, BufferAttribute, ShaderMaterial, AdditiveBlending } from "three";
 
 const PARTICLE_COUNT = 3500;
 const FIELD_SIZE = 80;

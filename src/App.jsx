@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Mail } from "lucide-react";
+import { ArrowUpRight, Mail, Terminal } from "lucide-react";
 import { Button, ButtonGroup, ButtonIcon } from "./components/Button";
+import { useKonamiCode } from "./hooks/useKonamiCode";
 import {
   Card,
   CardContent,
@@ -154,7 +155,11 @@ const JOURNEY = [
   },
 ];
 
-function useReveal({ threshold = 0.15, rootMargin = "0px 0px -10% 0px" } = {}) {
+function useReveal({
+  threshold = 0.15,
+  rootMargin = "0px 0px -10% 0px",
+  chainIndex = -1,
+} = {}) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -167,17 +172,37 @@ function useReveal({ threshold = 0.15, rootMargin = "0px 0px -10% 0px" } = {}) {
 
     if (!targets.length) return undefined;
 
-    if (typeof IntersectionObserver === "undefined") {
+    // Check prefers-reduced-motion: all visible immediately
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced || typeof IntersectionObserver === "undefined") {
       targets.forEach((el) => el.classList.add("visible"));
       return undefined;
     }
+
+    // Chain delay: each section after hero gets an extra cumulative delay
+    const chainDelay = chainIndex > 0 ? chainIndex * 120 : 0;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
+            const el = entry.target;
+            // Add chain delay if the element is a section-level reveal target
+            if (chainDelay > 0 && !el.closest(".bento-cell, .accordion__panel")) {
+              const existingDelay = parseFloat(getComputedStyle(el).transitionDelay) || 0;
+              // Apply chain delay as additional stagger on top of existing stagger
+              el.style.transitionDelay = `${existingDelay + chainDelay}ms`;
+            }
+            // Use rAF to ensure the style is applied before adding visible
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                el.classList.add("visible");
+              });
+            });
+            observer.unobserve(el);
           }
         });
       },
@@ -186,7 +211,7 @@ function useReveal({ threshold = 0.15, rootMargin = "0px 0px -10% 0px" } = {}) {
 
     targets.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [threshold, rootMargin]);
+  }, [threshold, rootMargin, chainIndex]);
 
   return ref;
 }
@@ -360,8 +385,8 @@ function FluidNav({ open, setOpen }) {
   );
 }
 
-function Section({ id, eyebrow, title, desc, children, bordered = true, className = "" }) {
-  const revealRef = useReveal();
+function Section({ id, eyebrow, title, desc, children, bordered = true, className = "", chainIndex = -1 }) {
+  const revealRef = useReveal({ chainIndex });
   return (
     <section
       id={id}
@@ -584,9 +609,41 @@ function WriteupGrid({ writeups }) {
   );
 }
 
+function KonamiToast({ active }) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (active) {
+      setVisible(true);
+      const timer = setTimeout(() => setVisible(false), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setVisible(false);
+    }
+  }, [active]);
+
+  if (!visible) return null;
+
+  return (
+    <div
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-3 border border-[var(--color-success)] bg-[var(--color-void)] px-4 py-3 font-mono text-xs tracking-wider"
+      style={{
+        opacity: 1,
+        transform: "translateY(0)",
+        transition: "opacity 0.3s ease, transform 0.3s ease",
+        color: "var(--color-success)",
+      }}
+    >
+      <Terminal className="h-4 w-4" />
+      <span>SYS://MODE: DEBUG</span>
+    </div>
+  );
+}
+
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [projectFilter, setProjectFilter] = useState("All");
+  const konamiActive = useKonamiCode({ duration: 10000 });
 
   const visibleProjects =
     projectFilter === "All"
@@ -594,6 +651,21 @@ function App() {
       : PROJECTS.filter((p) => p.category === projectFilter);
 
   const onFilterChange = useCallback((v) => setProjectFilter(v), []);
+
+  // Flash effect on hero media wrapper when Konami activates
+  useEffect(() => {
+    if (!konamiActive) return;
+    const wrapper = document.querySelector(".hero-media-wrapper");
+    if (!wrapper) return;
+    wrapper.style.transition = "filter 0.2s ease";
+    wrapper.style.filter = "brightness(1.5) hue-rotate(120deg)";
+    const timer = setTimeout(() => {
+      wrapper.style.filter = "";
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [konamiActive]);
+
+  const aboutRevealRef = useReveal({ chainIndex: 0 });
 
   return (
     <LenisProvider>
@@ -618,12 +690,12 @@ function App() {
               poster="https://images.pexels.com/photos/6424585/pexels-photo-6424585.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
             >
               <source
-                src="https://assets.mixkit.co/videos/50748/50748-1080.mp4"
+                src="https://assets.mixkit.co/videos/50736/50736-1080.mp4"
                 type="video/mp4"
                 media="(min-width: 769px)"
               />
               <source
-                src="https://assets.mixkit.co/videos/50748/50748-720.mp4"
+                src="https://assets.mixkit.co/videos/50736/50736-720.mp4"
                 type="video/mp4"
               />
             </video>
@@ -644,7 +716,7 @@ function App() {
                 <span className="warning-stripe" style={{ width: "48px" }} />
               </div>
               <h1
-                className="font-display uppercase"
+                className="font-display uppercase hero-headline"
                 style={{
                   fontSize: "clamp(2.75rem, 7vw, 6.5rem)",
                   fontWeight: 900,
@@ -684,6 +756,7 @@ function App() {
         {/* About */}
         <section
           id="about"
+          ref={aboutRevealRef}
           className="border-t border-[var(--color-hairline)] py-24 md:py-32 lg:py-40"
         >
           <div className="container">
@@ -734,20 +807,14 @@ function App() {
         </section>
 
         {/* Gapless Bento Grid */}
-        <Section eyebrow="[ LOG ]" title="Signal Log" desc="A cross-section of the work: firmware, red team, and the tooling in between.">
+        <Section chainIndex={1} eyebrow="[ LOG ]" title="Signal Log" desc="A cross-section of the work: firmware, red team, and the tooling in between.">
           <BentoGrid />
-        </Section>
-
-        {/* Timeline */}
-        <Section eyebrow="[ HISTORY ]" title="Journey" desc="Four years of breaking and building in public.">
-          <div className="mt-16">
-            <Timeline items={JOURNEY} />
-          </div>
         </Section>
 
         {/* Projects */}
         <Section
           id="work"
+          chainIndex={2}
           eyebrow="[ BUILD ]"
           title="Projects"
           desc="Open-source tools, hardware research, agentic pentest frameworks."
@@ -809,6 +876,13 @@ function App() {
         {/* Desire — pinned title + scrubbing text reveal */}
         <DesireSection />
 
+        {/* Timeline — moved after Desire for ascending narrative arc */}
+        <Section eyebrow="[ HISTORY ]" title="Journey" desc="Four years of breaking and building in public.">
+          <div className="mt-16">
+            <Timeline items={JOURNEY} />
+          </div>
+        </Section>
+
         {/* Stack / Arsenal */}
         <Stack items={STACK} subtitle="Tech Stack" title="Arsenal" />
 
@@ -851,6 +925,13 @@ function App() {
           </div>
         </Section>
 
+        {/* Konami Easter Egg: override accent to success green while active */}
+        {konamiActive && (
+          <style>{`
+            :root { --color-accent: #4af626; --color-accent-strong: #6cff47; --color-accent-glow: rgba(74,246,38,0.3); --color-border-accent: #4af626; --color-text-accent: #4af626; }
+          `}</style>
+        )}
+
         {/* Footer */}
         <footer className="border-t border-[var(--color-hairline)] py-12">
           <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
@@ -872,6 +953,7 @@ function App() {
             </div>
           </div>
         </footer>
+        <KonamiToast active={konamiActive} />
       </main>
     </LenisProvider>
   );

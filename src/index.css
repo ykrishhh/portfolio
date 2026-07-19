@@ -587,6 +587,119 @@ body {
   100% { background-position: 0% 0%; }
 }
 
+/* ========== GLITCH TEXT (screen-tear + chromatic aberration) ========== */
+@keyframes glitch-text {
+  0%, 94%, 100% {
+    clip-path: none;
+    transform: none;
+    text-shadow: none;
+  }
+  95% {
+    clip-path: polygon(0 15%, 100% 12%, 100% 28%, 0 31%);
+    transform: translateX(-2px);
+    text-shadow: 3px 0 rgba(255,0,0,0.6), -3px 0 rgba(0,255,255,0.6);
+  }
+  95.5% {
+    clip-path: polygon(0 48%, 100% 45%, 100% 55%, 0 58%);
+    transform: translateX(2px);
+    text-shadow: -4px 0 rgba(255,0,0,0.5), 4px 0 rgba(0,255,255,0.5);
+  }
+  96% {
+    clip-path: polygon(0 72%, 100% 70%, 100% 82%, 0 85%);
+    transform: translateX(-1px);
+    text-shadow: 2px 0 rgba(255,0,0,0.4), -2px 0 rgba(0,255,255,0.4);
+  }
+  96.5% {
+    clip-path: none;
+    transform: none;
+    text-shadow: none;
+  }
+}
+
+@keyframes glitch-text-2 {
+  0%, 90%, 100% {
+    clip-path: none;
+    transform: none;
+    text-shadow: none;
+  }
+  91% {
+    clip-path: polygon(0 30%, 100% 28%, 100% 42%, 0 45%);
+    transform: translateX(1px);
+    text-shadow: -3px 0 rgba(255,0,0,0.5), 3px 0 rgba(0,255,255,0.5);
+  }
+  92% {
+    clip-path: polygon(0 60%, 100% 58%, 100% 70%, 0 73%);
+    transform: translateX(-2px);
+    text-shadow: 4px 0 rgba(255,0,0,0.4), -4px 0 rgba(0,255,255,0.4);
+  }
+  93% {
+    clip-path: none;
+    transform: none;
+    text-shadow: none;
+  }
+}
+
+@keyframes glitch-text-3 {
+  0%, 92%, 100% {
+    clip-path: none;
+    transform: none;
+    text-shadow: none;
+  }
+  93% {
+    clip-path: polygon(0 20%, 100% 18%, 100% 34%, 0 37%);
+    transform: translateX(-1px);
+    text-shadow: 3px 0 rgba(255,0,0,0.7), -3px 0 rgba(0,255,255,0.7);
+  }
+  94% {
+    clip-path: polygon(0 55%, 100% 53%, 100% 63%, 0 66%);
+    transform: translateX(3px);
+    text-shadow: -5px 0 rgba(255,0,0,0.5), 5px 0 rgba(0,255,255,0.5);
+  }
+  95% {
+    clip-path: polygon(0 78%, 100% 76%, 100% 88%, 0 91%);
+    transform: translateX(-2px);
+    text-shadow: 2px 0 rgba(255,0,0,0.4), -2px 0 rgba(0,255,255,0.4);
+  }
+  96% {
+    clip-path: none;
+    transform: none;
+    text-shadow: none;
+  }
+}
+
+.hero-headline {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-headline .block:nth-child(1) {
+  animation: glitch-text 8s ease-in-out infinite;
+}
+.hero-headline .block:nth-child(2) {
+  animation: glitch-text-2 8s ease-in-out infinite;
+  animation-delay: 0.15s;
+}
+.hero-headline .block:nth-child(3) {
+  animation: glitch-text-3 8s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.hero-headline:hover .block:nth-child(1) {
+  animation-duration: 0.8s;
+}
+.hero-headline:hover .block:nth-child(2) {
+  animation-duration: 0.8s;
+}
+.hero-headline:hover .block:nth-child(3) {
+  animation-duration: 0.8s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-headline .block {
+    animation: none !important;
+  }
+}
+
 /* ========== HERO VIGNETTE — deeper edge darkening ========== */
 .hero-vignette {
   position: absolute;

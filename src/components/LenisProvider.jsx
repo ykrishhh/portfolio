@@ -27,16 +27,14 @@ export function LenisProvider({ children }) {
 
     lenisRef.current = lenis;
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
+    // Single driver: GSAP ticker drives Lenis (prevents double-rAF conflicts)
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
     });
     gsap.ticker.lagSmoothing(0);
+
+    // Force a resize after first paint so Lenis captures correct dimensions
+    requestAnimationFrame(() => lenis.resize());
 
     ScrollTrigger.addEventListener("refresh", () => lenis.resize());
     lenis.on("scroll", ScrollTrigger.update);

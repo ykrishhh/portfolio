@@ -6,8 +6,8 @@ function cn(...classes) {
 
 const base = cn(
   "group relative inline-flex items-center justify-center gap-2 select-none whitespace-nowrap align-middle",
-  "min-h-[44px] min-w-[44px] rounded-full font-medium leading-none",
-  "outline-none [transition:transform_var(--duration-fast)_var(--ease-sharp),background-color_var(--duration-smooth)_var(--ease-spring),border-color_var(--duration-smooth)_var(--ease-smooth),box-shadow_var(--duration-smooth)_var(--ease-smooth),color_var(--duration-smooth)_var(--ease-smooth)]",
+  "min-h-[44px] min-w-[44px] rounded-none font-mono font-semibold uppercase tracking-[0.08em] text-[0.75rem] leading-none",
+  "outline-none [transition:transform_var(--duration-fast)_var(--ease-sharp),background-color_var(--duration-smooth)_var(--ease-sharp),border-color_var(--duration-smooth)_var(--ease-sharp),color_var(--duration-smooth)_var(--ease-sharp)]",
   "focus-visible:[box-shadow:0_0_0_2px_var(--color-void),0_0_0_4px_var(--color-accent)]",
   "active:scale-[0.98] active:[transition:transform_var(--duration-instant)_var(--ease-sharp)]",
   "disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50",
@@ -15,30 +15,29 @@ const base = cn(
 
 const variants = {
   primary: cn(
-    "bg-white text-black shadow-[var(--shadow-glow-sm)]",
-    "hover:bg-white/90 hover:shadow-[var(--shadow-lg),var(--shadow-glow-md)]",
+    "bg-[var(--color-accent)] text-white border border-[var(--color-accent)]",
+    "hover:bg-[var(--color-accent-strong)] hover:border-[var(--color-accent-strong)]",
   ),
   secondary: cn(
-    "text-white bg-[var(--color-surface)] border border-[var(--color-hairline)]",
-    "backdrop-blur-md",
-    "hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-hairline-hover)] hover:shadow-[var(--shadow-md)]",
+    "text-[var(--color-text)] bg-[var(--color-surface)] border border-[var(--color-hairline-strong)]",
+    "hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
   ),
   outline: cn(
-    "text-white/80 border-2 border-white/20 bg-transparent",
-    "hover:text-white hover:border-white/40 hover:bg-white/[0.02]",
+    "text-[var(--color-text)] border border-[var(--color-hairline-strong)] bg-transparent",
+    "hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]",
   ),
   ghost: cn(
-    "text-[var(--color-text-muted)] bg-transparent",
-    "hover:text-white hover:bg-[var(--color-surface)]",
+    "text-[var(--color-text-muted)] bg-transparent border border-transparent",
+    "hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]",
   ),
   destructive: cn(
-    "text-white bg-[var(--color-error)] shadow-[0_0_16px_rgba(239,68,68,0.18)]",
-    "hover:bg-[#dc2626] hover:shadow-[var(--shadow-lg),0_0_28px_rgba(239,68,68,0.28)]",
+    "text-white bg-[var(--color-error)] border border-[var(--color-error)]",
+    "hover:bg-[#ff2a2a] hover:border-[#ff2a2a]",
   ),
 };
 
 const iconWrapVariants = {
-  primary: "bg-black/5",
+  primary: "bg-black/10",
   secondary: "bg-white/5",
   outline: "bg-white/5",
   ghost: "bg-white/5",
@@ -46,9 +45,9 @@ const iconWrapVariants = {
 };
 
 const sizes = {
-  sm: "h-11 min-h-[44px] px-4 text-xs gap-1.5",
-  md: "h-11 min-h-[44px] px-6 text-sm gap-2",
-  lg: "h-12 min-h-[48px] px-8 text-base gap-2.5",
+  sm: "h-11 min-h-[44px] px-4 text-[0.7rem] gap-1.5",
+  md: "h-11 min-h-[44px] px-6 text-[0.75rem] gap-2",
+  lg: "h-12 min-h-[48px] px-8 text-[0.8rem] gap-2.5",
   icon: "h-11 w-11 min-h-[44px] min-w-[44px] p-0",
 };
 
@@ -73,9 +72,9 @@ export const ButtonIcon = forwardRef(function ButtonIcon(
       aria-hidden="true"
       data-button-icon=""
       className={cn(
-        "inline-flex shrink-0 items-center justify-center w-8 h-8 rounded-full",
-        "[transition:transform_var(--duration-smooth)_var(--ease-spring),background-color_var(--duration-smooth)_var(--ease-smooth)]",
-        "group-hover:translate-x-1 group-hover:-translate-y-px group-hover:scale-105",
+        "inline-flex shrink-0 items-center justify-center w-8 h-8 rounded-none",
+        "[transition:transform_var(--duration-smooth)_var(--ease-sharp),background-color_var(--duration-smooth)_var(--ease-sharp)]",
+        "group-hover:translate-x-1 group-hover:-translate-y-px",
         className
       )}
       {...props}

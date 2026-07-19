@@ -107,10 +107,10 @@ export const FilterTabs = forwardRef(function FilterTabs(
           <span
             aria-hidden="true"
             className={cn(
-              "pointer-events-none absolute left-0 top-0 z-0 rounded-[var(--radius-full)]",
-              "bg-[var(--color-accent)] shadow-[var(--shadow-glow-sm)]",
+              "pointer-events-none absolute left-0 top-0 z-0 rounded-none",
+              "bg-[var(--color-accent)]",
               ready &&
-                "[transition:transform_var(--duration-smooth)_var(--ease-spring),width_var(--duration-smooth)_var(--ease-spring),height_var(--duration-smooth)_var(--ease-spring)]"
+                "[transition:transform_var(--duration-smooth)_var(--ease-sharp),width_var(--duration-smooth)_var(--ease-sharp),height_var(--duration-smooth)_var(--ease-sharp)]"
             )}
             style={{
               width: `${indicator.width}px`,
@@ -188,15 +188,15 @@ export const FilterTab = forwardRef(function FilterTab(
       onKeyDown={handleKeyDown}
       className={cn(
         "relative z-[1] inline-flex select-none items-center justify-center whitespace-nowrap",
-        "min-h-[44px] min-w-[44px] rounded-[var(--radius-full)] px-4 py-2",
-        "text-sm font-medium leading-none outline-none",
-        "[transition:color_var(--duration-smooth)_var(--ease-smooth),background-color_var(--duration-smooth)_var(--ease-smooth),border-color_var(--duration-smooth)_var(--ease-smooth)]",
+        "min-h-[44px] min-w-[44px] rounded-none px-4 py-2",
+        "font-mono text-[0.7rem] font-semibold uppercase tracking-[0.08em] leading-none outline-none",
+        "[transition:color_var(--duration-smooth)_var(--ease-sharp),background-color_var(--duration-smooth)_var(--ease-sharp),border-color_var(--duration-smooth)_var(--ease-sharp)]",
         "focus-visible:[box-shadow:0_0_0_2px_var(--color-void),0_0_0_4px_var(--color-accent)]",
         active
-          ? "text-[var(--color-text-inverse)]"
+          ? "text-white"
           : cn(
               "bg-[var(--color-surface)] text-[var(--color-text-muted)]",
-              "border border-[var(--color-hairline)] backdrop-blur-md",
+              "border border-[var(--color-hairline)]",
               "hover:border-[var(--color-hairline-hover)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)]"
             ),
         className

@@ -13,12 +13,11 @@ const iconWrapStyle = {
   justifyContent: "center",
   width: "2.25rem",
   height: "2.25rem",
-  borderRadius: "var(--radius-lg)",
+  borderRadius: 0,
   background: "var(--color-surface)",
   border: "1px solid var(--color-hairline)",
-  boxShadow: "var(--shadow-inner-sm)",
   transition:
-    "border-color var(--duration-smooth) var(--ease-smooth), box-shadow var(--duration-smooth) var(--ease-smooth)",
+    "border-color var(--duration-smooth) var(--ease-sharp)",
 };
 
 const iconInnerStyle = {
@@ -27,7 +26,7 @@ const iconInnerStyle = {
   justifyContent: "center",
   width: "1.75rem",
   height: "1.75rem",
-  borderRadius: "calc(var(--radius-lg) - 0.25rem)",
+  borderRadius: 0,
   background: "var(--color-surface-elevated)",
   border: "1px solid var(--color-border-accent)",
 };
@@ -47,10 +46,11 @@ function IconBezel({ icon: Icon }) {
 const titleStyle = {
   fontFamily: "var(--font-display)",
   fontSize: "1.0625rem",
-  fontWeight: 600,
-  lineHeight: 1.25,
-  letterSpacing: "-0.01em",
-  color: "#ffffff",
+  fontWeight: 700,
+  lineHeight: 1.1,
+  letterSpacing: "-0.02em",
+  textTransform: "uppercase",
+  color: "var(--color-text)",
 };
 
 const descStyle = {

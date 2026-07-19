@@ -4,59 +4,22 @@ function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const SHELL_RADIUS = "var(--radius-3xl)";
-const CORE_RADIUS = "calc(var(--radius-3xl) - 0.5rem)";
-
 const shellBase = {
   position: "relative",
   display: "flex",
   flexDirection: "column",
-  borderRadius: SHELL_RADIUS,
-  padding: "var(--space-2)",
+  borderRadius: 0,
   border: "1px solid var(--color-hairline)",
+  background: "var(--color-surface)",
   transition:
-    "border-color var(--duration-smooth) var(--ease-smooth), box-shadow var(--duration-smooth) var(--ease-smooth), transform var(--duration-smooth) var(--ease-spring)",
-};
-
-const coreBase = {
-  position: "relative",
-  zIndex: 1,
-  display: "flex",
-  flexDirection: "column",
-  flex: "1 1 auto",
-  borderRadius: CORE_RADIUS,
-  boxShadow: "var(--shadow-inner-sm)",
-  transition:
-    "background-color var(--duration-smooth) var(--ease-smooth), box-shadow var(--duration-smooth) var(--ease-smooth)",
+    "border-color var(--duration-smooth) var(--ease-sharp), background-color var(--duration-smooth) var(--ease-sharp)",
 };
 
 const shellVariants = {
-  default: {
-    background: "var(--color-surface)",
-    boxShadow: "var(--shadow-sm)",
-  },
-  interactive: {
-    background: "var(--color-surface)",
-    boxShadow: "var(--shadow-sm)",
-    cursor: "pointer",
-  },
-  elevated: {
-    background: "var(--color-surface-elevated)",
-    boxShadow: "var(--shadow-lg)",
-  },
-  glass: {
-    background: "var(--color-surface)",
-    backdropFilter: "blur(20px) saturate(1.4)",
-    WebkitBackdropFilter: "blur(20px) saturate(1.4)",
-    boxShadow: "var(--shadow-md)",
-  },
-};
-
-const coreVariants = {
-  default: { background: "var(--color-surface-elevated)" },
-  interactive: { background: "var(--color-surface-elevated)" },
-  elevated: { background: "var(--color-void-elevated)" },
-  glass: { background: "rgba(255, 255, 255, 0.02)" },
+  default: {},
+  interactive: { cursor: "pointer" },
+  elevated: { background: "var(--color-surface-elevated)" },
+  glass: { background: "var(--color-surface)" },
 };
 
 export const Card = forwardRef(function Card(
@@ -84,15 +47,12 @@ export const Card = forwardRef(function Card(
       ref={ref}
       data-variant={resolved}
       data-interactive={isInteractive ? "" : undefined}
-      className={cn("card-doppelrand", `card-doppelrand--${resolved}`, className)}
+      className={cn("card-brutal", `card-brutal--${resolved}`, className)}
       style={shellStyle}
       tabIndex={isInteractive ? props.tabIndex ?? 0 : props.tabIndex}
       {...props}
     >
-      <span aria-hidden="true" className="card-doppelrand__sheen" />
-      <div className="card-doppelrand__core" style={{ ...coreBase, ...coreVariants[resolved] }}>
-        {children}
-      </div>
+      {children}
     </div>
   );
 });
@@ -129,9 +89,10 @@ export const CardTitle = forwardRef(function CardTitle(
       style={{
         fontFamily: "var(--font-display)",
         fontSize: "1.125rem",
-        fontWeight: 600,
-        lineHeight: 1.2,
-        letterSpacing: "-0.01em",
+        fontWeight: 700,
+        lineHeight: 1.1,
+        letterSpacing: "-0.02em",
+        textTransform: "uppercase",
         color: "var(--color-text)",
       }}
       {...props}
@@ -154,6 +115,7 @@ export const CardDescription = forwardRef(function CardDescription(
         fontSize: "0.875rem",
         lineHeight: 1.6,
         color: "var(--color-text-muted)",
+        fontFamily: "var(--font-mono)",
       }}
       {...props}
     >

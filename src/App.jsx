@@ -228,19 +228,18 @@ function FluidNav({ open, setOpen }) {
         style={{ zIndex: "var(--z-nav)" }}
       >
         <nav
-          className="pointer-events-auto mx-auto mt-6 flex w-max items-center gap-1 rounded-full border border-[var(--color-hairline)] bg-[var(--color-void)]/80 px-2 py-2 backdrop-blur-2xl"
+          className="pointer-events-auto mx-auto mt-6 flex w-max items-center gap-1 border border-[var(--color-hairline)] bg-[var(--color-void)] px-2 py-2"
           style={{
-            boxShadow: atTop ? "var(--shadow-md)" : "var(--shadow-lg)",
             transform: hidden ? "translateY(-160%)" : "translateY(0)",
             transition:
-              "transform var(--duration-smooth) var(--ease-expo), box-shadow var(--duration-smooth) var(--ease-smooth)",
+              "transform var(--duration-smooth) var(--ease-expo)",
           }}
         >
           <a
             href="#home"
-            className="px-4 text-sm font-semibold tracking-tight text-[var(--color-text)]"
+            className="px-4 font-mono text-sm font-bold uppercase tracking-[0.1em] text-[var(--color-text)]"
           >
-            KRISH
+            [ KRISH ]
           </a>
 
           <div className="hidden items-center md:flex">
@@ -265,7 +264,7 @@ function FluidNav({ open, setOpen }) {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="relative flex h-11 w-11 items-center justify-center rounded-full text-[var(--color-text)] active:scale-90 md:hidden"
+            className="relative flex h-11 w-11 items-center justify-center text-[var(--color-text)] active:scale-90 md:hidden"
           >
             <span className="relative block h-4 w-5">
               <span
@@ -301,10 +300,10 @@ function FluidNav({ open, setOpen }) {
 
       {/* Mobile full-screen overlay */}
       <div
-        className="fixed inset-0 flex flex-col justify-center px-8 backdrop-blur-3xl md:hidden"
+        className="fixed inset-0 flex flex-col justify-center px-8 md:hidden"
         style={{
           zIndex: "var(--z-overlay)",
-          background: "rgba(3, 3, 3, 0.9)",
+          background: "var(--color-void)",
           opacity: open ? 1 : 0,
           pointerEvents: open ? "auto" : "none",
           transform: open ? "scale(1)" : "scale(1.04)",
@@ -318,7 +317,7 @@ function FluidNav({ open, setOpen }) {
               key={link}
               href={`#${link.toLowerCase()}`}
               onClick={() => setOpen(false)}
-              className="font-display text-4xl font-semibold italic tracking-tight text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+              className="font-display text-4xl font-bold uppercase tracking-tight text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
               style={{
                 opacity: open ? 1 : 0,
                 transform: open ? "translateY(0)" : "translateY(16px)",
@@ -373,7 +372,7 @@ function Section({ id, eyebrow, title, desc, children, bordered = true, classNam
       <div className="container">
         {(eyebrow || title || desc) && (
           <div className="max-w-2xl">
-            {eyebrow && <span className="section-eyebrow reveal">{eyebrow}</span>}
+            {eyebrow && <span className="section-bracket reveal">{eyebrow}</span>}
             {title && <h2 className="section-title reveal stagger-1">{title}</h2>}
             {desc && <p className="section-desc reveal stagger-2">{desc}</p>}
           </div>
@@ -420,13 +419,62 @@ function App() {
   return (
     <LenisProvider>
       <div className="relative min-h-screen font-sans text-[var(--color-text)]">
-        <div className="bg-mesh" aria-hidden="true" />
+        <div className="bg-scanlines" aria-hidden="true" />
         <div className="bg-noise" aria-hidden="true" />
 
         <FluidNav open={menuOpen} setOpen={setMenuOpen} />
 
-        {/* Motion Hero - replaces the old Hero section */}
-        <MotionHero />
+        {/* Hero — particle field background + foreground content */}
+        <section
+          id="home"
+          className="relative flex min-h-[100dvh] items-center overflow-hidden"
+        >
+          <div className="absolute inset-0" style={{ zIndex: 0 }}>
+            <MotionHero />
+          </div>
+          <div className="container relative" style={{ zIndex: 2 }}>
+            <div className="max-w-4xl">
+              <div className="mb-6 flex items-center gap-3">
+                <span className="reg-mark">[ SYS://ONLINE ]</span>
+                <span className="warning-stripe" style={{ width: "48px" }} />
+              </div>
+              <h1
+                className="font-display uppercase"
+                style={{
+                  fontSize: "clamp(3rem, 12vw, 9rem)",
+                  fontWeight: 900,
+                  lineHeight: 0.85,
+                  letterSpacing: "-0.04em",
+                  color: "var(--color-text)",
+                }}
+              >
+                KRISHNA
+                <br />
+                <span style={{ color: "var(--color-accent)" }}>SECURITY</span>
+              </h1>
+              <p
+                className="mt-8 max-w-xl font-mono text-sm uppercase tracking-[0.05em] text-[var(--color-text-muted)]"
+                style={{ lineHeight: 1.8 }}
+              >
+                Offensive security · Hardware hacking · Autonomous AI systems.
+                Breaking things from kernel to cloud since 2022.
+              </p>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Button asChild variant="primary">
+                  <a href="#work">
+                    View Work
+                    <ButtonIcon>
+                      <ArrowUpRight className="h-4 w-4" />
+                    </ButtonIcon>
+                  </a>
+                </Button>
+                <Button asChild variant="secondary">
+                  <a href="#contact">Connect</a>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* About */}
         <section
@@ -436,7 +484,7 @@ function App() {
           <div className="container">
             <div className="grid gap-12 lg:grid-cols-2">
               <div>
-                <span className="section-eyebrow reveal">About</span>
+                <span className="section-bracket reveal">About</span>
                 <h2 className="section-title reveal stagger-1">Krishna</h2>
                 <div className="mt-6 space-y-4 text-base leading-relaxed text-[var(--color-text-muted)] reveal stagger-2">
                   <p>
@@ -549,13 +597,14 @@ function App() {
         {/* Contact */}
         <Section id="contact">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="section-eyebrow reveal">Get In Touch</span>
+            <span className="section-bracket reveal">Get In Touch</span>
             <h2
-              className="reveal stagger-1 font-display italic tracking-tight"
+              className="reveal stagger-1 font-display uppercase tracking-tight"
               style={{
                 fontSize: "clamp(2.5rem, 7vw, 6rem)",
-                lineHeight: 1.02,
+                lineHeight: 0.9,
                 letterSpacing: "-0.03em",
+                fontWeight: 800,
               }}
             >
               Let's Build

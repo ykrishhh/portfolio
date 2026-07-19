@@ -129,11 +129,19 @@ function ParticleField({ scrollProgress, explodeAmt, hoverIntensity, mouse }) {
       sizes[i] = 0.8 + Math.random() * 1.2;
       phases[i] = Math.random();
 
-      const heightNorm = (positions[i3 + 1] + FIELD_SIZE) / (FIELD_SIZE * 2);
-      const color = new Color().setHSL(0.55, 0.8, 0.5 + heightNorm * 0.4);
-      colors[i3] = color.r;
-      colors[i3 + 1] = color.g;
-      colors[i3 + 2] = color.b;
+      // Brutalist palette: mostly phosphor white, ~12% aviation red accent
+      const isAccent = Math.random() < 0.12;
+      if (isAccent) {
+        colors[i3] = 0.902;     // #E61919 -> r
+        colors[i3 + 1] = 0.098; // g
+        colors[i3 + 2] = 0.098; // b
+      } else {
+        const heightNorm = (positions[i3 + 1] + FIELD_SIZE) / (FIELD_SIZE * 2);
+        const lum = 0.6 + heightNorm * 0.4;
+        colors[i3] = lum;
+        colors[i3 + 1] = lum;
+        colors[i3 + 2] = lum;
+      }
     }
 
     geometry.setAttribute("position", new BufferAttribute(positions, 3));
@@ -188,7 +196,7 @@ export function MotionHeroCanvas({
 }) {
   return (
     <Canvas
-      className="hero-canvas absolute inset-0 -z-10"
+      className="hero-canvas absolute inset-0"
       camera={{ position: [0, 0, 60], fov: 45 }}
       gl={{ 
         antialias: true, 
@@ -197,7 +205,7 @@ export function MotionHeroCanvas({
       }}
       frameloop="always"
     >
-      <color attach="background" args={["#030303", 0]} />
+      <color attach="background" args={["#0a0a0a", 0]} />
       <ParticleField
         scrollProgress={scrollProgress}
         explodeAmt={explodeAmt}
@@ -272,9 +280,9 @@ export function MotionHero() {
   if (reduceMotion || deviceTier === "low") {
     return (
       <div 
-        className="relative min-h-[100dvh] w-full"
+        className="absolute inset-0 w-full"
         style={{
-          background: "radial-gradient(ellipse 60% 60% at 15% 15%, rgba(99,179,237,0.08) 0%, transparent 70%), radial-gradient(ellipse 50% 50% at 85% 25%, rgba(99,179,237,0.05) 0%, transparent 60%), #030303",
+          background: "radial-gradient(ellipse 60% 60% at 15% 15%, rgba(230,25,25,0.06) 0%, transparent 70%), #0a0a0a",
         }}
         role="img"
         aria-label="Hero background - reduced motion mode"

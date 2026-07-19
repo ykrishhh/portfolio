@@ -71,12 +71,9 @@ const lineDrawStyle = {
   left: 0,
   width: "100%",
   height: "var(--progress, 0%)",
-  background:
-    "linear-gradient(180deg, var(--color-accent) 0%, var(--color-accent-strong) 100%)",
-  boxShadow: "var(--shadow-glow-sm)",
-  borderRadius: "var(--radius-full)",
+  background: "var(--color-accent)",
   transition:
-    "height var(--duration-smooth) var(--ease-smooth)",
+    "height var(--duration-smooth) var(--ease-sharp)",
   willChange: "height",
 };
 
@@ -87,31 +84,28 @@ const dotOuterStyle = {
   justifyContent: "center",
   width: "12px",
   height: "12px",
-  borderRadius: "var(--radius-full)",
-  background: "var(--color-surface)",
+  borderRadius: 0,
+  background: "var(--color-void)",
   border: "1px solid var(--color-hairline)",
-  boxShadow: "var(--shadow-inner-sm)",
   transition:
-    "border-color var(--duration-smooth) var(--ease-smooth), box-shadow var(--duration-smooth) var(--ease-smooth)",
+    "border-color var(--duration-smooth) var(--ease-sharp)",
 };
 
 const dotOuterActiveStyle = {
   borderColor: "var(--color-border-accent)",
-  boxShadow: "var(--shadow-inner-sm), var(--shadow-glow-sm)",
 };
 
 const dotInnerBase = {
   width: "8px",
   height: "8px",
-  borderRadius: "var(--radius-full)",
+  borderRadius: 0,
   background: "var(--color-surface-elevated)",
   transition:
-    "background-color var(--duration-smooth) var(--ease-spring), box-shadow var(--duration-smooth) var(--ease-spring)",
+    "background-color var(--duration-smooth) var(--ease-sharp)",
 };
 
 const dotInnerActiveStyle = {
   background: "var(--color-accent)",
-  boxShadow: "0 0 0 1px var(--color-border-accent), var(--shadow-glow-sm)",
 };
 
 const yearTagStyle = {
@@ -123,16 +117,18 @@ const yearTagStyle = {
 const titleStyle = {
   fontFamily: "var(--font-display)",
   fontSize: "1.0625rem",
-  fontWeight: 600,
-  lineHeight: 1.25,
-  letterSpacing: "-0.01em",
-  color: "#ffffff",
+  fontWeight: 700,
+  lineHeight: 1.1,
+  letterSpacing: "-0.02em",
+  textTransform: "uppercase",
+  color: "var(--color-text)",
 };
 
 const descStyle = {
   fontSize: "0.875rem",
   lineHeight: 1.6,
   color: "var(--color-text-muted)",
+  fontFamily: "var(--font-mono)",
 };
 
 /* ========================================================================== */
@@ -176,34 +172,32 @@ const TimelineItem = forwardRef(function TimelineItem(
           active && "visible"
         )}
       >
-        <div className="card-shell">
+        <div
+          className="card-brutal flex flex-col"
+          style={{ gap: "var(--space-2)", padding: "var(--space-5)" }}
+        >
           <div
-            className="card-core flex flex-col"
-            style={{ gap: "var(--space-2)", padding: "var(--space-5)" }}
+            className={cn(
+              "flex items-center gap-3",
+              isEven && "md:flex-row-reverse"
+            )}
           >
-            <div
-              className={cn(
-                "flex items-center gap-3",
-                isEven && "md:flex-row-reverse"
-              )}
-            >
-              <span className="tag" style={yearTagStyle}>
-                {year}
-              </span>
-              {Icon && (
-                <Icon
-                  aria-hidden="true"
-                  style={{
-                    width: "1rem",
-                    height: "1rem",
-                    color: "var(--color-text-faint)",
-                  }}
-                />
-              )}
-            </div>
-            <h3 style={titleStyle}>{title}</h3>
-            <p style={descStyle}>{desc}</p>
+            <span className="tag" style={yearTagStyle}>
+              {year}
+            </span>
+            {Icon && (
+              <Icon
+                aria-hidden="true"
+                style={{
+                  width: "1rem",
+                  height: "1rem",
+                  color: "var(--color-text-faint)",
+                }}
+              />
+            )}
           </div>
+          <h3 style={titleStyle}>{title}</h3>
+          <p style={descStyle}>{desc}</p>
         </div>
       </div>
     </div>
@@ -320,7 +314,7 @@ const eyebrowStyle = {
   textTransform: "uppercase",
   color: "var(--color-text-faint)",
   padding: "var(--space-1) var(--space-3)",
-  borderRadius: "var(--radius-full)",
+  borderRadius: 0,
   background: "var(--color-surface)",
   border: "1px solid var(--color-hairline)",
   marginBottom: "var(--space-5)",
@@ -332,7 +326,7 @@ const stackTitleStyle = {
   fontWeight: 700,
   lineHeight: 1.05,
   letterSpacing: "-0.02em",
-  fontStyle: "italic",
+  textTransform: "uppercase",
   color: "var(--color-text)",
   marginBottom: "var(--space-8)",
 };
@@ -370,9 +364,9 @@ function StackPill({ label, index, active }) {
           ? "var(--color-border-accent)"
           : "var(--color-hairline)",
         color: lift.hovering ? "var(--color-text)" : "var(--color-text-muted)",
-        boxShadow: lift.hovering ? "var(--shadow-glow-sm)" : "none",
+        boxShadow: "none",
         transition:
-          "transform var(--duration-smooth) var(--ease-spring), border-color var(--duration-fast) var(--ease-smooth), box-shadow var(--duration-fast) var(--ease-smooth), color var(--duration-fast) var(--ease-smooth), opacity var(--duration-slower) var(--ease-expo)",
+          "transform var(--duration-smooth) var(--ease-sharp), border-color var(--duration-fast) var(--ease-sharp), color var(--duration-fast) var(--ease-sharp), opacity var(--duration-slower) var(--ease-expo)",
         willChange: "transform",
       }}
     >

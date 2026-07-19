@@ -351,9 +351,8 @@ export default function App() {
                   understand how they work, then build them stronger.
                 </p>
                 <p>
-                  From fuzzing ESP32 firmware to orchestrating multi-agent
-                  pentesting pipelines, my work spans the full stack, from bare metal
-                  to cloud, kernel to API.
+                  ESP32 firmware fuzzing, multi-agent pentest pipelines, and Android
+                  attestation research. The work runs from kernel to cloud.
                 </p>
                 <p>
                   Currently building open-source security tools, writing deep-dive

@@ -165,7 +165,7 @@ const writeupLinkStyle = {
   fontSize: "0.8125rem",
   fontWeight: 600,
   color: "var(--color-text-muted)",
-  transition: "color var(--duration-smooth) var(--ease-smooth)",
+  transition: "color var(--duration-smooth) var(--ease-sharp)",
 };
 
 export const WriteupCard = forwardRef(function WriteupCard(

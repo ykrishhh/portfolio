@@ -309,7 +309,7 @@ function FluidNav({ open, setOpen }) {
                 style={{
                   opacity: open ? 0 : 1,
                   transform: open ? "scaleX(0)" : "scaleX(1)",
-                  transition: "opacity var(--duration-fast) var(--ease-smooth), transform var(--duration-fast) var(--ease-smooth)",
+                  transition: "opacity var(--duration-fast) var(--ease-sharp), transform var(--duration-fast) var(--ease-sharp)",
                 }}
               />
               <span
@@ -555,8 +555,8 @@ function DesireSection() {
     >
       <div className="container grid gap-12 lg:grid-cols-2">
         <div ref={pinRef} className="pin-title">
-          <span className="section-header reveal">Method</span>
-          <h2 className="section-title reveal stagger-1 mt-4">
+          <span className="section-header">Method</span>
+          <h2 className="section-title stagger-1 mt-4">
             How I
             <br />
             Operate

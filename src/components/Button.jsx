@@ -6,7 +6,7 @@ function cn(...classes) {
 
 const base = cn(
   "group relative inline-flex items-center justify-center gap-2 select-none whitespace-nowrap align-middle",
-  "min-h-[44px] min-w-[44px] rounded-none font-mono font-semibold uppercase tracking-[0.08em] text-[0.75rem] leading-none",
+  "min-h-[44px] min-w-[44px] rounded-none font-sans font-medium text-[0.875rem] leading-none",
   "outline-none [transition:transform_var(--duration-fast)_var(--ease-sharp),background-color_var(--duration-smooth)_var(--ease-sharp),border-color_var(--duration-smooth)_var(--ease-sharp),color_var(--duration-smooth)_var(--ease-sharp)]",
   "focus-visible:[box-shadow:0_0_0_2px_var(--color-void),0_0_0_4px_var(--color-accent)]",
   "active:scale-[0.98] active:[transition:transform_var(--duration-instant)_var(--ease-sharp)]",
@@ -45,9 +45,9 @@ const iconWrapVariants = {
 };
 
 const sizes = {
-  sm: "h-11 min-h-[44px] px-4 text-[0.7rem] gap-1.5",
-  md: "h-11 min-h-[44px] px-6 text-[0.75rem] gap-2",
-  lg: "h-12 min-h-[48px] px-8 text-[0.8rem] gap-2.5",
+  sm: "h-11 min-h-[44px] px-4 text-[0.8125rem] gap-1.5",
+  md: "h-11 min-h-[44px] px-6 text-[0.875rem] gap-2",
+  lg: "h-12 min-h-[48px] px-8 text-[1rem] gap-2.5",
   icon: "h-11 w-11 min-h-[44px] min-w-[44px] p-0",
 };
 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Mail, Terminal } from "lucide-react";
+import { ArrowUpRight, Mail } from "lucide-react";
 import { Button, ButtonGroup, ButtonIcon } from "./components/Button";
 import { useKonamiCode } from "./hooks/useKonamiCode";
 import {
@@ -12,10 +12,6 @@ import {
 import { FilterTabList } from "./components/FilterTabs";
 import { ProjectCard, WriteupCard } from "./components/ProjectCard";
 import { Stack, Timeline } from "./components/Timeline";
-import { lazy, Suspense } from "react";
-const MotionHero = lazy(() =>
-  import("./components/MotionHero").then((m) => ({ default: m.MotionHero }))
-);
 import { LenisProvider } from "./components/LenisProvider";
 import {
   useScrubText,
@@ -267,9 +263,9 @@ function FluidNav({ open, setOpen }) {
         >
           <a
             href="#home"
-            className="px-4 font-mono text-sm font-bold uppercase tracking-[0.1em] text-[var(--color-text)]"
+            className="px-4 font-semibold text-sm text-[var(--color-text)]"
           >
-            [ KRISH ]
+            KRISH
           </a>
 
           <div className="hidden items-center md:flex">
@@ -350,7 +346,7 @@ function FluidNav({ open, setOpen }) {
               key={link}
               href={`#${link.toLowerCase()}`}
               onClick={() => setOpen(false)}
-              className="font-display text-4xl font-bold uppercase tracking-tight text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+              className="font-display text-4xl font-bold tracking-tight text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
               style={{
                 opacity: open ? 1 : 0,
                 transform: open ? "translateY(0)" : "translateY(16px)",
@@ -405,7 +401,7 @@ function Section({ id, eyebrow, title, desc, children, bordered = true, classNam
       <div className="container">
         {(eyebrow || title || desc) && (
           <div className="max-w-2xl">
-            {eyebrow && <span className="section-bracket reveal">{eyebrow}</span>}
+            {eyebrow && <span className="section-header reveal">{eyebrow}</span>}
             {title && <h2 className="section-title reveal stagger-1">{title}</h2>}
             {desc && <p className="section-desc reveal stagger-2">{desc}</p>}
           </div>
@@ -431,35 +427,35 @@ function ProjectGrid({ projects }) {
 const BENTO = [
   {
     cls: "bento-a",
-    tag: "[ GLITCH ]",
+    tag: "Firmware",
     title: "GLiTCh BadgE",
     desc: "RP2040 + iCE40 fault-injection playground.",
     img: "https://images.pexels.com/photos/8108728/pexels-photo-8108728.jpeg?auto=compress&cs=tinysrgb&w=1200&h=1200&fit=crop",
   },
   {
     cls: "bento-b",
-    tag: "[ EXTRACT ]",
+    tag: "Extraction",
     title: "CH55x Dumper",
     desc: "Timing-attack firmware readout over UART.",
     img: "https://images.pexels.com/photos/1432794/pexels-photo-1432794.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop",
   },
   {
     cls: "bento-c",
-    tag: "[ EXPLOIT ]",
+    tag: "Exploitation",
     title: "ret2dso",
     desc: "Full RELRO bypass via loader metadata.",
     img: "https://images.pexels.com/photos/5380664/pexels-photo-5380664.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
   {
     cls: "bento-d",
-    tag: "[ SIDE-CH ]",
+    tag: "Side-Channel",
     title: "ChipWhisperer",
     desc: "AES key recovery from power traces.",
     img: "https://images.pexels.com/photos/7858248/pexels-photo-7858248.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop",
   },
   {
     cls: "bento-e",
-    tag: "[ IOT ]",
+    tag: "IoT",
     title: "Echo Show eMMC",
     desc: "Hardware tap to root a smart display.",
     img: "https://images.pexels.com/photos/163170/board-printed-circuit-board-computer-electronics-163170.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop",
@@ -478,10 +474,10 @@ function BentoGrid() {
           <img src={cell.img} alt={cell.title} loading="lazy" />
           <span className="tag tag-accent bento-cell__tag">{cell.tag}</span>
           <div className="bento-cell__label">
-            <h3 className="font-display text-lg font-bold uppercase tracking-tight text-[var(--color-text)]">
+            <h3 className="font-display text-lg font-bold tracking-tight text-[var(--color-text)]">
               {cell.title}
             </h3>
-            <p className="mt-1 font-mono text-xs uppercase tracking-[0.05em] text-[var(--color-text-muted)]">
+            <p className="mt-1 font-mono text-xs tracking-[0.02em] text-[var(--color-text-muted)]">
               {cell.desc}
             </p>
           </div>
@@ -531,7 +527,7 @@ function DomainAccordion() {
           <img src={d.img} alt={d.title} loading="lazy" />
           <span className="accordion__panel__index">{d.tag}</span>
           <div className="accordion__panel__label">
-            <h3 className="font-display text-xl font-bold uppercase tracking-tight text-[var(--color-text)]">
+            <h3 className="font-display text-xl font-bold tracking-tight text-[var(--color-text)]">
               {d.title}
             </h3>
           </div>
@@ -559,7 +555,7 @@ function DesireSection() {
     >
       <div className="container grid gap-12 lg:grid-cols-2">
         <div ref={pinRef} className="pin-title">
-          <span className="section-bracket reveal">Method</span>
+          <span className="section-header reveal">Method</span>
           <h2 className="section-title reveal stagger-1 mt-4">
             How I
             <br />
@@ -572,11 +568,7 @@ function DesireSection() {
             ref={scrubRef}
             className="font-display text-2xl font-medium leading-snug tracking-tight text-[var(--color-text)] md:text-3xl"
           >
-            {SCRUB_PARAGRAPH.split(" ").map((w, i) => (
-              <span key={i} className="scrub-word" data-word>
-                {w}
-              </span>
-            ))}
+            {SCRUB_PARAGRAPH}
           </p>
           <div className="mt-12 grid grid-cols-2 gap-4">
             {[
@@ -589,7 +581,7 @@ function DesireSection() {
                 <div className="font-display text-3xl font-bold text-[var(--color-accent)]">
                   {n}
                 </div>
-                <div className="mt-1 font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-text-muted)]">
+                <div className="mt-1 font-mono text-xs tracking-[0.05em] text-[var(--color-text-muted)]">
                   {l}
                 </div>
               </div>
@@ -637,8 +629,7 @@ function KonamiToast({ active }) {
         color: "var(--color-success)",
       }}
     >
-      <Terminal className="h-4 w-4" />
-      <span>SYS://MODE: DEBUG</span>
+      <span>Konami: DEBUG MODE</span>
     </div>
   );
 }
@@ -647,7 +638,6 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [projectFilter, setProjectFilter] = useState("All");
   const konamiActive = useKonamiCode({ duration: 10000 });
-  const flashTimerRef = useRef(null);
 
   const visibleProjects =
     projectFilter === "All"
@@ -656,84 +646,46 @@ function App() {
 
   const onFilterChange = useCallback((v) => setProjectFilter(v), []);
 
-  // Flash effect on hero media wrapper when Konami activates
-  useEffect(() => {
-    if (!konamiActive) return;
-    const wrapper = document.querySelector(".hero-media-wrapper");
-    if (!wrapper) return;
-    // Clear any pending flash timer on re-trigger to prevent style lingering
-    if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
-    wrapper.style.transition = "filter 0.2s ease";
-    wrapper.style.filter = "brightness(1.5) hue-rotate(120deg)";
-    flashTimerRef.current = setTimeout(() => {
-      wrapper.style.filter = "";
-      flashTimerRef.current = null;
-    }, 200);
-    return () => {
-      if (flashTimerRef.current) clearTimeout(flashTimerRef.current);
-      flashTimerRef.current = null;
-    };
-  }, [konamiActive]);
-
   const aboutRevealRef = useReveal({ chainIndex: 0 });
 
   return (
     <LenisProvider>
       <main className="relative min-h-screen w-full max-w-full overflow-x-hidden font-sans text-[var(--color-text)]">
-        <div className="bg-scanlines" aria-hidden="true" />
-        <div className="bg-noise" aria-hidden="true" />
-
         <a href="#home" className="skip-link">
           Skip to content
         </a>
 
         <FluidNav open={menuOpen} setOpen={setMenuOpen} />
 
-        {/* Hero — full-bleed video + particle field + foreground content */}
+        {/* Hero — full-bleed video + clean overlay */}
         <section
           id="home"
           aria-labelledby="hero-heading"
           className="relative flex min-h-[100dvh] items-center overflow-hidden"
         >
-          <div className="hero-media-wrapper" aria-hidden="true">
-            <video
-              className="hero-video"
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster="/hero-poster.jpg"
-            >
-              <source
-                src="https://assets.mixkit.co/videos/45378/45378-720.mp4"
-                type="video/mp4"
-              />
-            </video>
-            <div className="absolute inset-0 opacity-40" style={{ zIndex: 1 }}>
-              <Suspense fallback={<div className="absolute inset-0 bg-[var(--color-void)]" />}>
-                <MotionHero />
-              </Suspense>
-            </div>
-          </div>
+          <video
+            className="hero-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/hero-poster.jpg"
+          >
+            <source
+              src="https://assets.mixkit.co/videos/45378/45378-720.mp4"
+              type="video/mp4"
+            />
+          </video>
           <div className="hero-video-wash" aria-hidden="true" />
-          <div className="hero-grain" aria-hidden="true" />
-          <div className="hero-vignette" aria-hidden="true" />
 
           <div className="container relative" style={{ zIndex: 2 }}>
             <div className="max-w-6xl">
-              <div className="mb-6 flex items-center gap-3">
-                <span className="reg-mark">[ SYS://ONLINE ]</span>
-                <span className="warning-stripe" style={{ width: "48px" }} />
-              </div>
               <h1
                 id="hero-heading"
-                className="font-display uppercase hero-headline"
+                className="font-display font-bold leading-tight tracking-tight text-[var(--color-text)]"
                 style={{
-                  fontSize: "clamp(2.75rem, 7vw, 6.5rem)",
-                  fontWeight: 900,
-                  lineHeight: 0.9,
-                  letterSpacing: "-0.04em",
-                  color: "var(--color-text)",
+                  fontSize: "clamp(3rem, 6vw, 5.5rem)",
+                  lineHeight: 1.05,
                 }}
               >
                 <span className="block">Glitch.</span>
@@ -741,13 +693,12 @@ function App() {
                 <span className="block text-[var(--color-accent)]">Repeat.</span>
               </h1>
               <p
-                className="mt-8 max-w-xl font-mono text-sm uppercase tracking-[0.05em] text-[var(--color-text-muted)]"
-                style={{ lineHeight: 1.8 }}
+                className="mt-6 max-w-xl text-base md:text-lg leading-relaxed text-[var(--color-text-muted)]"
               >
                 Offensive security, hardware hacking, autonomous AI.
                 Breaking things from kernel to cloud since 2022.
               </p>
-              <div className="mt-10 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild variant="primary">
                   <a href="#work">
                     View Work
@@ -773,7 +724,7 @@ function App() {
           <div className="container">
             <div className="grid gap-12 lg:grid-cols-2">
               <div>
-                <span className="section-bracket reveal">About</span>
+                <span className="section-header reveal">About</span>
                 <h2 className="section-title reveal stagger-1">Krishna</h2>
                 <div className="mt-6 space-y-4 text-base leading-relaxed text-[var(--color-text-muted)] reveal stagger-2">
                   <p>
@@ -804,7 +755,7 @@ function App() {
                       ["Active since", "2022"],
                     ].map(([k, v]) => (
                       <div key={k} className="flex items-center gap-3">
-                        <span className="text-[#FF4444]">→</span>
+                        <span className="text-[#E61919]">→</span>
                         <span className="text-[var(--color-text-muted)]">
                           {k}: <span className="text-[var(--color-text)]">{v}</span>
                         </span>
@@ -818,7 +769,7 @@ function App() {
         </section>
 
         {/* Gapless Bento Grid */}
-        <Section chainIndex={1} eyebrow="[ LOG ]" title="Signal Log" desc="A cross-section of the work: firmware, red team, and the tooling in between.">
+        <Section chainIndex={1} eyebrow="Log" title="Signal Log" desc="A cross-section of the work: firmware, red team, and the tooling in between.">
           <BentoGrid />
         </Section>
 
@@ -826,7 +777,7 @@ function App() {
         <Section
           id="work"
           chainIndex={2}
-          eyebrow="[ BUILD ]"
+          eyebrow="Build"
           title="Projects"
           desc="Open-source tools, hardware research, agentic pentest frameworks."
         >
@@ -858,7 +809,7 @@ function App() {
         {/* Writeups */}
         <Section
           id="writeups"
-          eyebrow="[ DISASSEMBLY ]"
+          eyebrow="Disassembly"
           title="Writeups"
           desc="Vulnerability analysis from real engagements."
         >
@@ -880,7 +831,7 @@ function App() {
         <Marquee />
 
         {/* Horizontal Accordion — research domains */}
-        <Section eyebrow="[ DOMAINS ]" title="Where I Work" desc="Four lanes, one obsession: finding the path that was not supposed to exist.">
+        <Section eyebrow="Domains" title="Where I Work" desc="Four lanes, one obsession: finding the path that was not supposed to exist.">
           <DomainAccordion />
         </Section>
 
@@ -888,7 +839,7 @@ function App() {
         <DesireSection />
 
         {/* Timeline — moved after Desire for ascending narrative arc */}
-        <Section eyebrow="[ HISTORY ]" title="Journey" desc="Four years of breaking and building in public.">
+        <Section eyebrow="History" title="Journey" desc="Four years of breaking and building in public.">
           <div className="mt-16">
             <Timeline items={JOURNEY} />
           </div>
@@ -900,14 +851,13 @@ function App() {
         {/* Contact */}
         <Section id="contact">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="section-bracket reveal">[ CONTACT ]</span>
+            <span className="section-header reveal">Contact</span>
             <h2
-              className="reveal stagger-1 font-display uppercase tracking-tight"
+              className="reveal stagger-1 font-display font-bold tracking-tight"
               style={{
                 fontSize: "clamp(2.5rem, 7vw, 6rem)",
-                lineHeight: 0.9,
-                letterSpacing: "-0.03em",
-                fontWeight: 800,
+                lineHeight: 0.95,
+                letterSpacing: "-0.02em",
               }}
             >
               Let's Build

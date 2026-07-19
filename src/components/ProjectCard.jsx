@@ -47,9 +47,8 @@ const titleStyle = {
   fontFamily: "var(--font-display)",
   fontSize: "1.0625rem",
   fontWeight: 700,
-  lineHeight: 1.1,
+  lineHeight: 1.2,
   letterSpacing: "-0.02em",
-  textTransform: "uppercase",
   color: "var(--color-text)",
 };
 

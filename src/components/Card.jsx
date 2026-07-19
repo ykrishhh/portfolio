@@ -90,9 +90,8 @@ export const CardTitle = forwardRef(function CardTitle(
         fontFamily: "var(--font-display)",
         fontSize: "1.125rem",
         fontWeight: 700,
-        lineHeight: 1.1,
+        lineHeight: 1.2,
         letterSpacing: "-0.02em",
-        textTransform: "uppercase",
         color: "var(--color-text)",
       }}
       {...props}
@@ -115,7 +114,6 @@ export const CardDescription = forwardRef(function CardDescription(
         fontSize: "0.875rem",
         lineHeight: 1.6,
         color: "var(--color-text-muted)",
-        fontFamily: "var(--font-mono)",
       }}
       {...props}
     >

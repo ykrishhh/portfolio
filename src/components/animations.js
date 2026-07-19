@@ -8,26 +8,22 @@ const prefersReduced = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* Scrubbing word-by-word text reveal: each word fades 0.12 -> 1 as user scrolls */
+/* Scrubbing text reveal: entire element fades in on scroll */
 export function useScrubText(ref, deps = []) {
   useEffect(() => {
     const el = ref.current;
     if (!el || prefersReduced()) return undefined;
 
-    const words = el.querySelectorAll("[data-word]");
-    if (!words.length) return undefined;
-
     const tween = gsap.fromTo(
-      words,
-      { opacity: 0.12 },
+      el,
+      { opacity: 0 },
       {
         opacity: 1,
-        stagger: 0.2,
-        ease: "none",
+        ease: "power2.out",
         scrollTrigger: {
           trigger: el,
           start: "top 75%",
-          end: "bottom 55%",
+          end: "top 45%",
           scrub: true,
         },
       }

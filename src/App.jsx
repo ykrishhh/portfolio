@@ -11,7 +11,10 @@ import {
 import { FilterTabList } from "./components/FilterTabs";
 import { ProjectCard, WriteupCard } from "./components/ProjectCard";
 import { Stack, Timeline } from "./components/Timeline";
-import { MotionHero } from "./components/MotionHero";
+import { lazy, Suspense } from "react";
+const MotionHero = lazy(() =>
+  import("./components/MotionHero").then((m) => ({ default: m.MotionHero }))
+);
 import { LenisProvider } from "./components/LenisProvider";
 import {
   useScrubText,
@@ -620,7 +623,9 @@ function App() {
           </video>
           <div className="hero-video-wash" aria-hidden="true" />
           <div className="absolute inset-0 opacity-40" style={{ zIndex: 1 }}>
-            <MotionHero />
+            <Suspense fallback={<div className="absolute inset-0 bg-[var(--color-void)]" />}>
+              <MotionHero />
+            </Suspense>
           </div>
 
           <div className="container relative" style={{ zIndex: 2 }}>

@@ -11,6 +11,8 @@ import {
 import { FilterTabList } from "./components/FilterTabs";
 import { ProjectCard, WriteupCard } from "./components/ProjectCard";
 import { Stack, Timeline } from "./components/Timeline";
+import { MotionHero } from "./components/MotionHero";
+import { LenisProvider } from "./components/LenisProvider";
 
 function GithubIcon({ className }) {
   return (
@@ -109,18 +111,7 @@ const WRITEUPS = [
 ];
 
 const STACK = [
-  "Python",
-  "C",
-  "JavaScript",
-  "Bash",
-  "Linux",
-  "ESP32",
-  "Android",
-  "Frida",
-  "eBPF",
-  "React",
-  "FastAPI",
-  "LangChain",
+  "Python", "C", "JavaScript", "Bash", "Linux", "ESP32", "Android", "Frida", "eBPF", "React", "FastAPI", "LangChain",
 ];
 
 const JOURNEY = [
@@ -155,10 +146,6 @@ const JOURNEY = [
     icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>,
   },
 ];
-
-/* ========================================================================== */
-/*  useReveal — scroll-reveal via IntersectionObserver, toggles `.visible`      */
-/* ========================================================================== */
 
 function useReveal({ threshold = 0.15, rootMargin = "0px 0px -10% 0px" } = {}) {
   const ref = useRef(null);
@@ -196,10 +183,6 @@ function useReveal({ threshold = 0.15, rootMargin = "0px 0px -10% 0px" } = {}) {
 
   return ref;
 }
-
-/* ========================================================================== */
-/*  FluidNav — floating pill island, scroll-aware, morphing hamburger          */
-/* ========================================================================== */
 
 function FluidNav({ open, setOpen }) {
   const sentinelRef = useRef(null);
@@ -373,10 +356,6 @@ function FluidNav({ open, setOpen }) {
   );
 }
 
-/* ========================================================================== */
-/*  Section — eyebrow + title + desc + border, wired with scroll reveal        */
-/* ========================================================================== */
-
 function Section({ id, eyebrow, title, desc, children, bordered = true, className = "" }) {
   const revealRef = useReveal();
   return (
@@ -405,300 +384,6 @@ function Section({ id, eyebrow, title, desc, children, bordered = true, classNam
   );
 }
 
-/* ========================================================================== */
-/*  App                                                                        */
-/* ========================================================================== */
-
-export default function App() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [projectFilter, setProjectFilter] = useState("All");
-  const heroRef = useReveal({ threshold: 0.05 });
-
-  const visibleProjects =
-    projectFilter === "All"
-      ? PROJECTS
-      : PROJECTS.filter((p) => p.category === projectFilter);
-
-  const onFilterChange = useCallback((v) => setProjectFilter(v), []);
-
-  return (
-    <div className="relative min-h-screen font-sans text-[var(--color-text)]">
-      <div className="bg-mesh" aria-hidden="true" />
-      <div className="bg-noise" aria-hidden="true" />
-
-      <FluidNav open={menuOpen} setOpen={setMenuOpen} />
-
-      {/* Hero */}
-      <section id="home" className="relative min-h-[100dvh] w-full overflow-hidden">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="hero-video"
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4"
-        />
-        <div className="bg-mesh" aria-hidden="true" style={{ position: "absolute", zIndex: 1 }} />
-        <div
-          className="absolute inset-0"
-          aria-hidden="true"
-          style={{
-            zIndex: 1,
-            background:
-              "linear-gradient(180deg, rgba(3,3,3,0.35) 0%, rgba(3,3,3,0.15) 40%, rgba(3,3,3,0.85) 100%)",
-          }}
-        />
-
-        <div className="container relative z-10 flex min-h-[100dvh] flex-col justify-end pb-16 pt-32">
-          <p
-            className="section-eyebrow"
-            style={{ animation: "fadeSlideUp 0.8s var(--ease-expo) 0.2s both" }}
-          >
-            Security Engineer &amp; AI Researcher
-          </p>
-          <h1
-            className="font-display italic tracking-tight text-[var(--color-text)]"
-            style={{
-              fontSize: "clamp(3rem, 8vw, 8rem)",
-              lineHeight: 1.02,
-              letterSpacing: "-0.03em",
-              animation: "fadeSlideUp 0.8s var(--ease-expo) 0.4s both",
-            }}
-          >
-            Security work across
-            <br />
-            hardware and software.
-          </h1>
-          <p
-            className="mt-6 max-w-xl text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg"
-            style={{ animation: "fadeSlideUp 0.8s var(--ease-expo) 0.7s both" }}
-          >
-            Offensive security, hardware hacking, and autonomous AI, from bare
-            metal to agentic pipelines.
-          </p>
-          <ButtonGroup
-            className="mt-8 flex-wrap gap-3"
-            style={{ animation: "fadeSlideUp 0.8s var(--ease-expo) 0.9s both" }}
-          >
-            <Button asChild variant="primary">
-              <a href="#work">
-                View Projects
-                <ButtonIcon>
-                  <ArrowUpRight className="h-4 w-4" />
-                </ButtonIcon>
-              </a>
-            </Button>
-            <Button asChild variant="secondary">
-              <a href="#writeups">Read Writeups</a>
-            </Button>
-          </ButtonGroup>
-
-          {/* Scroll indicator: animated line draw */}
-          <div
-            className="mt-14 flex items-center gap-3 text-[var(--color-text-faint)]"
-            style={{ animation: "fadeIn 1s var(--ease-smooth) 1.2s both" }}
-          >
-            <span
-              aria-hidden="true"
-              className="block w-px"
-              style={{
-                height: "48px",
-                background:
-                  "linear-gradient(180deg, var(--color-accent) 0%, transparent 100%)",
-                animation: "lineDraw 1.4s var(--ease-expo) 1.3s both",
-              }}
-            />
-            <span className="text-xs uppercase tracking-[0.2em]">Scroll</span>
-          </div>
-        </div>
-      </section>
-
-      {/* About */}
-      <section
-        id="about"
-        ref={heroRef}
-        className="border-t border-[var(--color-hairline)] py-24 md:py-32 lg:py-40"
-      >
-        <div className="container">
-          <div className="grid gap-12 lg:grid-cols-2">
-            <div>
-              <span className="section-eyebrow reveal">About</span>
-              <h2 className="section-title reveal stagger-1">Krishna</h2>
-              <div className="mt-6 space-y-4 text-base leading-relaxed text-[var(--color-text-muted)] reveal stagger-2">
-                <p>
-                  Security engineer focused on offensive security, hardware
-                  hacking, and building autonomous AI systems. I break things to
-                  understand how they work, then build them stronger.
-                </p>
-                <p>
-                  ESP32 firmware fuzzing, multi-agent pentest pipelines, and
-                  Android attestation research. The work runs from kernel to
-                  cloud.
-                </p>
-                <p>
-                  Currently building open-source security tools, writing deep-dive
-                  research writeups, and exploring how local LLMs can automate
-                  vulnerability research.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col justify-center">
-              <Card variant="elevated" className="reveal-scale stagger-3">
-                <CardHeader>
-                  <CardTitle>Quick Facts</CardTitle>
-                  <CardDescription>The essentials, at a glance.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm">
-                  {[
-                    ["Location", "India"],
-                    ["Focus", "OffSec · Hardware · AI"],
-                    ["Workspace", "Linux (Termux) on Android"],
-                    ["Active since", "2022"],
-                  ].map(([k, v]) => (
-                    <div key={k} className="flex items-center gap-3">
-                      <span className="text-[var(--color-accent)]">→</span>
-                      <span className="text-[var(--color-text-muted)]">
-                        {k}: <span className="text-[var(--color-text)]">{v}</span>
-                      </span>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <Section eyebrow="Timeline" title="Journey" desc="Four years of breaking, building, and researching in public.">
-        <div className="mt-16">
-          <Timeline items={JOURNEY} />
-        </div>
-      </Section>
-
-      {/* Projects */}
-      <Section
-        id="work"
-        eyebrow="Featured Work"
-        title="Projects"
-        desc="Open-source security tools, hardware research, and AI-powered pentesting frameworks."
-      >
-        <div className="mt-12">
-          <FilterTabList
-            options={PROJECT_CATEGORIES.map((c) => ({ value: c, label: c }))}
-            value={projectFilter}
-            onChange={onFilterChange}
-            className="mb-8"
-            ariaLabel="Filter projects by category"
-          />
-
-          <ProjectGrid key={projectFilter} projects={visibleProjects} />
-
-          <div className="mt-10">
-            <a
-              href="https://github.com/ykrishhh?tab=repositories"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
-            >
-              View all repos on GitHub
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-          </div>
-        </div>
-      </Section>
-
-      {/* Writeups */}
-      <Section
-        id="writeups"
-        eyebrow="Deep Dives"
-        title="Writeups"
-        desc="Technical research and vulnerability analysis from real-world engagements."
-      >
-        <WriteupGrid writeups={WRITEUPS} />
-        <div className="mt-10">
-          <a
-            href="https://harrydev.one"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
-          >
-            Browse all writeups
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
-        </div>
-      </Section>
-
-      {/* Stack / Arsenal */}
-      <Stack items={STACK} subtitle="Tech Stack" title="Arsenal" />
-
-      {/* Contact */}
-      <Section id="contact">
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="section-eyebrow reveal">Get In Touch</span>
-          <h2
-            className="reveal stagger-1 font-display italic tracking-tight"
-            style={{
-              fontSize: "clamp(2.5rem, 7vw, 6rem)",
-              lineHeight: 1.02,
-              letterSpacing: "-0.03em",
-            }}
-          >
-            Let's Build
-          </h2>
-          <p className="reveal stagger-2 mx-auto mt-6 max-w-lg text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg">
-            Open to security research collaborations, red team engagements, and
-            interesting problems.
-          </p>
-          <ButtonGroup className="reveal stagger-3 mt-8 flex-wrap justify-center gap-3">
-            <Button asChild variant="primary">
-              <a href="mailto:krishy2122@gmail.com">
-                <Mail className="h-4 w-4" />
-                Email Me
-                <ButtonIcon>
-                  <ArrowUpRight className="h-4 w-4" />
-                </ButtonIcon>
-              </a>
-            </Button>
-            <Button asChild variant="secondary">
-              <a href="https://github.com/ykrishhh" target="_blank" rel="noopener noreferrer">
-                <GithubIcon className="h-4 w-4" />
-                GitHub
-              </a>
-            </Button>
-          </ButtonGroup>
-        </div>
-      </Section>
-
-      {/* Footer */}
-      <footer className="border-t border-[var(--color-hairline)] py-12">
-        <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
-          <p className="text-sm text-[var(--color-text-faint)]">
-            Built with React 19, Vite 8, Tailwind v4, and zero fluff.
-          </p>
-          <div className="flex gap-2">
-            {SOCIALS.map((s) => (
-              <a
-                key={s.name}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="nav-link"
-              >
-                {s.name}
-              </a>
-            ))}
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-}
-
-/* ========================================================================== */
-/*  Grids — own reveal observer so cards fade/stagger on scroll                 */
-/* ========================================================================== */
-
 function ProjectGrid({ projects }) {
   const ref = useReveal();
   return (
@@ -720,3 +405,209 @@ function WriteupGrid({ writeups }) {
     </div>
   );
 }
+
+function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [projectFilter, setProjectFilter] = useState("All");
+
+  const visibleProjects =
+    projectFilter === "All"
+      ? PROJECTS
+      : PROJECTS.filter((p) => p.category === projectFilter);
+
+  const onFilterChange = useCallback((v) => setProjectFilter(v), []);
+
+  return (
+    <LenisProvider>
+      <div className="relative min-h-screen font-sans text-[var(--color-text)]">
+        <div className="bg-mesh" aria-hidden="true" />
+        <div className="bg-noise" aria-hidden="true" />
+
+        <FluidNav open={menuOpen} setOpen={setMenuOpen} />
+
+        {/* Motion Hero - replaces the old Hero section */}
+        <MotionHero />
+
+        {/* About */}
+        <section
+          id="about"
+          className="border-t border-[var(--color-hairline)] py-24 md:py-32 lg:py-40"
+        >
+          <div className="container">
+            <div className="grid gap-12 lg:grid-cols-2">
+              <div>
+                <span className="section-eyebrow reveal">About</span>
+                <h2 className="section-title reveal stagger-1">Krishna</h2>
+                <div className="mt-6 space-y-4 text-base leading-relaxed text-[var(--color-text-muted)] reveal stagger-2">
+                  <p>
+                    Security engineer focused on offensive security, hardware
+                    hacking, and building autonomous AI systems. I break things to
+                    understand how they work, then build them stronger.
+                  </p>
+                  <p>
+                    ESP32 firmware fuzzing, multi-agent pentest pipelines, and
+                    Android attestation research. The work runs from kernel to
+                    cloud.
+                  </p>
+                  <p>
+                    Currently building open-source security tools, writing deep-dive
+                    research writeups, and exploring how local LLMs can automate
+                    vulnerability research.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center">
+                <Card variant="elevated" className="reveal-scale stagger-3">
+                  <CardHeader>
+                    <CardTitle>Quick Facts</CardTitle>
+                    <CardDescription>The essentials, at a glance.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-sm">
+                    {[
+                      ["Location", "India"],
+                      ["Focus", "OffSec · Hardware · AI"],
+                      ["Workspace", "Linux (Termux) on Android"],
+                      ["Active since", "2022"],
+                    ].map(([k, v]) => (
+                      <div key={k} className="flex items-center gap-3">
+                        <span className="text-[var(--color-accent)]">→</span>
+                        <span className="text-[var(--color-text-muted)]">
+                          {k}: <span className="text-[var(--color-text)]">{v}</span>
+                        </span>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Timeline */}
+        <Section eyebrow="Timeline" title="Journey" desc="Four years of breaking, building, and researching in public.">
+          <div className="mt-16">
+            <Timeline items={JOURNEY} />
+          </div>
+        </Section>
+
+        {/* Projects */}
+        <Section
+          id="work"
+          eyebrow="Featured Work"
+          title="Projects"
+          desc="Open-source security tools, hardware research, and AI-powered pentesting frameworks."
+        >
+          <div className="mt-12">
+            <FilterTabList
+              options={PROJECT_CATEGORIES.map((c) => ({ value: c, label: c }))}
+              value={projectFilter}
+              onChange={onFilterChange}
+              className="mb-8"
+              ariaLabel="Filter projects by category"
+            />
+
+            <ProjectGrid key={projectFilter} projects={visibleProjects} />
+
+            <div className="mt-10">
+              <a
+                href="https://github.com/ykrishhh?tab=repositories"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+              >
+                View all repos on GitHub
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            </div>
+          </div>
+        </Section>
+
+        {/* Writeups */}
+        <Section
+          id="writeups"
+          eyebrow="Deep Dives"
+          title="Writeups"
+          desc="Technical research and vulnerability analysis from real-world engagements."
+        >
+          <WriteupGrid writeups={WRITEUPS} />
+          <div className="mt-10">
+            <a
+              href="https://harrydev.one"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+            >
+              Browse all writeups
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </div>
+        </Section>
+
+        {/* Stack / Arsenal */}
+        <Stack items={STACK} subtitle="Tech Stack" title="Arsenal" />
+
+        {/* Contact */}
+        <Section id="contact">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="section-eyebrow reveal">Get In Touch</span>
+            <h2
+              className="reveal stagger-1 font-display italic tracking-tight"
+              style={{
+                fontSize: "clamp(2.5rem, 7vw, 6rem)",
+                lineHeight: 1.02,
+                letterSpacing: "-0.03em",
+              }}
+            >
+              Let's Build
+            </h2>
+            <p className="reveal stagger-2 mx-auto mt-6 max-w-lg text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg">
+              Open to security research collaborations, red team engagements, and
+              interesting problems.
+            </p>
+            <ButtonGroup className="reveal stagger-3 mt-8 flex-wrap justify-center gap-3">
+              <Button asChild variant="primary">
+                <a href="mailto:krishy2122@gmail.com">
+                  <Mail className="h-4 w-4" />
+                  Email Me
+                  <ButtonIcon>
+                    <ArrowUpRight className="h-4 w-4" />
+                  </ButtonIcon>
+                </a>
+              </Button>
+              <Button asChild variant="secondary">
+                <a href="https://github.com/ykrishhh" target="_blank" rel="noopener noreferrer">
+                  <GithubIcon className="h-4 w-4" />
+                  GitHub
+                </a>
+              </Button>
+            </ButtonGroup>
+          </div>
+        </Section>
+
+        {/* Footer */}
+        <footer className="border-t border-[var(--color-hairline)] py-12">
+          <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
+            <p className="text-sm text-[var(--color-text-faint)]">
+              Built with React 19, Vite 8, Tailwind v4, and zero fluff.
+            </p>
+            <div className="flex gap-2">
+              {SOCIALS.map((s) => (
+                <a
+                  key={s.name}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nav-link"
+                >
+                  {s.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </footer>
+      </div>
+    </LenisProvider>
+  );
+}
+
+export default App;

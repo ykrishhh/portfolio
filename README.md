@@ -1,33 +1,30 @@
-<div align="center">
+# foldcraft
 
-# Portfolio · KRISH
+React 19 portfolio — [harrydev.one](https://harrydev.one). Bento grid, dark terminal aesthetic, live GitHub data. Built because most portfolio templates dress you in someone else's clothes.
 
-**React SPA — [harrydev.one/portfolio](https://harrydev.one/portfolio)**
+## Stack
 
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)]()
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)]()
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)]()
-[![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)]()
+Vite 8 · React 19 · Tailwind v4 · shadcn/ui · oxlint · gh-pages
 
-</div>
+## Sections
 
-Bento grid, dark terminal aesthetic, live data from the GitHub API. Built because most portfolio templates dress you in someone else's clothes.
+Hero → Skills → Stats → Services → Projects → Writeups → Terminal Profile → Timeline → Contact
 
-**Sections:** Hero → Skills → Stats → Services → Projects → Writeups → Terminal Profile → Timeline → Contact
-
-### Quick start
+## Quick start
 
 ```bash
 npm install
-npm run dev       # local dev at :3000
+npm run dev       # localhost:3000
 npm run build     # production to dist/
 npm run deploy    # push to gh-pages
 ```
 
-### Stack
+## Lint
 
-Vite · React 18 · TypeScript · Tailwind CSS · shadcn/ui · gh-pages
+```bash
+npm run lint      # oxlint
+```
 
 ---
 
-*Built on Termux, one commit at a time.*
+*No badges. No TypeScript. No fluff.*

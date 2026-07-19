@@ -1,20 +1,10 @@
+import { ArrowUpRight, Mail } from "lucide-react";
+import { Button } from "./components/Button";
+import { Card } from "./components/Card";
+import { FilterTabList } from "./components/FilterTabs";
+import { ProjectCard, WriteupCard } from "./components/ProjectCard";
+import { Stack, Timeline } from "./components/Timeline";
 import { useState } from "react";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Globe,
-  Mail,
-  Menu,
-  X,
-  Shield,
-  Cpu,
-  Brain,
-  Terminal,
-  ExternalLink,
-  Zap,
-  Target,
-  BookOpen,
-} from "lucide-react";
 
 function GithubIcon({ className }) {
   return (
@@ -24,20 +14,12 @@ function GithubIcon({ className }) {
   );
 }
 
-function XIcon({ className }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-
 const NAV_LINKS = ["Home", "About", "Work", "Writeups", "Contact"];
 
 const SOCIALS = [
-  { name: "GitHub", url: "https://github.com/ykrishhh", icon: GithubIcon },
-  { name: "X", url: "https://x.com/harry6ez", icon: XIcon },
-  { name: "harrydev.one", url: "https://harrydev.one", icon: Globe },
+  { name: "GitHub", url: "https://github.com/ykrishhh" },
+  { name: "X", url: "https://x.com/harry6ez" },
+  { name: "harrydev.one", url: "https://harrydev.one" },
 ];
 
 const PROJECT_CATEGORIES = ["All", "Hardware", "AI", "Web", "Android"];
@@ -48,7 +30,7 @@ const PROJECTS = [
     desc: "Security tools and scripts for Termux: network scanning, password auditing, and pentesting on Android.",
     stars: 5,
     url: "https://github.com/ykrishhh/termux-security-toolkit",
-    icon: Terminal,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
     category: "Android",
     tags: ["android", "termux", "pentesting"],
   },
@@ -57,7 +39,7 @@ const PROJECTS = [
     desc: "Advanced ESP32 pentesting and telemetry firmware for 2.4 GHz research, RF24 experimentation, and on-device forensic capture.",
     stars: 1,
     url: "https://github.com/ykrishhh/ESP32-HARNESS",
-    icon: Cpu,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>,
     category: "Hardware",
     tags: ["esp32", "firmware", "iot"],
   },
@@ -66,7 +48,7 @@ const PROJECTS = [
     desc: "OU.edu Red Team Hunt: 6 validated vulnerabilities with proof-of-concept exploits.",
     stars: 1,
     url: "https://github.com/ykrishhh/ou-hunt-report",
-    icon: Shield,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 1 10z"/></svg>,
     category: "Web",
     tags: ["red-team", "cve", "python"],
   },
@@ -75,7 +57,7 @@ const PROJECTS = [
     desc: "AI-assisted Python pentesting: exploit analysis and vulnerability detection for reconnaissance.",
     stars: 0,
     url: "https://github.com/ykrishhh/pypentest-ai",
-    icon: Brain,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a8 8 0 0 1 8 8H4a8 8 0 0 1 8-8Z"/><path d="M12 14v4"/><path d="M12 14h.01"/></svg>,
     category: "AI",
     tags: ["ai", "pentesting", "python"],
   },
@@ -84,7 +66,7 @@ const PROJECTS = [
     desc: "Advanced web hosting control panel: server management, database admin, file manager, and deployment tools.",
     stars: 1,
     url: "https://github.com/ykrishhh/HarryPanel",
-    icon: Terminal,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
     category: "Web",
     tags: ["flask", "devops", "hosting"],
   },
@@ -93,7 +75,7 @@ const PROJECTS = [
     desc: "Complete guide to Android rooting and hooking, from user-space DEX editing to Xposed and KernelSU.",
     stars: 1,
     url: "https://github.com/ykrishhh/android-rooting-masterclass",
-    icon: Shield,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
     category: "Android",
     tags: ["android", "frida", "kernel"],
   },
@@ -104,26 +86,26 @@ const WRITEUPS = [
     title: "ESP32 BLE Attack Vectors",
     desc: "Recon, over-the-air exploitation, and payload injections on ESP32 Bluetooth Low Energy.",
     url: "https://harrydev.one/blog/esp32-ble-attack",
-    icon: Cpu,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>,
   },
   {
     title: "Android Root Security Bypass",
     desc: "Bypassing modern attestation models using custom eBPF hooks.",
     url: "https://harrydev.one/blog/android-rooting-deep-dive",
-    icon: Shield,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
   },
   {
     title: "Binary Reverse Engineering",
     desc: "Advanced CTF disassembly walkthroughs and assembly analysis.",
     url: "https://harrydev.one/blog/ctf-reverse-engineering",
-    icon: Terminal,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
   },
 ];
 
 const STACK = [
   "Python",
   "C",
-  "TypeScript",
+  "JavaScript",
   "Bash",
   "Linux",
   "ESP32",
@@ -140,31 +122,31 @@ const JOURNEY = [
     year: "2022",
     title: "Started Security Research",
     desc: "Deep dive into offensive security, CTF competitions, and vulnerability research.",
-    icon: Target,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>,
   },
   {
     year: "2023",
     title: "Hardware Hacking & ESP32",
     desc: "Built custom firmware for wireless auditing and IoT security research.",
-    icon: Cpu,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>,
   },
   {
     year: "2024",
     title: "AI-Powered Pentesting",
     desc: "Developed autonomous security tools using local LLMs and agentic pipelines.",
-    icon: Brain,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a8 8 0 0 1 8 8H4a8 8 0 0 1 8-8Z"/><path d="M12 14v4"/><path d="M12 14h.01"/></svg>,
   },
   {
     year: "2025",
     title: "Red Team Engagements",
     desc: "OU.edu Red Team Hunt: 6 validated vulnerabilities with full PoC chain.",
-    icon: Zap,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
   },
   {
     year: "2026",
     title: "Building in Public",
     desc: "Open-sourcing tools, writing deep-dive research, and mentoring new researchers.",
-    icon: BookOpen,
+    icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>,
   },
 ];
 
@@ -179,7 +161,7 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0a] font-sans text-white">
-      {/* subtle drift mesh, matches writeups.harrydev.one */}
+      {/* Subtle drift mesh */}
       <div
         className="pointer-events-none fixed inset-0 -z-10"
         style={{
@@ -188,6 +170,7 @@ export default function App() {
           filter: "blur(20px)",
         }}
       />
+      
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden">
         <video
@@ -199,16 +182,10 @@ export default function App() {
           style={{ objectPosition: "70% center" }}
           src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4"
         />
-
-        {/* Navbar */}
         <nav className="relative z-30 flex items-center justify-between px-6 py-5 md:px-12 lg:px-16">
-          <a
-            href="#"
-            className="text-lg font-semibold tracking-tight text-white sm:text-xl"
-          >
+          <a href="#" className="text-lg font-semibold tracking-tight text-white sm:text-xl">
             KRISH
           </a>
-
           <div className="hidden items-center gap-8 md:flex">
             {NAV_LINKS.map((link) => (
               <a
@@ -220,14 +197,12 @@ export default function App() {
               </a>
             ))}
           </div>
-
           <a
             href="mailto:krishy2122@gmail.com"
             className="hidden rounded-lg bg-white px-5 py-2 text-sm font-medium text-black transition-transform hover:scale-105 md:block"
           >
-            Let&apos;s Connect
+            Let's Connect
           </a>
-
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="relative z-50 flex h-11 w-11 items-center justify-center active:scale-90 md:hidden"
@@ -240,7 +215,7 @@ export default function App() {
                   : "rotate-0 scale-100 opacity-100"
               }`}
             >
-              <Menu className="h-6 w-6 text-white" />
+              <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
             </span>
             <span
               className={`absolute transition-all duration-300 ${
@@ -249,7 +224,7 @@ export default function App() {
                   : "-rotate-90 scale-0 opacity-0"
               }`}
             >
-              <X className="h-6 w-6 text-white" />
+              <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </span>
           </button>
         </nav>
@@ -305,7 +280,7 @@ export default function App() {
               className="mb-4 text-xs text-white/90 sm:mb-6 sm:text-sm"
               style={{ animation: "fadeSlideUp 0.8s ease 0.2s both" }}
             >
-              Security Engineer &amp; AI Researcher
+              Security Engineer & AI Researcher
             </p>
             <h1
               className="font-display text-4xl italic leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl"
@@ -318,7 +293,6 @@ export default function App() {
               and software.
             </h1>
           </div>
-
           <div>
             <p
               className="mb-5 max-w-sm text-sm leading-relaxed text-white/60 sm:mb-6 sm:max-w-lg sm:text-base md:text-lg"
@@ -331,19 +305,12 @@ export default function App() {
               className="flex flex-wrap items-center gap-3"
               style={{ animation: "fadeSlideUp 0.8s ease 0.9s both" }}
             >
-              <a
-                href="#work"
-                className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-black transition-transform hover:scale-105 sm:px-6 sm:py-3"
-              >
-                View Projects
-                <ArrowRight className="h-4 w-4" />
-              </a>
-              <a
-                href="#writeups"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/20 px-5 py-2.5 text-sm font-medium text-white/80 transition-colors hover:border-white/50 hover:text-white sm:px-6 sm:py-3"
-              >
-                Read Writeups
-              </a>
+              <Button variant="primary" asChild>
+                <a href="#work">View Projects <ArrowUpRight className="h-4 w-4" /></a>
+              </Button>
+              <Button variant="secondary" asChild>
+                <a href="#writeups">Read Writeups</a>
+              </Button>
             </div>
           </div>
         </div>
@@ -376,7 +343,7 @@ export default function App() {
               </div>
             </div>
             <div className="flex flex-col justify-center">
-              <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
+              <Card variant="default" className="p-6">
                 <p className="mb-4 text-xs text-white/40">Quick Facts</p>
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-3">
@@ -411,7 +378,7 @@ export default function App() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </Card>
             </div>
           </div>
         </div>
@@ -424,49 +391,14 @@ export default function App() {
           <h2 className="mb-12 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
             Journey
           </h2>
-
-          <div className="relative space-y-8">
-            {/* Vertical line */}
-            <div className="absolute left-[19px] top-0 bottom-0 w-px bg-white/10 md:left-1/2" />
-
-            {JOURNEY.map((j, i) => (
-              <div
-                key={j.year}
-                className={`relative flex items-start gap-6 md:gap-0 ${
-                  i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
-              >
-                {/* Dot */}
-                <div className="absolute left-[15px] z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black md:left-1/2 md:-translate-x-1/2">
-                  <j.icon className="h-4 w-4 text-white/60" />
-                </div>
-
-                {/* Content */}
-                <div
-                  className={`ml-14 md:ml-0 md:w-[calc(50%-2rem)] ${
-                    i % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"
-                  }`}
-                >
-                  <span className="text-xs text-white/30">{j.year}</span>
-                  <h3 className="mt-1 text-base font-medium text-white">
-                    {j.title}
-                  </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-white/50">
-                    {j.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <Timeline items={JOURNEY} />
         </div>
       </section>
 
       {/* Projects Section */}
       <section id="work" className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16">
         <div className="mx-auto max-w-6xl">
-          <p className="mb-3 text-xs text-white/50 sm:text-sm">
-            Featured Work
-          </p>
+          <p className="mb-3 text-xs text-white/50 sm:text-sm">Featured Work</p>
           <h2 className="mb-4 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
             Projects
           </h2>
@@ -475,69 +407,18 @@ export default function App() {
             pentesting frameworks.
           </p>
 
-          {/* Category filter — stable height, no layout shift on press */}
-          <div
+          <FilterTabList
+            options={PROJECT_CATEGORIES.map((c) => ({ value: c, label: c }))}
+            value={projectFilter}
+            onChange={setProjectFilter}
             className="mb-8 flex min-h-[44px] flex-wrap gap-2"
             role="group"
             aria-label="Filter projects by category"
-          >
-            {PROJECT_CATEGORIES.map((cat) => {
-              const active = projectFilter === cat;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setProjectFilter(cat)}
-                  aria-pressed={active}
-                  className={`rounded-lg border px-4 py-2 text-sm transition-colors ${
-                    active
-                      ? "border-white/40 bg-white/10 text-white"
-                      : "border-white/10 bg-white/[0.02] text-white/50 hover:border-white/25 hover:text-white/80"
-                  }`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
+          />
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {visibleProjects.map((p) => (
-              <a
-                key={p.name}
-                href={p.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-colors hover:border-white/25 hover:bg-white/[0.05]"
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                    <p.icon className="h-5 w-5 text-white/70" />
-                  </div>
-                  <ArrowUpRight className="h-4 w-4 text-white/30 transition-colors group-hover:text-white/70" />
-                </div>
-                <h3 className="mb-2 text-base font-medium text-white">
-                  {p.name}
-                </h3>
-                <p className="mb-4 text-sm leading-relaxed text-white/50">
-                  {p.desc}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {p.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-md bg-white/5 px-2 py-1 text-xs text-white/40"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                  {p.stars > 0 && (
-                    <span className="ml-auto text-xs text-white/30">
-                      ★ {p.stars}
-                    </span>
-                  )}
-                </div>
-              </a>
+              <ProjectCard key={p.name} project={p} />
             ))}
           </div>
 
@@ -561,9 +442,7 @@ export default function App() {
         className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16"
       >
         <div className="mx-auto max-w-6xl">
-          <p className="mb-3 text-xs text-white/50 sm:text-sm">
-            Deep Dives
-          </p>
+          <p className="mb-3 text-xs text-white/50 sm:text-sm">Deep Dives</p>
           <h2 className="mb-4 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
             Writeups
           </h2>
@@ -574,27 +453,7 @@ export default function App() {
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {WRITEUPS.map((w) => (
-              <a
-                key={w.title}
-                href={w.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-xl border border-white/10 bg-white/[0.02] p-6 transition-colors hover:border-white/25 hover:bg-white/[0.05]"
-              >
-                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                  <w.icon className="h-5 w-5 text-white/70" />
-                </div>
-                <h3 className="mb-2 text-base font-medium text-white">
-                  {w.title}
-                </h3>
-                <p className="mb-4 text-sm leading-relaxed text-white/50">
-                  {w.desc}
-                </p>
-                <span className="inline-flex items-center gap-1.5 text-xs text-white/40 transition-colors group-hover:text-white/70">
-                  Read on harrydev.one
-                  <ArrowUpRight className="h-3 w-3" />
-                </span>
-              </a>
+              <WriteupCard key={w.title} writeup={w} />
             ))}
           </div>
 
@@ -613,109 +472,59 @@ export default function App() {
       </section>
 
       {/* Stack Section */}
-      <section className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16">
-        <div className="mx-auto max-w-6xl">
-          <p className="mb-3 text-xs text-white/50 sm:text-sm">
-            Tech Stack
-          </p>
-          <h2 className="mb-8 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
-            Arsenal
-          </h2>
-          <div className="flex flex-wrap gap-3">
-            {STACK.map((s) => (
-              <span
-                key={s}
-                className="rounded-lg border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-white/60"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
-            Let&apos;s work on
-            <br />
-            something useful.
-          </h2>
-          <p className="mx-auto mt-6 max-w-lg text-sm leading-relaxed text-white/50 sm:text-base">
-            Have a threat model to break, an firmware to audit, or a pipeline to
-            automate? That is the work I want to hear about.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <a
-              href="mailto:krishy2122@gmail.com"
-              className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-medium text-black transition-transform hover:scale-105"
-            >
-              <Mail className="h-4 w-4" />
-              Get in Touch
-            </a>
-            <a
-              href="https://github.com/ykrishhh"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border border-white/20 px-6 py-3 text-sm font-medium text-white/80 transition-colors hover:border-white/50 hover:text-white"
-            >
-              <GithubIcon className="h-4 w-4" />
-              GitHub
-            </a>
-          </div>
-        </div>
-      </section>
+      <Stack
+        items={STACK}
+        subtitle="Tech Stack"
+        title="Arsenal"
+      />
 
       {/* Contact Section */}
-      <section
-        id="contact"
-        className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16"
-      >
-        <div className="mx-auto max-w-6xl">
-          <p className="mb-3 text-xs text-white/50 sm:text-sm">
-            Get in Touch
-          </p>
+      <section className="border-t border-white/10 px-6 py-24 md:px-12 lg:px-16">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="mb-3 text-xs text-white/50 sm:text-sm">Get In Touch</p>
           <h2 className="mb-4 font-display text-4xl italic tracking-tight sm:text-5xl md:text-6xl">
-            Contact
+            Let's Build
           </h2>
-          <p className="mb-8 max-w-lg text-sm leading-relaxed text-white/50 sm:text-base">
-            Email is fastest. Otherwise find me on GitHub or X.
+          <p className="mb-8 max-w-lg mx-auto text-sm leading-relaxed text-white/50 sm:text-base">
+            Open to security research collaborations, red team engagements, and
+            interesting problems.
           </p>
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <Button variant="primary" asChild>
+              <a href="mailto:krishy2122@gmail.com">
+                <Mail className="h-4 w-4" />
+                Email Me
+              </a>
+            </Button>
+            <Button variant="secondary" asChild>
+              <a href="https://github.com/ykrishhh" target="_blank" rel="noopener noreferrer">
+                <GithubIcon className="h-4 w-4" />
+                GitHub
+              </a>
+            </Button>
+          </div>
+        </div>
+      </section>
 
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="mailto:krishy2122@gmail.com"
-              className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-medium text-black transition-transform hover:scale-105"
-            >
-              <Mail className="h-4 w-4" />
-              krishy2122@gmail.com
-            </a>
+      {/* Footer */}
+      <footer className="border-t border-white/10 px-6 py-12 md:px-12 lg:px-16">
+        <div className="mx-auto max-w-6xl flex flex-col items-center justify-between gap-4 md:flex-row">
+          <p className="text-sm text-white/40">
+            Built with React 19, Vite 8, Tailwind v4, and zero fluff.
+          </p>
+          <div className="flex gap-6">
             {SOCIALS.map((s) => (
               <a
                 key={s.name}
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border border-white/20 px-6 py-3 text-sm font-medium text-white/80 transition-colors hover:border-white/50 hover:text-white"
+                className="text-sm text-white/40 transition-colors hover:text-white"
               >
-                <s.icon className="h-4 w-4" />
                 {s.name}
               </a>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-white/10 px-6 py-8 md:px-12 lg:px-16">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-xs text-white/30">
-            © 2026 Krishna.
-          </p>
-          <p className="text-xs text-white/30">
-            India • Offensive Security • Hardware/IoT • Autonomous AI
-          </p>
         </div>
       </footer>
     </div>

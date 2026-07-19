@@ -694,7 +694,7 @@ function App() {
               muted
               loop
               playsInline
-              poster="https://images.pexels.com/photos/6424589/pexels-photo-6424589.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
+              poster="/hero-poster.jpg"
             >
               <source
                 src="https://assets.mixkit.co/videos/45378/45378-720.mp4"

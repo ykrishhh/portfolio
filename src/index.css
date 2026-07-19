@@ -426,17 +426,6 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-/* ========== HERO VIDEO ========== */
-.hero-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 65% center;
-  z-index: -2;
-}
-
 /* ========== CONTAINER ========== */
 .container {
   width: 100%;
@@ -571,9 +560,81 @@ body {
   position: absolute;
   inset: 0;
   z-index: 1;
+  pointer-events: none;
   background:
     radial-gradient(ellipse 80% 80% at 50% 40%, rgba(10,10,10,0.35) 0%, rgba(10,10,10,0.85) 70%, var(--color-void) 100%),
     linear-gradient(180deg, rgba(10,10,10,0.6) 0%, transparent 30%, var(--color-void) 100%);
+}
+
+/* ========== HERO GRAIN — film-grain overlay via stepped noise ========== */
+.hero-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  animation: grain-shift 0.45s steps(4) infinite;
+}
+
+@keyframes grain-shift {
+  0%   { background-position: 0% 0%; }
+  25%  { background-position: 25% 75%; }
+  50%  { background-position: 75% 50%; }
+  75%  { background-position: 50% 25%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* ========== HERO VIGNETTE — deeper edge darkening ========== */
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 60% 55% at 50% 40%, transparent 0%, rgba(10,10,10,0.15) 50%, rgba(10,10,10,0.5) 80%, rgba(10,10,10,0.85) 100%);
+}
+
+/* ========== HERO MEDIA WRAPPER — periodic CRT glitch sweep ========== */
+.hero-media-wrapper {
+  position: absolute;
+  inset: 0;
+  animation: glitch-sweep 12s ease-in-out infinite;
+}
+
+@keyframes glitch-sweep {
+  0%, 96%, 100% {
+    transform: translateX(0);
+    clip-path: none;
+    filter: none;
+  }
+  97% {
+    transform: translateX(-3px) skewX(0.3deg);
+    filter: hue-rotate(60deg) contrast(1.4) brightness(1.3);
+    clip-path: polygon(0 32%, 100% 30%, 100% 36%, 0 38%);
+  }
+  97.5% {
+    transform: translateX(2px) skewX(-0.2deg);
+    clip-path: polygon(0 55%, 100% 57%, 100% 61%, 0 59%);
+    filter: hue-rotate(-30deg) contrast(1.2);
+  }
+  98% {
+    transform: translateX(0);
+    clip-path: none;
+    filter: none;
+  }
+}
+
+/* Reduced motion — freeze all hero effects */
+@media (prefers-reduced-motion: reduce) {
+  .hero-grain {
+    animation: none;
+    opacity: 0.15;
+  }
+  .hero-media-wrapper {
+    animation: none;
+  }
 }
 
 /* ========== GAPLESS BENTO GRID ========== */

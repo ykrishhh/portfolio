@@ -515,7 +515,7 @@ function DomainAccordion() {
 
 /* ========== Desire: pinned title + scrubbing text reveal ========== */
 const SCRUB_PARAGRAPH =
-  "I treat every system as a puzzle with a hidden exit. Firmware, kernels, cloud, and the models sitting on top of them all leak the same way. The work is patience, repetition, and a refusal to accept the documented behavior as the real one.";
+  "I treat every system as a puzzle with a hidden exit. Firmware, kernels, cloud, and the models on top all leak the same way. The work is patience and repetition. I don't trust the docs. I verify.";
 
 function DesireSection() {
   const pinRef = useRef(null);
@@ -608,25 +608,34 @@ function App() {
           id="home"
           className="relative flex min-h-[100dvh] items-center overflow-hidden"
         >
-          <video
-            className="hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="https://picsum.photos/seed/securitycode/1920/1080"
-          >
-            <source
-              src="https://cdn.coverr.co/videos/coverr-typing-on-a-keyboard-1584/1080p.mp4"
-              type="video/mp4"
-            />
-          </video>
-          <div className="hero-video-wash" aria-hidden="true" />
-          <div className="absolute inset-0 opacity-40" style={{ zIndex: 1 }}>
-            <Suspense fallback={<div className="absolute inset-0 bg-[var(--color-void)]" />}>
-              <MotionHero />
-            </Suspense>
+          <div className="hero-media-wrapper" aria-hidden="true">
+            <video
+              className="hero-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster="https://picsum.photos/seed/securitycode/1920/1080"
+            >
+              <source
+                src="https://assets.mixkit.co/videos/50748/50748-1080.mp4"
+                type="video/mp4"
+                media="(min-width: 769px)"
+              />
+              <source
+                src="https://assets.mixkit.co/videos/50748/50748-720.mp4"
+                type="video/mp4"
+              />
+            </video>
+            <div className="absolute inset-0 opacity-40" style={{ zIndex: 1 }}>
+              <Suspense fallback={<div className="absolute inset-0 bg-[var(--color-void)]" />}>
+                <MotionHero />
+              </Suspense>
+            </div>
           </div>
+          <div className="hero-video-wash" aria-hidden="true" />
+          <div className="hero-grain" aria-hidden="true" />
+          <div className="hero-vignette" aria-hidden="true" />
 
           <div className="container relative" style={{ zIndex: 2 }}>
             <div className="max-w-6xl">
@@ -642,16 +651,17 @@ function App() {
                   lineHeight: 0.9,
                   letterSpacing: "-0.04em",
                   color: "var(--color-text)",
-                  maxWidth: "18ch",
                 }}
               >
-                I break systems so they can't break you.
+                <span className="block">Glitch.</span>
+                <span className="block">Extract.</span>
+                <span className="block text-[var(--color-accent)]">Repeat.</span>
               </h1>
               <p
                 className="mt-8 max-w-xl font-mono text-sm uppercase tracking-[0.05em] text-[var(--color-text-muted)]"
                 style={{ lineHeight: 1.8 }}
               >
-                Offensive security · Hardware hacking · Autonomous AI systems.
+                Offensive security, hardware hacking, autonomous AI.
                 Breaking things from kernel to cloud since 2022.
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
@@ -683,19 +693,16 @@ function App() {
                 <h2 className="section-title reveal stagger-1">Krishna</h2>
                 <div className="mt-6 space-y-4 text-base leading-relaxed text-[var(--color-text-muted)] reveal stagger-2">
                   <p>
-                    Security engineer focused on offensive security, hardware
-                    hacking, and building autonomous AI systems. I break things to
-                    understand how they work, then build them stronger.
+                    Security engineer. I break systems to learn how they work,
+                    then rebuild them stronger.
                   </p>
                   <p>
-                    ESP32 firmware fuzzing, multi-agent pentest pipelines, and
-                    Android attestation research. The work runs from kernel to
-                    cloud.
+                    ESP32 firmware fuzzing, multi-agent pentest pipelines, Android
+                    attestation research. The range runs from silicon to cloud.
                   </p>
                   <p>
-                    Currently building open-source security tools, writing deep-dive
-                    research writeups, and exploring how local LLMs can automate
-                    vulnerability research.
+                    Right now I ship open-source tools, write research, and push
+                    local LLMs to automate vuln discovery.
                   </p>
                 </div>
               </div>
@@ -703,7 +710,7 @@ function App() {
                 <Card variant="elevated" className="reveal-scale stagger-3">
                   <CardHeader>
                     <CardTitle>Quick Facts</CardTitle>
-                    <CardDescription>The essentials, at a glance.</CardDescription>
+                    <CardDescription>Quick facts.</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
                     {[
@@ -732,7 +739,7 @@ function App() {
         </Section>
 
         {/* Timeline */}
-        <Section eyebrow="Timeline" title="Journey" desc="Four years of breaking, building, and researching in public.">
+        <Section eyebrow="Timeline" title="Journey" desc="Four years of breaking and building in public.">
           <div className="mt-16">
             <Timeline items={JOURNEY} />
           </div>
@@ -743,7 +750,7 @@ function App() {
           id="work"
           eyebrow="Featured Work"
           title="Projects"
-          desc="Open-source security tools, hardware research, and AI-powered pentesting frameworks."
+          desc="Open-source tools, hardware research, agentic pentest frameworks."
         >
           <div className="mt-12">
             <FilterTabList
@@ -775,7 +782,7 @@ function App() {
           id="writeups"
           eyebrow="Deep Dives"
           title="Writeups"
-          desc="Technical research and vulnerability analysis from real-world engagements."
+          desc="Vulnerability analysis from real engagements."
         >
           <WriteupGrid writeups={WRITEUPS} />
           <div className="mt-10">
@@ -821,8 +828,8 @@ function App() {
               Let's Build
             </h2>
             <p className="reveal stagger-2 mx-auto mt-6 max-w-lg text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg">
-              Open to security research collaborations, red team engagements, and
-              interesting problems.
+              Open to red team engagements, vuln research collabs, and hard
+              reverse-engineering work.
             </p>
             <ButtonGroup className="reveal stagger-3 mt-8 flex-wrap justify-center gap-3">
               <Button asChild variant="primary">

@@ -431,25 +431,172 @@ body {
   background: var(--color-accent-dim);
 }
 
-/* ========== HERO VIDEO ========== */
-.hero-video {
+/* ========== HERO VIDEO (background layers) ========== */
+.hero-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 30%, rgba(0, 212, 170, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 20% 70%, rgba(0, 212, 170, 0.06) 0%, transparent 60%),
+    var(--color-void);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-fallback {
+    background:
+      center / cover no-repeat url("/fallback-poster.svg"),
+      var(--color-void);
+  }
+}
+
+.hero-main-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
+  pointer-events: none;
   object-fit: cover;
-  object-position: center;
-  z-index: 0;
-  filter: brightness(0.45) saturate(0.7);
+  display: block;
+  opacity: 0.35;
 }
+
+.hero-wash-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  object-fit: cover;
+  display: block;
+  opacity: 0.15;
+  mix-blend-mode: screen;
+}
+
 .hero-video-wash {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 3;
   pointer-events: none;
   background:
     radial-gradient(ellipse 80% 80% at 50% 40%, rgba(5,5,16,0.30) 0%, rgba(5,5,16,0.80) 65%, var(--color-void) 100%),
     linear-gradient(180deg, rgba(5,5,16,0.55) 0%, transparent 25%, var(--color-void) 100%);
+}
+
+/* ========== HERO v2 — premium motion classes ========== */
+.hero-shell { position: relative; isolation: isolate; }
+
+/* Mono eyebrow — directly above the H1, not floating */
+.hero-eyebrow {
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 10px 4px 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.hero-eyebrow__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent-glow);
+  animation: hero-pulse 2.4s ease-in-out infinite;
+}
+@keyframes hero-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.85); }
+}
+
+/* Title — clamp-matched, latent reveal */
+.hero-title {
+  font-size: clamp(3rem, 6vw, 7rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+.hero-line { display: block; will-change: transform, opacity; }
+.hero-em {
+  position: relative;
+  padding: 0 0.05em;
+}
+
+/* Sub copy */
+.hero-sub { max-width: 56ch; will-change: opacity, transform; }
+
+/* Scroll cue */
+.hero-cue {
+  position: absolute;
+  bottom: clamp(20px, 4vh, 36px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.hero-cue__line {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(180deg, transparent 0%, var(--color-text-faint) 50%, transparent 100%);
+  animation: hero-cue 2.2s ease-in-out infinite;
+}
+@keyframes hero-cue {
+  0% { transform: translateY(-6px); opacity: 0.4; }
+  50% { transform: translateY(2px); opacity: 1; }
+  100% { transform: translateY(10px); opacity: 0.0; }
+}
+
+/* Vignette — bottom-left cinematic darken (now handled by hero-video-wash) */
+
+/* Stagger reveal — driven by useHeroChoreography adding .hero-revealed to .hero-shell */
+.hero-shell .hero-eyebrow,
+.hero-shell .hero-line,
+.hero-shell .hero-sub,
+.hero-shell .hero-ctas,
+.hero-shell .hero-cue {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.hero-shell.hero-revealed .hero-eyebrow { animation: hero-rise 0.8s cubic-bezier(0.16,1,0.3,1) 0ms forwards; }
+.hero-shell.hero-revealed .hero-line:nth-child(1) { animation: hero-rise 0.8s cubic-bezier(0.16,1,0.3,1) 90ms forwards; }
+.hero-shell.hero-revealed .hero-line:nth-child(2) { animation: hero-rise 0.8s cubic-bezier(0.16,1,0.3,1) 180ms forwards; }
+.hero-shell.hero-revealed .hero-sub { animation: hero-rise 0.9s cubic-bezier(0.16,1,0.3,1) 270ms forwards; }
+.hero-shell.hero-revealed .hero-ctas { animation: hero-rise 0.9s cubic-bezier(0.16,1,0.3,1) 360ms forwards; }
+.hero-shell.hero-revealed .hero-cue { animation: hero-fade 1.1s cubic-bezier(0.16,1,0.3,1) 480ms forwards; }
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-shell .hero-eyebrow,
+  .hero-shell .hero-line,
+  .hero-shell .hero-sub,
+  .hero-shell .hero-ctas,
+  .hero-shell .hero-cue {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .hero-eyebrow__dot,
+  .hero-cue__line { animation: none !important; }
+  .hero-main-video,
+  .hero-wash-video { display: none !important; }
+  .hero-fallback { z-index: 10; }
 }
 
 /* ========== GAPLESS BENTO GRID ========== */
@@ -663,4 +810,129 @@ body {
 }
 .stat-cell:hover {
   border-color: var(--color-hairline-hover);
+}
+
+/* ========== SKILL CATEGORY GRID ========== */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-10);
+}
+.skill-category {
+  border: 1px solid var(--color-hairline);
+  padding: var(--space-6);
+  transition: border-color var(--duration-smooth) var(--ease-sharp),
+              background-color var(--duration-smooth) var(--ease-sharp);
+}
+.skill-category:hover {
+  border-color: var(--color-hairline-hover);
+  background: var(--color-surface-hover);
+}
+.skill-category__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-hairline);
+}
+.skill-category__icon {
+  width: 18px;
+  height: 18px;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+.skill-category__name {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+.skill-category__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.skill-category__item {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  padding-left: var(--space-4);
+  transition: color var(--duration-fast) var(--ease-sharp);
+}
+.skill-category__item::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: 600;
+}
+.skill-category__item:hover {
+  color: var(--color-text);
+}
+
+/* ========== HERO PORTAL (right edge hairline) ========== */
+.hero-portal {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--color-hairline) 20%,
+    var(--color-accent) 50%,
+    var(--color-hairline) 80%,
+    transparent 100%
+  );
+  opacity: 0.4;
+}
+
+/* ========== SIGNAL STRIP ========== */
+.signal-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid var(--color-hairline);
+  border-bottom: 1px solid var(--color-hairline);
+}
+.signal-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+  border-right: 1px solid var(--color-hairline);
+  transition: background-color var(--duration-smooth) var(--ease-sharp);
+}
+.signal-cell:last-child { border-right: none; }
+.signal-cell:hover { background: var(--color-surface-hover); }
+.signal-cell__value {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-accent);
+  letter-spacing: -0.02em;
+}
+.signal-cell__label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+@media (max-width: 640px) {
+  .signal-strip { grid-template-columns: repeat(3, 1fr); }
+  .signal-cell:nth-child(n+4) { border-top: 1px solid var(--color-hairline); }
+  .signal-cell:nth-child(3n) { border-right: none; }
 }

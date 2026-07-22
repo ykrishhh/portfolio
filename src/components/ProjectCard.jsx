@@ -76,7 +76,7 @@ export const ProjectCard = forwardRef(function ProjectCard(
   { project, className = "", staggerIndex = 1, style, ...props },
   ref
 ) {
-  const { name, desc, url, icon: Icon, tags = [], stars = 0 } = project;
+  const { name, desc, url, icon: Icon, tags = [], stars = 0, arch } = project;
   const stagger = `stagger-${Math.min(Math.max(staggerIndex, 1), 6)}`;
 
   return (
@@ -131,8 +131,8 @@ export const ProjectCard = forwardRef(function ProjectCard(
         </div>
       </CardContent>
 
-      <CardFooter style={{ padding: "var(--space-2) var(--space-5) var(--space-5)" }}>
-<Button
+      <CardFooter style={{ padding: "var(--space-2) var(--space-5) var(--space-5)", display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
+        <Button
             asChild
             variant="secondary"
             size="md"
@@ -151,6 +151,38 @@ export const ProjectCard = forwardRef(function ProjectCard(
               </ButtonIcon>
             </a>
           </Button>
+        {arch && (
+          <a
+            href={arch}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "6px",
+              padding: "8px 12px",
+              fontSize: "0.75rem",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.04em",
+              color: "var(--color-text-muted)",
+              border: "1px solid var(--color-hairline)",
+              borderRadius: 0,
+              transition: "all var(--duration-fast) var(--ease-sharp)",
+              textAlign: "center",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.color = "var(--color-text)"; e.currentTarget.style.borderColor = "var(--color-accent)"; }}
+            onMouseLeave={e => { e.currentTarget.style.color = "var(--color-text-muted)"; e.currentTarget.style.borderColor = "var(--color-hairline)"; }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: "0.875rem", height: "0.875rem" }}>
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+            </svg>
+            View architecture diagram
+          </a>
+        )}
       </CardFooter>
     </Card>
   );

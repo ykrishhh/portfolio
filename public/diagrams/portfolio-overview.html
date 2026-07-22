@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio Overview – ykrishhh</title>
+<style>
+:root {
+  --paper: #050510;
+  --paper-2: #0d0d1a;
+  --ink: #eaeaea;
+  --muted: #8a8a9e;
+  --soft: #6c6c80;
+  --rule: rgba(234,234,234,0.12);
+  --rule-solid: rgba(234,234,234,0.25);
+  --accent: #00d4aa;
+  --accent-tint: rgba(0,212,170,0.10);
+  --link: #6a95d8;
+}
+body{
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Geist", system-ui, sans-serif;
+  margin:2rem;
+  display:flex;flex-direction:column;align-items:center;
+  gap:2rem;
+}
+h1{
+  font-family:"Instrument Serif", "Geist", serif;
+  font-size:2rem;letter-spacing:-0.02em;
+  margin:0 0 1rem;
+}
+.legend{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:12px;margin-bottom:1rem}
+.legend span{display:inline-flex;align-items:center;gap:.4rem}
+.dot{width:10px;height:10px;border-radius:2px;display:inline-block}
+.cat-hardware{background:#b5523a}
+.cat-ai{background:#6a95d8}
+.cat-web{background:#9caf8f}
+.cat-android{background:#d3ad7a}
+.cat-docs{background:#8d8298}
+.diagram-wrap{width:100%;max-width:1200px;background:var(--paper-2);border:1px solid var(--rule);padding:1rem}
+.cat-row{display:flex;gap:.8rem;align-items:flex-start;flex-wrap:wrap;padding:.5rem 0;border-top:1px dashed var(--rule)}
+.cat-row:first-of-type{border-top:none}
+.cat-label{
+  flex:0 0 140px;
+  font-family:"Geist Mono", monospace;
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);
+  padding-top:.5rem;
+}
+.repo-grid{display:flex;flex-wrap:wrap;gap:.5rem;flex:1}
+.repo{
+  border:1px solid var(--rule);
+  background:var(--paper);
+  padding:.5rem .7rem;
+  font-size:11px;
+  border-radius:2px;
+  min-width:140px;
+  display:flex;flex-direction:column;gap:2px;
+  border-left:3px solid var(--accent);
+}
+.repo .name{font-weight:600;color:var(--ink)}
+.repo .meta{color:var(--muted);font-family:"Geist Mono", monospace;font-size:9px}
+.repo.doc{border-left-color:var(--soft)}
+.repo.hardware{border-left-color:#b5523a}
+.repo.ai{border-left-color:#6a95d8}
+.repo.web{border-left-color:#9caf8f}
+.repo.android{border-left-color:#d3ad7a}
+.repo h-archived{border-left-color:#c44b4b}
+.repo::after{content:"";display:none}
+</style>
+</head>
+<body>
+<h1>Portfolio Overview – ykrishhh</h1>
+<div class="legend">
+  <span><i class="dot cat-hardware</i> Hardware / IoT (ESP32</span>
+  <span><i class="dot cat-ai</i> AI / Security</span>
+  <span><i class="dot cat-web</i> Web / Panel</span>
+  <span><i class="dot cat-android</i> Android</span>
+  <span><i class="dot cat-docs</i> Docs & AWESOME lists</span>
+</div>
+<div class="diagram-wrap">
+
+<div class="cat-row">
+  <div class="cat-label">Hardware / IoT</div>
+  <div class="repo-grid">
+    <div class="repo hardware"><span class="name">ESP32-HARNESS</span><span class="meta">Py · ★1</span</div>
+    <div class="repo hardware"><span class="name">awesome-esp32-security</span><span class="meta">Awesome · ★2</span</div>
+    <div class="repo hardware"><span class="name">esp32-hacking-guide</span><span class="meta">HTML · ★1</span</div>
+    <div class="repo hardware"><span class="name">esp32-smart-cam</span><span class="meta">HTML · ★0</span</div>
+    <div class="repo hardware"><span class="name">camera-ai-pipeline</span><span class="meta">Py · ★0</span</div>
+    <div class="repo hardware"><span class="name">cve-pocs</span><span class="meta">PoC · ★1</span</div>
+ </div>
+</div>
+
+<div class="cat-row">
+  <div class="cat-label">AI / Security</div>
+  <div class="repo-grid">
+    <div class="repo ai"><span class="name">ml-security-scanner</span><span class="meta">Py · ★0</span</div>
+    <div class="repo ai"><span class="name">safe-model-loader</span><span class="meta">Py · ★0</span</div>
+    <div class="repo ai"><span class="name">pypentest-ai</span><span class="meta">HTML · ★0</span</div>
+    <div class="repo ai"><span class="name">content-agent</span><span class="meta">Py · ★0</span</div>
+    <div class="repo ai"><span class="name">ai-agent-comcomparison</span><span class="meta">Docs · ★0</span</div>
+    <div class="repo ai"><span class="name">ai-workflow-recipes</span><span class="meta">Docs · ★0</span</div>
+    <div class="repo ai"><span class="name">ai-system-prompts</span><span class="meta">Docs · ★0</span</div>
+    <div class="repo ai"><span class="name">awesome-ai-security-tools</span><span class="meta">Awesome · ★0</span</div>
+ </div>
+</div>
+
+<div class="cat-row">
+  <div class="cat-label">Web / Panel</div>
+  <div class="repo-grid">
+    <div class="repo web"><span class="name">HarryPanel</span><span class="meta">HTML · ★1</span</div>
+    <div class="repo web"><span class="name">network-scanner</span><span class="meta">HTML · ★0</span</div>
+    <div class="repo web"><span class="name">privacy-tools</span><span class="meta">HTML · ★0</span</div>
+    <div class="repo web"><span class="name">linux-hardening</span><span class="meta">HTML · ★0</span</div>
+    <div class="repo web"><span class="name">telegram-security</span><span class="meta">HTML · ★0</span</div>
+    <div class="repo web"><span class="name">dev-productivity</span><span class="meta">HTML · ★0</span</div>
+    <div class="repo web"><span class="name">awesome-cybersecurity-tools</span><span class="meta">Awesome · ★0</span</div>
+    <div class="repo web"><span class="name">self-hosted-ai-termux</span><span class="meta">Docs · ★0</span</div>
+    <div class="repo web"><span class="name">awesome-free-ai-apis</span><span class="meta">Awesome · ★0</span</div>
+    <div class="repo web"><span class="name">writeups</span><span class="meta">MDX · ★0</span</div>
+ </div>
+</div>
+
+<div class="cat-row">
+  <div class="cat-label">Android</div>
+  <div class="repo-grid">
+    <div class="repo android"><span class="name">termux-security-toolkit</span><span class="meta">Docs · ★5</span</div>
+    <div class="repo android"><span class="name">termux-banner</span><span class="meta">Py · ★0</span</div>
+    <div class="repo android"><span class="name">android-rooting-masterclass</span><span class="meta">Docs · ★2</span</div>
+    <div class="repo android"><span class="name">android-reverse-engineering</span><span class="meta">Docs · ★0</span</div>
+    <div class="repo android"><span class="name">www-project-machine-learning-security-top-10</span><span class="meta">HTML · ★0</span</div>
+ </div>
+</div>
+
+<div class="cat-row">
+  <div class="cat-label">Docs & Lists</div>
+  <div class="repo-grid">
+    <div class="repo doc"><span class="name">security-research</span><span class="meta">Docs · ★1</span</div>
+    <div class="repo doc"><span class="name">ou-hunt-report</span><span class="meta">Py · ★1</span</div>
+    <div class="repo doc"><span class="name">AI-For-Beginners</span><span class="meta">JP · ★0</span</div>
+ </div>
+</div>
+
+</div>
+
+</body>
+</html>

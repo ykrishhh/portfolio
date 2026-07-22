@@ -13,9 +13,13 @@ import { FilterTabList } from "./components/FilterTabs";
 import { ProjectCard, WriteupCard } from "./components/ProjectCard";
 import { Stack, Timeline } from "./components/Timeline";
 import { LenisProvider } from "./components/LenisProvider";
+import { HeroVideo } from "./components/HeroVideo";
+import { SkillCategory } from "./components/SkillCategory";
+import { SKILL_CATEGORIES } from "./data/skills";
 import {
   useScrubText,
   usePinGallery,
+  useHeroChoreography,
 } from "./components/animations";
 
 function GithubIcon({ className }) {
@@ -42,6 +46,7 @@ const PROJECTS = [
     desc: "Security tools and scripts for Termux: network scanning, password auditing, and pentesting on Android.",
     stars: 5,
     url: "https://github.com/ykrishhh/termux-security-toolkit",
+    arch: "https://github.com/ykrishhh/termux-security-toolkit/blob/master/docs/architecture.html",
     icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
     category: "Android",
     tags: ["android", "termux", "pentesting"],
@@ -51,6 +56,7 @@ const PROJECTS = [
     desc: "Advanced ESP32 pentesting and telemetry firmware for 2.4 GHz research, RF24 experimentation, and on-device forensic capture.",
     stars: 1,
     url: "https://github.com/ykrishhh/ESP32-HARNESS",
+    arch: "https://github.com/ykrishhh/ESP32-HARNESS/blob/main/docs/architecture.html",
     icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>,
     category: "Hardware",
     tags: ["esp32", "firmware", "iot"],
@@ -60,6 +66,7 @@ const PROJECTS = [
     desc: "OU.edu Red Team Hunt: 6 validated vulnerabilities with proof-of-concept exploits.",
     stars: 1,
     url: "https://github.com/ykrishhh/ou-hunt-report",
+    arch: "https://github.com/ykrishhh/ou-hunt-report/blob/main/docs/architecture.html",
     icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
     category: "Web",
     tags: ["red-team", "cve", "python"],
@@ -78,6 +85,7 @@ const PROJECTS = [
     desc: "Advanced web hosting control panel: server management, database admin, file manager, and deployment tools.",
     stars: 1,
     url: "https://github.com/ykrishhh/HarryPanel",
+    arch: "https://github.com/ykrishhh/HarryPanel/blob/main/docs/architecture.html",
     icon: (props) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
     category: "Web",
     tags: ["flask", "devops", "hosting"],
@@ -638,6 +646,8 @@ function App() {
   const onFilterChange = useCallback((v) => setProjectFilter(v), []);
 
   const aboutRevealRef = useReveal({ chainIndex: 0 });
+  const heroRef = useRef(null);
+  useHeroChoreography(heroRef);
 
   return (
     <LenisProvider>
@@ -648,62 +658,80 @@ function App() {
 
         <FluidNav open={menuOpen} setOpen={setMenuOpen} />
 
-        {/* Hero — full-bleed video + clean overlay */}
+        {/* Hero — premium motion: video background + staggered text */}
         <section
           id="home"
+          ref={heroRef}
           aria-labelledby="hero-heading"
-          className="relative flex min-h-[100dvh] items-center overflow-hidden"
+          className="hero-shell relative flex min-h-[100dvh] items-center overflow-hidden"
         >
-          <video
-            className="hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="https://picsum.photos/seed/securitycode/1920/1080"
-          >
-            <source
-              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4"
-              type="video/mp4"
-            />
-          </video>
+          <div className="hero-fallback" aria-hidden="true" />
           <div className="hero-video-wash" aria-hidden="true" />
+          <HeroVideo />
 
-          <div className="container relative" style={{ zIndex: 2 }}>
+          <div className="container relative" style={{ zIndex: 4 }}>
             <div className="max-w-6xl">
+              {/* Eyebrow directly above H1 */}
+              <div className="hero-eyebrow" aria-hidden="true">
+                <span className="hero-eyebrow__dot" />
+                <span>Building in public since 2022</span>
+              </div>
+
               <h1
                 id="hero-heading"
-                className="font-display font-bold leading-tight tracking-tight text-[var(--color-text)]"
-                style={{
-                  fontSize: "clamp(3rem, 6vw, 5.5rem)",
-                  lineHeight: 1.05,
-                }}
+                className="hero-title font-display font-bold text-[var(--color-text)]"
               >
-                <span className="block">Glitch.</span>
-                <span className="block">Extract.</span>
-                <span className="block text-[var(--color-accent)]">Repeat.</span>
+                <span className="hero-line block">Breaking systems.</span>
+                <span className="hero-line block"><span className="font-semibold text-[var(--color-accent)]">Building</span> them safer.</span>
               </h1>
-              <p
-                className="mt-6 max-w-xl text-base md:text-lg leading-relaxed text-[var(--color-text-muted)]"
-              >
-                Offensive security, hardware hacking, autonomous AI.
-                Breaking things from kernel to cloud since 2022.
+
+              <p className="hero-sub mt-7 max-w-xl text-[clamp(1rem,1.1vw,1.125rem)] leading-relaxed text-[var(--color-text-muted)]">
+                Six CVEs disclosed. Forty open-source tools. One relentless loop:
+                <span className="text-[var(--color-text)]"> red-team, dissect, ship.</span>
               </p>
-              <div className="mt-8 flex flex-wrap gap-3">
+
+              <div className="hero-ctas mt-9 flex flex-wrap items-center gap-3">
                 <Button asChild variant="primary">
                   <a href="#work">
-                    View Work
+                    View Selected Work
                     <ButtonIcon>
                       <ArrowUpRight className="h-4 w-4" />
                     </ButtonIcon>
                   </a>
                 </Button>
                 <Button asChild variant="secondary">
-                  <a href="#contact">Connect</a>
+                  <a href="#writeups">Read Field Notes</a>
                 </Button>
               </div>
             </div>
           </div>
+
+          {/* Right-edge portal hairline */}
+          <div className="hero-portal" aria-hidden="true" />
+
+          {/* Scroll cue */}
+          <div className="hero-cue" aria-hidden="true">
+            <span className="hero-cue__line" />
+            <span className="font-mono text-[0.66rem] tracking-[0.18em] uppercase text-[var(--color-text-faint)]">
+              Scroll
+            </span>
+          </div>
+        </section>
+
+        {/* Signal Strip — stats moved out of hero */}
+        <section className="signal-strip container max-w-[1500px] mx-auto px-6 md:px-12">
+          {[
+            ["6", "CVEs disclosed"],
+            ["40+", "Open-source tools"],
+            ["\u221e", "Systems broken"],
+            ["2022 \u2014", "Building in public"],
+            ["1", "Researcher behind it"],
+          ].map(([value, label]) => (
+            <div key={label} className="signal-cell">
+              <div className="signal-cell__value">{value}</div>
+              <div className="signal-cell__label">{label}</div>
+            </div>
+          ))}
         </section>
 
         {/* About — bordered */}
@@ -768,8 +796,8 @@ function App() {
           id="work"
           chainIndex={2}
           bordered
-          title="Projects"
-          desc="Open-source tools, hardware research, agentic pentest frameworks."
+          title="Selected Work"
+          desc="Open-source tools, hardware research, and agentic pentest frameworks."
         >
           <div className="mt-12">
             <FilterTabList
@@ -800,8 +828,8 @@ function App() {
         <Section
           id="writeups"
           bordered={false}
-          title="Writeups"
-          desc="Vulnerability analysis from real engagements."
+          title="Research Notes"
+          desc="Vulnerability analysis from real engagements and lab work."
         >
           <WriteupGrid writeups={WRITEUPS} />
           <div className="mt-10">
@@ -821,7 +849,7 @@ function App() {
         <Marquee />
 
         {/* Horizontal Accordion — research domains, bordered */}
-        <Section bordered title="Where I Work" desc="Four lanes, one obsession: finding the path that was not supposed to exist.">
+        <Section bordered title="Research Domains" desc="Four lanes, one obsession: finding the path that was not supposed to exist.">
           <DomainAccordion />
         </Section>
 
@@ -829,7 +857,7 @@ function App() {
         <DesireSection />
 
         {/* Timeline — bordered */}
-        <Section bordered title="Journey" desc="Four years of breaking and building in public.">
+        <Section bordered title="Timeline" desc="Four years of breaking and building in public.">
           <div className="mt-16">
             <Timeline items={JOURNEY} />
           </div>
@@ -837,6 +865,15 @@ function App() {
 
         {/* Stack / Arsenal — no border */}
         <Stack items={STACK} title="Arsenal" />
+
+        {/* Skills — categorized grid */}
+        <Section id="skills" bordered title="Capabilities" desc="Six domains, one operator. From silicon fault injection to cloud-scale automation.">
+          <div className="skills-grid">
+            {SKILL_CATEGORIES.map((cat) => (
+              <SkillCategory key={cat.name} {...cat} />
+            ))}
+          </div>
+        </Section>
 
         {/* Contact — bordered, centered CTA */}
         <Section id="contact" bordered>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture Diagrams – Krishna</title>
+<meta name="description" content="Interactive architecture diagrams for Krishna's open‑source projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#050510;--paper-2:#0d0d1a;--ink:#eaeaea;--muted:#8a8a9e;--soft:#6c6c80;--rule:rgba(234,234,234,0.12);--rule-strong:rgba(234,234,234,0.25);--accent:#00d4aa;--accent-tint:rgba(0,212,170,0.10);--link:#6a95d8;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:'Geist',system-ui,-apple-system,sans-serif;padding:2rem;line-height:1.55;min-height:100dvh;display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+a.back{color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em}
+a.back:hover{color:var(--accent)}
+header{width:100%;max-width:1100px;display:flex;flex-direction:column;gap:.4rem}
+.title{font-family:'Instrument Serif',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:400;letter-spacing:-0.02em}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.18em;text-transform:uppercase}
+.lede{color:var(--muted);max-width:680px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;width:100%;max-width:1100px}
+.card{background:var(--paper-2);border:1px solid var(--rule);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.6rem;border-radius:2px;transition:border-color var(--duration-fast) ease}
+.card:hover{border-color:var(--rule-strong)}
+.card h3{font-size:1rem;color:var(--ink);font-weight:600}
+.card .meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);display:flex;gap:.6rem;flex-wrap:wrap}
+.card .desc{font-size:13px;color:var(--muted)}
+.card .links{display:flex;gap:.5rem;margin-top:.3rem;flex-wrap:wrap}
+.card .chip{display:inline-flex;align-items:center;gap:.3rem;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);text-decoration:none;border:1px solid var(--accent);border-radius:2px;padding:3px 7px;background:var(--accent-tint)}
+.card .chip:hover{background:var(--accent);color:var(--paper)}
+.card .chip.secondary{color:var(--muted);border-color:var(--rule)}
+.card .chip.secondary:hover{color:var(--ink);border-color:var(--ink)}
+footer{color:var(--soft);font-size:11px;margin-top:2rem;text-align:center}
+</style>
+</head>
+<body>
+<a class="back" href="https://harrydev.one">← Back to portfolio</a>
+<header>
+  <span class="eyebrow">Architecture // 2026</span>
+  <h1 class="title">Project Architectures</h1>
+  <p class="lede">Interactive four‑view diagrams (Architecture, Components, Data Flow, Hybrid) for each of my top‑starred open‑source projects. Click any node on a diagram to inspect its description.</p>
+</header>
+
+<section class="grid">
+  <article class="card">
+    <h3>awesome‑esp32‑security</h3>
+    <div class="meta"><span>★ 2</span><span>Awesome list</span></div>
+    <p class="desc">Curated list of ESP32 security tools, firmware, and resources for penetration testers and IoT researchers.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/ykrishhh/awesome-esp32-security/blob/main/docs/architecture.html">Open diagram ↗</a>
+      <a class="chip secondary" href="https://github.com/ykrishhh/awesome-esp32-security">Repository ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h3>android‑rooting‑masterclass</h3>
+    <div class="meta"><span>★ 2</span><span>Docs</span></div>
+    <p class="desc">Complete guide to Android rooting and hooking — from user‑space DEX editing to Xposed/LSPosed and kernel eBPF.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/ykrishhh/android-rooting-masterclass/blob/main/docs/architecture.html">Open diagram ↗</a>
+      <a class="chip secondary" href="https://github.com/ykrishhh/android-rooting-masterclass">Repository ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h3>termux‑security‑toolkit</h3>
+    <div class="meta"><span>★ 5</span><span>Docs · CLI</span></div>
+    <p class="desc">Security tools and scripts for Termux: network scanning, password auditing, and pentesting on Android.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/ykrishhh/termux-security-toolkit/blob/master/docs/architecture.html">Open diagram ↗</a>
+      <a class="chip secondary" href="https://github.com/ykrishhh/termux-security-toolkit">Repository ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h3>esp32‑hacking‑guide</h3>
+    <div class="meta"><span>★ 1</span><span>Guide</span></div>
+    <p class="desc">Guide to ESP32 security research: firmware analysis, Wi‑Fi attacks, BLE exploitation, and hardware hacking.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/ykrishhh/esp32-hacking-guide/blob/main/docs/architecture.html">Open diagram ↗</a>
+      <a class="chip secondary" href="https://github.com/ykrishhh/esp32-hacking-guide">Repository ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h3>ESP32‑HARNESS</h3>
+    <div class="meta"><span>★ 1</span><span>Python · C++</span></div>
+    <p class="desc">Advanced ESP32 pentesting and telemetry firmware for 2.4 GHz research, RF24 experimentation, and on‑device forensic capture.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/ykrishhh/ESP32-HARNESS/blob/main/docs/architecture.html">Open diagram ↗</a>
+      <a class="chip secondary" href="https://github.com/ykrishhh/ESP32-HARNESS">Repository ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h3>ou‑hunt‑report</h3>
+    <div class="meta"><span>★ 1</span><span>Red‑team report</span></div>
+    <p class="desc">OU.edu Red Team Hunt: six validated vulnerabilities with full proof‑of‑concept exploits.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/ykrishhh/ou-hunt-report/blob/main/docs/architecture.html">Open diagram ↗</a>
+      <a class="chip secondary" href="https://github.com/ykrishhh/ou-hunt-report">Repository ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h3>cve‑pocs</h3>
+    <div class="meta"><span>★ 1</span><span>PoC collection</span></div>
+    <p class="desc">Proof‑of‑concept exploits for CVEs: vulnerability analysis and responsible disclosure.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/ykrishhh/cve-pocs/blob/main/docs/architecture.html">Open diagram ↗</a>
+      <a class="chip secondary" href="https://github.com/ykrishhh/cve-pocs">Repository ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h3>security‑research</h3>
+    <div class="meta"><span>★ 1</span><span>Research notes</span></div>
+    <p class="desc">Security research 2026: Android, Linux, ESP32, and offensive security write‑ups.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/ykrishhh/security-research/blob/master/docs/architecture.html">Open diagram ↗</a>
+      <a class="chip secondary" href="https://github.com/ykrishhh/security-research">Repository ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h3>HarryPanel</h3>
+    <div class="meta"><span>★ 1</span><span>Web panel</span></div>
+    <p class="desc">Advanced web hosting control panel: server management, database admin, file manager, and deployment tools.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/ykrishhh/HarryPanel/blob/main/docs/architecture.html">Open diagram ↗</a>
+      <a class="chip secondary" href="https://github.com/ykrishhh/HarryPanel">Repository ↗</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h3>writeups</h3>
+    <div class="meta"><span>★ 0</span><span>MDX blog</span></div>
+    <p class="desc">Tutorials and methods, served from writeups.harrydev.one via Astro + MDX.</p>
+    <div class="links">
+      <a class="chip" href="https://github.com/ykrishhh/writeups/blob/main/docs/architecture.html">Open diagram ↗</a>
+      <a class="chip secondary" href="https://github.com/ykrishhh/writeups">Repository ↗</a>
+    </div>
+  </article>
+</section>
+
+<footer>
+  Generated by portfolio‑upgrade automation · See <code>docs/architecture.html</code> inside each repo for the underlying diagrams.
+</footer>
+</body>
+</html>

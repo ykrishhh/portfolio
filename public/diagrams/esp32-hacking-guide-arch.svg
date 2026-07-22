@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <style>@import url('https://fonts.cdnfonts.com/css/jetbrains-mono'); text { font-family: 'JetBrains Mono', monospace; }</style>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#050510"/><stop offset="100%" stop-color="#0a0a1a"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#00a88a"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#00d4aa" opacity="0.7"/></marker>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <g opacity="0.08"><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#00d4aa"/></pattern><rect width="800" height="500" fill="url(#dots)"/></g>
+  <text x="400" y="36" text-anchor="middle" fill="#00d4aa" font-size="13" letter-spacing="3" opacity="0.8">ARCHITECTURE :: ESP32-HACKING-GUIDE</text>
+  <line x1="180" y1="46" x2="620" y2="46" stroke="#00d4aa" stroke-width="1" opacity="0.3"/>
+
+  <!-- TIER 1 -->
+  <rect x="60" y="72" width="680" height="78" rx="4" fill="#00d4aa" fill-opacity="0.04" stroke="#00d4aa" stroke-opacity="0.15" stroke-width="1"/>
+  <text x="400" y="90" text-anchor="middle" fill="#00d4aa" font-size="10" letter-spacing="2" opacity="0.6">TIER 1 — ENTRY / INPUT</text>
+  <rect x="90" y="102" width="190" height="36" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.5" stroke-width="1"/><text x="185" y="124" text-anchor="middle" fill="#fff" font-size="11">ESP32 Hardware Setup</text>
+  <rect x="305" y="102" width="190" height="36" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.5" stroke-width="1"/><text x="400" y="124" text-anchor="middle" fill="#fff" font-size="11">ESP-IDF / Arduino</text>
+  <rect x="520" y="102" width="190" height="36" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.5" stroke-width="1"/><text x="615" y="124" text-anchor="middle" fill="#fff" font-size="11">UART / JTAG Probe</text>
+  <line x1="185" y1="138" x2="185" y2="175" stroke="#00d4aa" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="400" y1="138" x2="400" y2="175" stroke="#00d4aa" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="615" y1="138" x2="615" y2="175" stroke="#00d4aa" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- TIER 2 -->
+  <rect x="60" y="178" width="680" height="148" rx="4" fill="#00d4aa" fill-opacity="0.04" stroke="#00d4aa" stroke-opacity="0.15" stroke-width="1"/>
+  <text x="400" y="196" text-anchor="middle" fill="#00d4aa" font-size="10" letter-spacing="2" opacity="0.6">TIER 2 — CORE MODULES</text>
+  <rect x="90" y="210" width="150" height="32" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.6" stroke-width="1"/><text x="165" y="230" text-anchor="middle" fill="#fff" font-size="10">Firmware Dump</text>
+  <rect x="255" y="210" width="150" height="32" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.6" stroke-width="1"/><text x="330" y="230" text-anchor="middle" fill="#fff" font-size="10">Flash Analysis</text>
+  <rect x="420" y="210" width="150" height="32" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.6" stroke-width="1"/><text x="495" y="230" text-anchor="middle" fill="#fff" font-size="10">WiFi Eavesdrop</text>
+  <rect x="585" y="210" width="125" height="32" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.6" stroke-width="1"/><text x="647" y="230" text-anchor="middle" fill="#fff" font-size="10">BLE Spoof</text>
+  <rect x="90" y="252" width="150" height="32" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.6" stroke-width="1"/><text x="165" y="272" text-anchor="middle" fill="#fff" font-size="10">Memory Dump</text>
+  <rect x="255" y="252" width="150" height="32" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.6" stroke-width="1"/><text x="330" y="272" text-anchor="middle" fill="#fff" font-size="10">Secure Boot</text>
+  <rect x="420" y="252" width="150" height="32" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.6" stroke-width="1"/><text x="495" y="272" text-anchor="middle" fill="#fff" font-size="10">NVS Decrypt</text>
+  <rect x="585" y="252" width="125" height="32" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.6" stroke-width="1"/><text x="647" y="272" text-anchor="middle" fill="#fff" font-size="10">Partition</text>
+  <line x1="165" y1="242" x2="165" y2="252" stroke="#00d4aa" stroke-opacity="0.25" stroke-width="1"/>
+  <line x1="330" y1="242" x2="330" y2="252" stroke="#00d4aa" stroke-opacity="0.25" stroke-width="1"/>
+  <line x1="495" y1="242" x2="495" y2="252" stroke="#00d4aa" stroke-opacity="0.25" stroke-width="1"/>
+  <line x1="647" y1="242" x2="647" y2="252" stroke="#00d4aa" stroke-opacity="0.25" stroke-width="1"/>
+  <line x1="400" y1="326" x2="400" y2="368" stroke="#00d4aa" stroke-opacity="0.5" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- TIER 3 -->
+  <rect x="60" y="372" width="680" height="108" rx="4" fill="#00d4aa" fill-opacity="0.04" stroke="#00d4aa" stroke-opacity="0.15" stroke-width="1"/>
+  <text x="400" y="390" text-anchor="middle" fill="#00d4aa" font-size="10" letter-spacing="2" opacity="0.6">TIER 3 — OUTPUT / ARTIFACTS</text>
+  <rect x="90" y="405" width="200" height="32" rx="4" fill="url(#accent)" fill-opacity="0.15" stroke="url(#accent)" stroke-width="1.5"/><text x="190" y="425" text-anchor="middle" fill="#00d4aa" font-size="10" filter="url(#glow)">✦ Hacking Guide (docs)</text>
+  <rect x="315" y="405" width="170" height="32" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.5" stroke-width="1"/><text x="400" y="425" text-anchor="middle" fill="#fff" font-size="10">Exploit Payloads</text>
+  <rect x="510" y="405" width="200" height="32" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.5" stroke-width="1"/><text x="610" y="425" text-anchor="middle" fill="#fff" font-size="10">Python Tooling</text>
+  <rect x="90" y="447" width="200" height="24" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.2" stroke-width="0.5"/><text x="190" y="462" text-anchor="middle" fill="#00d4aa" font-size="8" opacity="0.7">📘 Attack Methodology</text>
+  <rect x="315" y="447" width="170" height="24" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.2" stroke-width="0.5"/><text x="400" y="462" text-anchor="middle" fill="#00d4aa" font-size="8" opacity="0.7">🔌 Custom Firmware</text>
+  <rect x="510" y="447" width="200" height="24" rx="4" fill="#050510" stroke="#00d4aa" stroke-opacity="0.2" stroke-width="0.5"/><text x="610" y="462" text-anchor="middle" fill="#00d4aa" font-size="8" opacity="0.7">🐍 esptool wrappers</text>
+  <line x1="200" y1="488" x2="600" y2="488" stroke="#00d4aa" stroke-width="1" opacity="0.15"/>
+</svg>

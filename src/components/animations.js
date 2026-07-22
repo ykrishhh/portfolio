@@ -59,3 +59,27 @@ export function usePinGallery(pinRef, containerRef, deps = []) {
 
 /* Generic reveal: scale 0.85 -> 1 + fade as element enters, darken as it leaves */
 /* Unused — kept for reference */
+
+/* Hero reveal choreography — adds `.hero-revealed` to the hero <section> once,
+ * after fonts are ready. Honors prefers-reduced-motion (CSS skips animation). */
+export function useHeroChoreography(heroRef, deps = []) {
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return undefined;
+    if (document.querySelector(".hero-shell.hero-revealed")) return undefined;
+
+    const trigger = () => {
+      el.classList.add("hero-revealed");
+    };
+
+    if (document.fonts && typeof document.fonts.ready?.then === "function") {
+      document.fonts.ready.then(trigger);
+    } else {
+      requestAnimationFrame(trigger);
+    }
+    // Hard fallback in case fonts.ready hangs
+    const t = window.setTimeout(trigger, 1200);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+}

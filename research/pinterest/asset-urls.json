@@ -1,0 +1,39 @@
+{
+  "searches": {
+    "hero_animation_dark_tech": [
+      "https://i.pinimg.com/736x/f0/49/32/f0493253184b784d95a6ecd47a84b052.jpg",
+      "https://i.pinimg.com/736x/6b/71/59/6b715928d5ee0505e0e5f2b8f6be9acf.jpg",
+      "https://i.pinimg.com/736x/37/cc/e6/37cce64bc95918146fefb124a8d236c0.jpg"
+    ],
+    "dark_terminal_hero": [
+      "https://i.pinimg.com/736x/34/6b/f1/346bf1ebc65272166d9708e42aec0cd5.jpg",
+      "https://i.pinimg.com/736x/d7/b3/b4/d7b3b4d5cd7ff6833302aa012b230152.jpg",
+      "https://i.pinimg.com/736x/22/c7/ec/22c7ec2303bd1bc9bad38be5ce0ca583.jpg"
+    ],
+    "particle_network_canvas": [
+      "https://i.pinimg.com/736x/7f/76/0b/7f760bbd21f3c733d215aa290b37dca8.jpg",
+      "https://i.pinimg.com/736x/12/e7/fc/12e7fc667aff2d73c81f0fd53ddd5224.jpg",
+      "https://i.pinimg.com/736x/5a/f8/19/5af819c18ff4eff722e23d73c3e6f1ad.jpg"
+    ],
+    "geometric_grid_animation": [
+      "https://i.pinimg.com/736x/37/cc/e6/37cce64bc95918146fefb124a8d236c0.jpg",
+      "https://i.pinimg.com/736x/9e/23/1f/9e231f3ade7a41a7d02b0c10b93a62b3.jpg",
+      "https://i.pinimg.com/736x/f4/6c/7d/f46c7d041a21d2fc58b60b517c581a24.jpg"
+    ],
+    "dark_tech_portfolio_hero": [
+      "https://i.pinimg.com/736x/37/cc/e6/37cce64bc95918146fefb124a8d236c0.jpg",
+      "https://i.pinimg.com/736x/9e/23/1f/9e231f3ade7a41a7d02b0c10b93a62b3.jpg",
+      "https://i.pinimg.com/736x/f4/6c/7d/f46c7d041a21d2fc58b60b517c581a24.jpg"
+    ]
+  },
+  "screenshots": [
+    "/tmp/pinterest-01-cyber-grid.png",
+    "/tmp/pinterest-02-bg-design.png",
+    "  /tmp/pinterest-03-futuristic-hud.png",
+    "/tmp/pinterest-04-scroll.png",
+    "/tmp/pinterest-05-dark-terminal-hero.png",
+    "/tmp/pinterest-06-particle-network.png",
+    "/tmp/pinterest-07-geometric-grid.png",
+    "/tmp/pinterest-08-code-rain.png"
+  ]
+}

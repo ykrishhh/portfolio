@@ -2,8 +2,6 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
 
-import AnimatedTitle from "./AnimatedTitle";
-
 gsap.registerPlugin(ScrollTrigger);
 
 const Repos = () => {
@@ -27,22 +25,24 @@ const Repos = () => {
   });
 
   return (
-    <div id="about" className="min-h-screen w-screen bg-white text-black">
+    <div id="about" className="min-h-screen w-screen bg-black text-blue-50">
       <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
-        <p className="font-general text-sm uppercase md:text-[10px]">
-          Welcome to my Portfolio
+        <p className="font-mono text-sm uppercase md:text-[10px]">
+          Security researcher & tool builder
         </p>
 
-        <AnimatedTitle
-          title="Human life <br /> p<b>o</b>wers AI"
-          containerClass="mt-5 !text-black text-center"
-        />
+        <h2 className="font-display text-6xl leading-[1.05] tracking-tighter text-center md:text-8xl max-w-4xl">
+          Offensive <br /> Sec<b className="text-[#00d4aa]">u</b>rity
+        </h2>
 
         <div className="about-subtext mt-10">
           <p>Security research meets practical tooling.</p>
-          <p className="text-gray-500 mt-2">
+          <p className="text-gray-400 mt-2">
             Building tools that make pentesting accessible on mobile —
             from ESP32 firmware to Termux security toolkits.
+          </p>
+          <p className="text-gray-400 mt-4 max-w-lg">
+            Every tool starts with a question no one asked — that's where the real finding lives.
           </p>
         </div>
       </div>
@@ -51,7 +51,7 @@ const Repos = () => {
         <div className="mask-clip-path about-image">
           <img
             src="img/about.webp"
-            alt="Background"
+            alt="Security research workspace with mobile pentesting tools"
             className="absolute left-0 top-0 size-full object-cover"
           />
         </div>

@@ -1,126 +1,54 @@
 import gsap from "gsap";
 import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/all";
 
-import Button from "./Button";
-import AnimatedTitle from "./AnimatedTitle";
+gsap.registerPlugin(ScrollTrigger);
 
-const FloatingImage = () => {
-  const frameRef = useRef(null);
+const Story = () => {
+  const containerRef = useRef(null);
 
-  const handleMouseMove = (e) => {
-    const { clientX, clientY } = e;
-    const element = frameRef.current;
-
-    if (!element) return;
-
-    const rect = element.getBoundingClientRect();
-    const xPos = clientX - rect.left;
-    const yPos = clientY - rect.top;
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = ((yPos - centerY) / centerY) * -10;
-    const rotateY = ((xPos - centerX) / centerX) * 10;
-
-    gsap.to(element, {
-      duration: 0.3,
-      rotateX,
-      rotateY,
-      transformPerspective: 500,
-      ease: "power1.inOut",
+  useGSAP(() => {
+    gsap.from(".story-content", {
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 75%",
+      },
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out",
     });
-  };
-
-  const handleMouseLeave = () => {
-    const element = frameRef.current;
-
-    if (element) {
-      gsap.to(element, {
-        duration: 0.3,
-        rotateX: 0,
-        rotateY: 0,
-        ease: "power1.inOut",
-      });
-    }
-  };
+  });
 
   return (
-    <div id="story" className="min-h-dvh w-screen bg-black text-blue-50">
-      <div className="flex size-full flex-col items-center py-10 pb-24">
-        <p className="font-general text-sm uppercase md:text-[10px]">
-          the open ip universe
-        </p>
+    <section id="story" ref={containerRef} className="min-h-dvh w-screen bg-black text-blue-50 py-32">
+      <div className="container mx-auto px-3 md:px-10">
+        <div className="flex flex-col items-center">
+          <p className="font-mono text-sm uppercase text-blue-50/60">
+            background
+          </p>
 
-        <div className="relative size-full">
-          <AnimatedTitle
-            title="the st<b>o</b>ry of <br /> a hidden real<b>m</b>"
-            containerClass="mt-5 pointer-events-none mix-blend-difference relative z-10"
-          />
+          <h2 className="font-display text-6xl md:text-8xl tracking-tighter mt-5 text-center leading-[1.05]">
+            the j<b className="text-[#00d4aa]">o</b>urney
+          </h2>
 
-          <div className="story-img-container">
-            <div className="story-img-mask">
-              <div className="story-img-content">
-                <img
-                  ref={frameRef}
-                  onMouseMove={handleMouseMove}
-                  onMouseLeave={handleMouseLeave}
-                  onMouseUp={handleMouseLeave}
-                  onMouseEnter={handleMouseLeave}
-                  src="/demos/Zentry_Premium/img/entrance.webp"
-                  alt="entrance.webp"
-                  className="object-contain"
-                />
-              </div>
-            </div>
-
-            {/* for the rounded corner */}
-            <svg
-              className="invisible absolute size-0"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <filter id="flt_tag">
-                  <feGaussianBlur
-                    in="SourceGraphic"
-                    stdDeviation="8"
-                    result="blur"
-                  />
-                  <feColorMatrix
-                    in="blur"
-                    mode="matrix"
-                    values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
-                    result="flt_tag"
-                  />
-                  <feComposite
-                    in="SourceGraphic"
-                    in2="flt_tag"
-                    operator="atop"
-                  />
-                </filter>
-              </defs>
-            </svg>
-          </div>
-        </div>
-
-        <div className="-mt-80 flex w-full justify-center md:-mt-64 md:me-44 md:justify-end">
-          <div className="flex h-full w-fit flex-col items-center md:items-start">
-            <p className="mt-3 max-w-sm text-center font-circular-web text-violet-50 md:text-start">
-              Where realms converge, lies Zentry and the boundless pillar.
-              Discover its secrets and shape your destiny amidst infinite
-              opportunities.
+          <div className="story-content mt-16 max-w-2xl text-center">
+            <p className="font-sans text-lg text-blue-50/80 leading-relaxed">
+              Started with Python scripts for log analysis. Found my first CVE in a forgotten service.
+              Built a Termux toolkit that thousands use daily. Every finding, every tool — open source,
+              peer-reviewed, mission-driven.
             </p>
-
-            <Button
-              id="realm-btn"
-              title="discover prologue"
-              containerClass="mt-5 bg-white text-black"
-            />
+            <div className="mt-12 border-t border-white/10 pt-8">
+              <blockquote className="font-mono text-sm text-[#00d4aa]/80">
+                "The best vulnerability is the one no one else thought to look for."
+              </blockquote>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default FloatingImage;
+export default Story;

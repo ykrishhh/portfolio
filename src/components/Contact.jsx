@@ -1,18 +1,13 @@
-import AnimatedTitle from "./AnimatedTitle";
-import Button from "./Button";
+import { Button } from "./Button";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
 
-const ImageClipBox = ({ src, clipClass }) => (
-  <div className={clipClass}>
-    <img src={src} />
-  </div>
-);
+gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   useGSAP(() => {
-    gsap.from("#contact .relative", {
+    gsap.from("#contact .contact-content", {
       scrollTrigger: {
         trigger: "#contact",
         start: "top 75%",
@@ -22,67 +17,30 @@ const Contact = () => {
       duration: 0.8,
       ease: "power3.out",
     });
-
-    gsap.from("#contact .contact-clip-path-1, #contact .contact-clip-path-2", {
-      scrollTrigger: {
-        trigger: "#contact",
-        start: "top 70%",
-      },
-      x: -60,
-      opacity: 0,
-      duration: 0.9,
-      stagger: 0.2,
-      ease: "power3.out",
-    });
-
-    gsap.from("#contact .sword-man-clip-path", {
-      scrollTrigger: {
-        trigger: "#contact",
-        start: "top 70%",
-      },
-      x: 60,
-      opacity: 0,
-      duration: 0.9,
-      ease: "power3.out",
-    });
   });
 
   return (
     <div id="contact" className="my-20 min-h-96 w-screen px-10">
-      <div className="relative rounded-lg bg-black py-24 text-blue-50 sm:overflow-hidden">
-        <div className="absolute -left-20 top-0 hidden h-full w-72 overflow-hidden sm:block lg:left-20 lg:w-96">
-          <ImageClipBox
-            src="/img/contact-1.webp"
-            clipClass="contact-clip-path-1"
-          />
-          <ImageClipBox
-            src="/img/contact-2.webp"
-            clipClass="contact-clip-path-2 lg:translate-y-40 translate-y-60"
-          />
-        </div>
-
-        <div className="absolute -top-40 left-20 w-60 sm:top-1/2 md:left-auto md:right-10 lg:top-20 lg:w-80">
-          <ImageClipBox
-            src="/img/swordman-partial.webp"
-            clipClass="absolute md:scale-125"
-          />
-          <ImageClipBox
-            src="/img/swordman.webp"
-            clipClass="sword-man-clip-path md:scale-125"
-          />
-        </div>
-
-        <div className="flex flex-col items-center text-center">
-          <p className="mb-10 font-general text-[10px] uppercase">
-            Get in Touch
+      <div className="bg-black py-24 text-blue-50">
+        <div className="contact-content flex flex-col items-center text-center">
+          <p className="mb-10 font-mono text-[10px] uppercase text-blue-50/60">
+            contact
           </p>
 
-          <AnimatedTitle
-            title="let&#39;s b<b>u</b>ild the <br /> new era of <br /> des<b>i</b>gn t<b>o</b>gether."
-            className="special-font !md:text-[6.2rem] w-full font-zentry !text-5xl !font-black !leading-[.9]"
-          />
+          <h2 className="font-display text-6xl md:text-8xl tracking-tighter leading-[1.05]">
+            G<b className="text-[#00d4aa]">e</b>t in t<b className="text-[#00d4aa]">o</b>uch
+          </h2>
 
-          <Button title="contact" containerClass="mt-10 cursor-pointer" />
+          <p className="font-sans text-base text-blue-50/60 mt-6 max-w-md">
+            Signal preferred. DMs open for research collaboration, tool feedback, and responsible disclosures.
+          </p>
+
+          <a
+            href="mailto:hello@harrydev.one"
+            className="mt-10 inline-flex items-center justify-center gap-2 min-h-[44px] min-w-[44px] px-5 py-2 text-sm font-medium bg-white text-black hover:bg-white/90 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            hello@harrydev.one
+          </a>
         </div>
       </div>
     </div>

@@ -102,7 +102,7 @@ export const ProjectCard = forwardRef(function ProjectCard(
         style={{ gap: "var(--space-3)", padding: "var(--space-5)" }}
       >
         <div className="flex items-start justify-between">
-          <IconBezel icon={Icon} />
+          {Icon && <IconBezel icon={Icon} />}
           <ArrowUpRight
             weight="bold"
             aria-hidden="true"
@@ -230,7 +230,7 @@ export const WriteupCard = forwardRef(function WriteupCard(
         className="flex flex-col"
         style={{ gap: "var(--space-3)", padding: "var(--space-5)" }}
       >
-        <IconBezel icon={Icon} />
+        {Icon && <IconBezel icon={Icon} />}
 
         <div className="flex flex-col" style={{ gap: "var(--space-1)" }}>
           <h3 style={titleStyle}>{title}</h3>

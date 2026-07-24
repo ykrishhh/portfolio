@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" fill="#0A0A0A" rx="0"/>
+  <!-- Bracket pair -->
+  <text x="8" y="52" font-family="monospace" font-size="48" font-weight="bold" fill="#EAEAEA" letter-spacing="0">[</text>
+  <text x="44" y="52" font-family="monospace" font-size="48" font-weight="bold" fill="#EAEAEA" letter-spacing="0">]</text>
+  <!-- Red terminal cursor block inside brackets -->
+  <rect x="24" y="16" width="16" height="32" fill="#E61919" rx="0"/>
+</svg>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$repo - Architecture Documentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'JetBrains Mono', monospace; 
+            background: linear-gradient(135deg, #050510 0%, #0a0a1a 100%);
+            color: #eaeaea;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: #050510;
+            border: 1px solid #00d4aa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header { 
+            background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
+            color: #050510;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { 
+            font-size: 2.5rem; 
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .header p { 
+            font-size: 1.2rem; 
+            opacity: 0.9;
+        }
+        .content { 
+            padding: 30px;
+        }
+        .diagram-section { 
+            margin-bottom: 40px;
+            border: 1px solid #00d4aa;
+            border-radius: 6px;
+            overflow: hidden;
+            background: #0a0a1a;
+        }
+        .diagram-header { 
+            background: #00d4aa;
+            color: #050510;
+            padding: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .legend { 
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .legend-item { 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color { 
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .accent { background: #00d4aa; }
+        .paper { background: #050510; }
+        .ink { background: #eaeaea; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>$repo</h1>
+            <p>Architecture Documentation</p>
+            <p>Four Interactive Diagram Views</p>
+        </div>
+        
+        <div class="content">
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color accent"></div>
+                    <span>Accent (Primary)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color paper"></div>
+                    <span>Paper (Background)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color ink"></div>
+                    <span>Ink (Text)</span>
+                </div>
+            </div>
+            
+            <div class="diagram-section">
+                <div class="diagram-header">1. Architecture Overview</div>
+                <div class="diagram-container">
+                    <h3>Architecture Diagram</h3>
+                    <p>Interactive SVG diagram showing the project architecture</p>
+                </div>
+            </div>
+            
+            <div class="diagram-section">
+                <div class="diagram-header">2. Component Architecture</div>
+                <div class="diagram-container">
+                    <h3>Component Layout Diagram</h3>
+                    <p>Detailed breakdown of application components and their connections</p>
+                </div>
+            </div>
+            
+            <div class="diagram-section">
+                <div class="diagram-header">3. Data Flow Architecture</div>
+                <div class="diagram-container">
+                    <h3>Data Processing Flow</h3>
+                    <p>End-to-end data flow from sources to outputs through processing pipelines</p>
+                </div>
+            </div>
+            
+            <div class="diagram-section">
+                <div class="diagram-header">4. Hybrid Architecture View</div>
+                <div class="diagram-container">
+                    <h3>Integrated Architecture</h3>
+                    <p>Combined view integrating all architectural perspectives into a unified diagram</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid #00d4aa;">
+                <p>Generated with <strong>diagram-design</strong> skill • Dark Teal Theme (#00d4aa accent)</p>
+                <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 10px;">
+                    All diagrams are interactive - hover over elements for details, click for expanded views
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
